@@ -1,0 +1,63 @@
+﻿@model IEnumerable<YHRSys.Models.tblReagent>
+
+@{
+    ViewBag.Title = "Reagents List";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.uom)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.createdBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.updatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.updatedDate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.uom)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.createdBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.createdDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.updatedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.updatedDate)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.reagentId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.reagentId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.reagentId })
+        </td>
+    </tr>
+}
+
+</table>

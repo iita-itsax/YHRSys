@@ -1,0 +1,50 @@
+﻿@model YHRSys.Models.Activity
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Activity</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.location.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.location.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.mediumPrepType.typename)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.mediumPrepType.typename)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.description)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.activityId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

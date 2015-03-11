@@ -1,0 +1,93 @@
+﻿@model IEnumerable<YHRSys.Models.tblPartner>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.contactAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.phoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.emailAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.webAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.geoLongitude)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.geoLatitude)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.createdBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.updatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.updatedDate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.contactAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.phoneNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.emailAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.webAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.geoLongitude)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.geoLatitude)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.createdBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.createdDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.updatedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.updatedDate)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.partnerId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.partnerId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.partnerId })
+        </td>
+    </tr>
+}
+
+</table>

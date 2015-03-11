@@ -1,0 +1,98 @@
+﻿@model YHRSys.Models.tblInventory
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>tblInventory</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.quantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.quantity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.stock)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.stock)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.stockDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.stockDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.stockUserId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.stockUserId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.initialStock)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.initialStock)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.createdBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.createdDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblReagent.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblReagent.name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.inventoryId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

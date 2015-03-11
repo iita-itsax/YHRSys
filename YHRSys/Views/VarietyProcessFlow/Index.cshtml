@@ -1,0 +1,93 @@
+﻿@model IEnumerable<YHRSys.Models.tblVarietyProcessFlow>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.form)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.processDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.userId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.rank)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.barcode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.createdBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.updatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.updatedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tblVariety.name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.form)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.processDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.userId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.rank)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.barcode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.createdBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.createdDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.updatedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.updatedDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tblVariety.name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.proccessId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.proccessId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.proccessId })
+        </td>
+    </tr>
+}
+
+</table>

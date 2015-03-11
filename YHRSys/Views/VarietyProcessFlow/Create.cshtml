@@ -1,0 +1,121 @@
+﻿@model YHRSys.Models.tblVarietyProcessFlow
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>tblVarietyProcessFlow</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.varietyId, "varietyId", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("varietyId", String.Empty)
+                @Html.ValidationMessageFor(model => model.varietyId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.form, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.form)
+                @Html.ValidationMessageFor(model => model.form)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.processDate, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.processDate)
+                @Html.ValidationMessageFor(model => model.processDate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.userId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.userId)
+                @Html.ValidationMessageFor(model => model.userId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.rank, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.rank)
+                @Html.ValidationMessageFor(model => model.rank)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.barcode, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.barcode)
+                @Html.ValidationMessageFor(model => model.barcode)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.description, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.description)
+                @Html.ValidationMessageFor(model => model.description)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.createdBy, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.createdBy)
+                @Html.ValidationMessageFor(model => model.createdBy)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.createdDate, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.createdDate)
+                @Html.ValidationMessageFor(model => model.createdDate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.updatedBy, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.updatedBy)
+                @Html.ValidationMessageFor(model => model.updatedBy)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.updatedDate, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.updatedDate)
+                @Html.ValidationMessageFor(model => model.updatedDate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Yam High Ratio Propagation System</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Yam High Ratio Propagation System", "Index", "Home", null, new { @class = "site-logo" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="/" id="Who-we-are" class="dropdown-toggle" data-toggle="dropdown">Home <span class="caret"></span></a>
+                        <ul class="dropdown-menu" aria-labelledby="download">
+                            <li>@Html.ActionLink("About", "About", "Home")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" id="manage" class="dropdown-toggle" data-toggle="dropdown">Settings<span class="caret"></span></a>
+                        <ul class="dropdown-menu" aria-labelledby="download">
+                            <li>@Html.ActionLink("Locations", "Index", "Location")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Location OiC", "Index", "LocationUser")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Reagents", "Index", "Reagent")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Medium Prep Types", "Index", "MediumPrepType")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Units of Measurements", "Index", "Measurements")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" id="actions" class="dropdown-toggle" data-toggle="dropdown">Contents <span class="caret"></span></a>
+                        <ul class="dropdown-menu" aria-labelledby="download">
+                            <li>@Html.ActionLink("Activities", "Index", "Activity")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Inventory", "Index", "Inventory")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Varieties", "Index", "Variety")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Variety Process Flow", "Index", "VarietyProcessFlow")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" id="partners" class="dropdown-toggle" data-toggle="dropdown">Partners <span class="caret"></span></a>
+                        <ul class="dropdown-menu" aria-labelledby="download">
+                            <li>@Html.ActionLink("Partners", "Index", "Partner")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Partner Activities", "Index", "PartnerActivity")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Partner Contacts", "Index", "PartnerContact")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" id="manage" class="dropdown-toggle" data-toggle="dropdown">Admin<span class="caret"></span></a>
+                        <ul class="dropdown-menu" aria-labelledby="download">
+                            <li>@Html.ActionLink("Users", "Index", "Account")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Groups", "Index", "Groups")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Permissions", "Index", "Roles")</li>
+                        </ul>
+                    </li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Yam High Ratio Propagation System</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

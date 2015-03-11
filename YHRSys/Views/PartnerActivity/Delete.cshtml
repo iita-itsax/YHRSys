@@ -1,0 +1,144 @@
+﻿@model YHRSys.Models.tblPartnerActivity
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>tblPartnerActivity</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.backStopping)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.backStopping)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tcPlantletsGiven)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tcPlantletsGiven)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.bioreactorplantsGiven)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.bioreactorplantsGiven)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tubersGiven)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tubersGiven)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tcPlantletsAvailable)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tcPlantletsAvailable)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tibPlantletsAvailable)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tibPlantletsAvailable)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tubersAvailable)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tubersAvailable)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.officerInCharge)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.officerInCharge)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.activityDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.activityDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.createdBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.createdDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblReagent.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblReagent.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblPartner.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblPartner.name)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

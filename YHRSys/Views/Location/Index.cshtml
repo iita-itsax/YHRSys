@@ -1,0 +1,75 @@
+﻿@model IEnumerable<YHRSys.Models.Location>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.locNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.source)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.baseUserEntity.createdBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.baseDateEntity.createdDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.baseUserEntity.updatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.baseDateEntity.updatedDate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.locNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.source)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.baseUserEntity.createdBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.baseDateEntity.createdDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.baseUserEntity.updatedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.baseDateEntity.updatedDate)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.locationId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.locationId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.locationId })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,184 @@
+﻿@model YHRSys.Models.tblVariety
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>tblVariety</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.sampleNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sampleNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.repUser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.repUser)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.testDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.testDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.releaseStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.releaseStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.resistance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.resistance)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.storability)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.storability)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.poundability)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.poundability)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.species)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.species)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.uniformity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.uniformity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.stability)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.stability)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.distinctness)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.distinctness)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.value)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.value)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.locationId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.locationId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.userId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.userId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.createdBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.createdDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tblActivity.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tblActivity.name)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

@@ -1,0 +1,117 @@
+﻿@model IEnumerable<YHRSys.Models.tblPartnerActivity>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.backStopping)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tcPlantletsGiven)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.bioreactorplantsGiven)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tubersGiven)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tcPlantletsAvailable)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tibPlantletsAvailable)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tubersAvailable)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.officerInCharge)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.activityDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.createdBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.updatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.updatedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tblReagent.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tblPartner.name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.backStopping)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tcPlantletsGiven)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.bioreactorplantsGiven)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tubersGiven)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tcPlantletsAvailable)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tibPlantletsAvailable)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tubersAvailable)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.officerInCharge)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.activityDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.createdBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.createdDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.updatedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.updatedDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tblReagent.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tblPartner.name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.partnerActivityId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.partnerActivityId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.partnerActivityId })
+        </td>
+    </tr>
+}
+
+</table>
