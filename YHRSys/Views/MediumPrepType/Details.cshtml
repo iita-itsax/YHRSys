@@ -1,13 +1,13 @@
-﻿@model YHRSys.Models.tblMediumPrepType
+﻿@model YHRSys.Models.MediumPrepType
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Medium Prep. Type Details";
 }
 
-<h2>Details</h2>
+<h2>Medium Prep. Type Details</h2>
 
 <div>
-    <h4>tblMediumPrepType</h4>
+    <h4>Medium Prep. Type</h4>
 	<hr />
     <dl class="dl-horizontal">
         <dt>
@@ -16,6 +16,38 @@
 
         <dd>
             @Html.DisplayFor(model => model.typename)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.extendCreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.createdDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.extendUpdatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updatedDate)
         </dd>
 
     </dl>

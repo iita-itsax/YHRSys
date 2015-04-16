@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YHRSys.Models
 {
-    public partial class Location
+    public partial class Location : BaseEntity
     {
         public Location()
         {
@@ -21,21 +21,21 @@ namespace YHRSys.Models
 
         [Required]
         [MaxLength(50)]
+        [DisplayName("Name")]
         public string name { get; set; }
 
         [MaxLength(50)]
+        [DisplayName("LocNo")]
         public string locNumber { get; set; }
 
         [MaxLength(50)]
+        [DisplayName("Source")]
         public string source { get; set; }
 
         [Column(TypeName = "ntext")]
         [MaxLength]
+        [DisplayName("Description")]
         public string description { get; set; }
-
-        public BaseDateEntity baseDateEntity { get; set; }
-        public BaseUserEntity baseUserEntity { get; set; }
-        public VersionedEntity version { get; set; }
 
         public virtual ICollection<Activity> Activities { get; set; }
         public virtual ICollection<LocationUser> LocationUsers { get; set; }

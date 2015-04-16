@@ -21,10 +21,14 @@ namespace YHRSys.Models
         public virtual IDbSet<MediumPrepType> MediumPrepTypes { get; set; }
         public virtual IDbSet<Partner> Partners { get; set; }
         public virtual IDbSet<PartnerActivity> PartnerActivities { get; set; }
-        public virtual IDbSet<PartnerContactPerson> PartnerContactPersons { get; set; }
+        public virtual IDbSet<PartnerContact> PartnerContactPersons { get; set; }
         public virtual IDbSet<Variety> Varieties { get; set; }
         public virtual IDbSet<VarietyProcessFlow> VarietyProcessFlows { get; set; }
-
+        public virtual IDbSet<ActivityDefinition> ActivityDefinitions { get; set; }
+        public virtual IDbSet<Stock> Stocks { get; set; }
+        public virtual IDbSet<Species> Species { get; set; }
+        public virtual IDbSet<VarietyDefinition> VarietyDefinitions { get; set; }
+        public virtual IDbSet<InternalReagentUsage> InternalReagentUsages { get; set; }
 
 
         public ApplicationDbContext()

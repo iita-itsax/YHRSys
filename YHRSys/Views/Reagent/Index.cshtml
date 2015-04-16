@@ -1,63 +1,96 @@
-﻿@model IEnumerable<YHRSys.Models.tblReagent>
-
+﻿@model PagedList.IPagedList<YHRSys.Models.ReagentStockModel>
+@using PagedList.Mvc;
 @{
-    ViewBag.Title = "Reagents List";
+    ViewBag.Title = "Reagents";
 }
 
-<h2>Index</h2>
+<h2>Reagents</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.uom)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.createdBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.createdDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.updatedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.updatedDate)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.uom)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.createdBy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.createdDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.updatedBy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.updatedDate)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.reagentId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.reagentId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.reagentId })
-        </td>
-    </tr>
+@using (Html.BeginForm("Index", "Reagent", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+{
+    <div class="form-group">
+        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control input-mini", placeholder = "Search for ... reagent, UoM or description" })
+    </div>;
+    <button class="btn btn-primary" type="submit">Search!</button> 
+    <button class="btn btn-success" type="button" onclick="clearForm();">Clear!</button>
 }
+</p>
+<div class="table-responsive">
+    <table class="table">
+        @if (Model.PageCount > 0)
+        {
+        <tr>
+            <th>
+                @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                UoM
+            </th>
+            <th>
+                ReOrder Lev
+            </th>
+            <th>
+                Desc
+            </th>
+            <th>
+                CreatedBy
+            </th>
+            <th>
+                @Html.ActionLink("CreatedOn", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                Stock Bal.
+            </th>
+            <th></th>
+        </tr>
+        }
+        else
+        {
+        <tr>
+            <td colspan="8">
+                <em>No records found!</em>
+            </td>
+        </tr>
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.reagentName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.measurementName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.reOrderLevel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.createdBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.createdDate)
+                </td>
+                <td>
+                    <span class="badge">@Html.DisplayFor(modelItem => item.stockBalance)</span>
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.reagentId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.reagentId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.reagentId })
+                </td>
+            </tr>
+        }
 
-</table>
+    </table>
+    <br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+</div>

@@ -1,10 +1,10 @@
-﻿@model YHRSys.Models.tblInventory
+﻿@model YHRSys.Models.Inventory
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create Inventory";
 }
 
-<h2>Create</h2>
+<h2>Create Inventory</h2>
 
 
 @using (Html.BeginForm()) 
@@ -12,20 +12,12 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>tblInventory</h4>
+        <h4>Inventory</h4>
         <hr />
         @Html.ValidationSummary(true)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.inventoryId, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.inventoryId)
-                @Html.ValidationMessageFor(model => model.inventoryId)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.reagentId, "reagentId", new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.reagentId, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("reagentId", String.Empty)
                 @Html.ValidationMessageFor(model => model.reagentId)
@@ -35,72 +27,32 @@
         <div class="form-group">
             @Html.LabelFor(model => model.quantity, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.quantity)
+                @Html.TextBoxFor(model => model.quantity, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.quantity)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.stock, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.stock)
-                @Html.ValidationMessageFor(model => model.stock)
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.stockDate, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.stockDate)
+                @Html.TextBoxFor(model => model.stockDate, new { @class = "form-control datecontrol" })
                 @Html.ValidationMessageFor(model => model.stockDate)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.stockUserId, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.userId, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.stockUserId)
-                @Html.ValidationMessageFor(model => model.stockUserId)
+                @Html.DropDownList("userId", String.Empty)
+                @Html.ValidationMessageFor(model => model.userId)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.initialStock, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.note, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.initialStock)
-                @Html.ValidationMessageFor(model => model.initialStock)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.createdBy, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.createdBy)
-                @Html.ValidationMessageFor(model => model.createdBy)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.createdDate, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.createdDate)
-                @Html.ValidationMessageFor(model => model.createdDate)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.updatedBy, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.updatedBy)
-                @Html.ValidationMessageFor(model => model.updatedBy)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.updatedDate, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.updatedDate)
-                @Html.ValidationMessageFor(model => model.updatedDate)
+                @Html.TextAreaFor(model => model.note, new { rows=2, columns=40, @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.note)
             </div>
         </div>
 

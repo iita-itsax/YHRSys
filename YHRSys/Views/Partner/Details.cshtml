@@ -1,13 +1,13 @@
-﻿@model YHRSys.Models.tblPartner
+﻿@model YHRSys.Models.Partner
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Details Partner";
 }
 
-<h2>Details</h2>
+<h2>Details Partner</h2>
 
 <div>
-    <h4>tblPartner</h4>
+    <h4>Partner</h4>
 	<hr />
     <dl class="dl-horizontal">
         <dt>
@@ -24,6 +24,30 @@
 
         <dd>
             @Html.DisplayFor(model => model.contactAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.contactCity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.contactCity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.contactState)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.contactState)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.contactCountry)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.contactCountry)
         </dd>
 
         <dt>
@@ -71,7 +95,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.createdBy)
+            @Html.DisplayFor(model => model.extendCreatedBy)
         </dd>
 
         <dt>
@@ -87,7 +111,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.updatedBy)
+            @Html.DisplayFor(model => model.extendUpdatedBy)
         </dd>
 
         <dt>

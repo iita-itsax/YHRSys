@@ -8,27 +8,52 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YHRSys.Models
 {
-    public partial class Activity
+    public partial class Activity : BaseEntity
     {
         public Activity()
         {
-            this.varieties = new HashSet<Variety>();
         }
+        private const int DEFAULT_VALUE = 0;
 
         [Key]
         public int activityId { get; set; }
 
         [Required]
-        public string name { get; set; }
+        [DisplayName("Name")]
+        public int activityDefinitionId { get; set; }
 
+        [DisplayName("Location")]
         public int locationId { get; set; }
+
+        [DisplayName("Type")]
         public int typeId { get; set; }
 
         [MaxLength]
+        [DisplayName("Description")]
         public string description { get; set; }
 
-        public BaseDateEntity baseDateEntity { get; set; }
-        public VersionedEntity version { get; set; }
+        [DisplayName("Variety")]
+        public Nullable<int> varietyId { get; set; }
+
+        [DisplayName("OiC")]
+        public string userId { get; set; }
+
+        [DisplayName("Quantity"), Required]
+        [DefaultValue(DEFAULT_VALUE)]
+        [Range(1, (int)Int32.MaxValue, ErrorMessage = "Quantity must be greater than zero.")]
+        public int quantity { get; set; }
+
+        [DisplayName("Quality"), Required]
+        [DefaultValue(DEFAULT_VALUE)]
+        [Range(1, 100, ErrorMessage = "Quality must be greater than zero.")]
+        public int quality { get; set; }
+
+        [DisplayName("Activity Date")]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        public Nullable<System.DateTime> activityDate { get; set; }
+
+        [ForeignKey("varietyId")]
+        public virtual Variety variety { get; set; }
         
         [ForeignKey("locationId")]
         public virtual Location location { get; set; }
@@ -36,8 +61,10 @@ namespace YHRSys.Models
         [ForeignKey("typeId")]
         public virtual MediumPrepType mediumPrepType { get; set; }
 
-        public BaseUserEntity baseUserEntity { get; set; }
+        [ForeignKey("activityDefinitionId")]
+        public virtual ActivityDefinition activityDefinition { get; set; }
 
-        public virtual ICollection<Variety> varieties { get; set; }
+        [ForeignKey("userId")]
+        public virtual ApplicationUser user { get; set; }
     }
 }

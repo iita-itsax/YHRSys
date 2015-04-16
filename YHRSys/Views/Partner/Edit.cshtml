@@ -1,10 +1,10 @@
-﻿@model YHRSys.Models.tblPartner
+﻿@model YHRSys.Models.Partner
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Partner";
 }
 
-<h2>Edit</h2>
+<h2>Edit Partner</h2>
 
 
 @using (Html.BeginForm())
@@ -12,15 +12,16 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>tblPartner</h4>
+        <h4>Partner</h4>
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.partnerId)
+        @Html.HiddenFor(model => model.Timestamp)
 
         <div class="form-group">
             @Html.LabelFor(model => model.name, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.name)
+                @Html.TextBoxFor(model => model.name, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.name)
             </div>
         </div>
@@ -28,15 +29,40 @@
         <div class="form-group">
             @Html.LabelFor(model => model.contactAddress, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.contactAddress)
+                @Html.TextAreaFor(model => model.contactAddress, new { rows = 2, columns = 4, @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.contactAddress)
             </div>
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.contactCity, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.contactCity, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.contactCity)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.contactState, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.contactState, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.contactState)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.contactCountry, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.contactCountry, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.contactCountry)
+            </div>
+        </div>
+
+
+        <div class="form-group">
             @Html.LabelFor(model => model.phoneNumber, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.phoneNumber)
+                @Html.TextBoxFor(model => model.phoneNumber, new { @class = "form-control", placeholder = "e.g. 803-111-1234" })
                 @Html.ValidationMessageFor(model => model.phoneNumber)
             </div>
         </div>
@@ -44,7 +70,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.emailAddress, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.emailAddress)
+                @Html.TextBoxFor(model => model.emailAddress, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.emailAddress)
             </div>
         </div>
@@ -52,7 +78,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.webAddress, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.webAddress)
+                @Html.TextBoxFor(model => model.webAddress, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.webAddress)
             </div>
         </div>
@@ -60,7 +86,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.geoLongitude, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.geoLongitude)
+                @Html.TextBoxFor(model => model.geoLongitude, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.geoLongitude)
             </div>
         </div>
@@ -68,40 +94,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.geoLatitude, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.geoLatitude)
+                @Html.TextBoxFor(model => model.geoLatitude, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.geoLatitude)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.createdBy, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.createdBy)
-                @Html.ValidationMessageFor(model => model.createdBy)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.createdDate, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.createdDate)
-                @Html.ValidationMessageFor(model => model.createdDate)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.updatedBy, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.updatedBy)
-                @Html.ValidationMessageFor(model => model.updatedBy)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.updatedDate, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.updatedDate)
-                @Html.ValidationMessageFor(model => model.updatedDate)
             </div>
         </div>
 

@@ -12,26 +12,41 @@ namespace YHRSys.Models
         ACTIVE, INACTIVE
     }
 
-    public partial class LocationUser
+    public partial class LocationUser : BaseEntity
     {
         [Key]
         public int locationUserId { get; set; }
         //This property line is for the user that is in-charge of this location
+        [DisplayName("Officer-in-Charge")]
         public string userId { get; set; }
 
+        [DisplayName("Location")]
         public int locationId { get; set; }
 
+        [DisplayName("Resump. Date")]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> startDate { get; set; }
+
+        [DisplayName("Exit Date")]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> endDate { get; set; }
 
+        [DisplayName("Status")]
         public STATUS status { get; set; }
-
-        public BaseDateEntity baseDateEntity { get; set; }
-        public VersionedEntity version { get; set; }
 
         [ForeignKey("locationId")]
         public virtual Location location { get; set; }
 
-        public BaseUserEntity baseUserEntity { get; set; }
+        [ForeignKey("userId")]
+        public virtual ApplicationUser user { get; set; }
+
+        [NotMapped]
+        public string FullName
+        {
+            get
+            {
+                return user.FirstName + " " + user.LastName;
+            }
+        }
     }
 }

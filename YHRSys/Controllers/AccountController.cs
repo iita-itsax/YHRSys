@@ -170,6 +170,11 @@ namespace YHRSys.Controllers
                 UserManager.Dispose();
                 UserManager = null;
             }
+            if (disposing && _db != null)
+            {
+                _db.Dispose();
+                _db = null;
+            }
             base.Dispose(disposing);
         }
 

@@ -1,87 +1,103 @@
-﻿@model IEnumerable<YHRSys.Models.tblInventory>
+﻿@model PagedList.IPagedList<YHRSys.Models.Inventory>
+@using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Inventory";
 }
 
-<h2>Index</h2>
+<h2>Inventory</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
+
+    @using (Html.BeginForm("Index", "Inventory", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+    {
+        <div class="form-group">
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control input-mini", placeholder = "Search phrase goes here ..." })
+        </div>;
+        <div class="form-group">
+            @Html.TextBox("SearchStartStockDate", ViewBag.StartStockDateFilter as string, new { @class = "form-control datecontrol input-mini", placeholder = "Stock date start range .." })
+        </div>;
+        <div class="form-group">
+            @Html.TextBox("SearchEndStockDate", ViewBag.EndStockDateFilter as string, new { @class = "form-control datecontrol input-mini", placeholder = "Stock date end range ..." })
+        </div>;
+        <button class="btn btn-primary" type="submit">Search!</button> <button class="btn btn-success" type="button" onclick="clearForm();">Clear!</button>
+    }
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.quantity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.stock)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.stockDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.stockUserId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.initialStock)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.createdBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.createdDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.updatedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.updatedDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.tblReagent.name)
-        </th>
-        <th></th>
-    </tr>
+<div class="table-responsive">
+    <table class="table">
+        @if (Model.PageCount > 0)
+        {
+        <tr>
+            <th>
+                @Html.ActionLink("Reagent", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Quantity", "Index", new { sortOrder = ViewBag.QuantitySortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Stock Date", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                @Html.ActionLink("PurchasedBy", "Index", new { sortOrder = ViewBag.OiCNameSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                Stock Note
+            </th>
+            <th>
+                CreatedBy
+            </th>
+            <th>
+                CreatedOn
+            </th>
+            <th></th>
+        </tr>
+        }
+        else
+        {
+        <tr>
+            <td colspan="8">
+                <em>No records found!</em>
+            </td>
+        </tr>
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.reagent.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.stockDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.user.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.note)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.extendCreatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.createdDate)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.inventoryId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.inventoryId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.inventoryId })
+                </td>
+            </tr>
+        }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.quantity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.stock)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.stockDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.stockUserId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.initialStock)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.createdBy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.createdDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.updatedBy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.updatedDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.tblReagent.name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.inventoryId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.inventoryId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.inventoryId })
-        </td>
-    </tr>
-}
+    </table>
+    <br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
-</table>
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+                        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter }))
+
+</div>

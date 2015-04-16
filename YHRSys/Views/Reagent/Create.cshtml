@@ -1,4 +1,4 @@
-﻿@model YHRSys.Models.tblReagent
+﻿@model YHRSys.Models.Reagent
 
 @{
     ViewBag.Title = "Create Reagent";
@@ -12,23 +12,39 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>tblReagent</h4>
+        <h4>Reagent</h4>
         <hr />
         @Html.ValidationSummary(true)
 
         <div class="form-group">
             @Html.LabelFor(model => model.name, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.name)
+                @Html.TextBoxFor(model => model.name, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.name)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.uom, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.measurementId, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.uom)
-                @Html.ValidationMessageFor(model => model.uom)
+                @Html.DropDownList("measurementId", String.Empty)
+                @Html.ValidationMessageFor(model => model.measurementId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.reOrderLevel, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.reOrderLevel, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.reOrderLevel)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.description, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.description, new { rows = 4, columns = 40, @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.description)
             </div>
         </div>
 

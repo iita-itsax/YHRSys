@@ -1,29 +1,29 @@
-﻿@model YHRSys.Models.tblInventory
+﻿@model YHRSys.Models.Inventory
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Inventory Details";
 }
 
-<h2>Details</h2>
+<h2>Inventory Details</h2>
 
 <div>
-    <h4>tblInventory</h4>
+    <h4>Inventory</h4>
 	<hr />
     <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.reagentId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.reagent.name)
+        </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.quantity)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.quantity)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.stock)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.stock)
         </dd>
 
         <dt>
@@ -35,19 +35,19 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.stockUserId)
+            @Html.DisplayNameFor(model => model.userId)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.stockUserId)
+            @Html.DisplayFor(model => model.user.FullName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.initialStock)
+            @Html.DisplayNameFor(model => model.note)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.initialStock)
+            @Html.DisplayFor(model => model.note)
         </dd>
 
         <dt>
@@ -55,7 +55,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.createdBy)
+            @Html.DisplayFor(model => model.extendCreatedBy)
         </dd>
 
         <dt>
@@ -71,7 +71,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.updatedBy)
+            @Html.DisplayFor(model => model.extendUpdatedBy)
         </dd>
 
         <dt>
@@ -80,14 +80,6 @@
 
         <dd>
             @Html.DisplayFor(model => model.updatedDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.tblReagent.name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.tblReagent.name)
         </dd>
 
     </dl>

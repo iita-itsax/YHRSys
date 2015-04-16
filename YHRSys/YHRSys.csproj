@@ -41,7 +41,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="Spire.Barcode">
       <HintPath>..\packages\Spire.BarCode.1.2.5\lib\net40\Spire.Barcode.dll</HintPath>
     </Reference>
@@ -163,20 +172,51 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Content\Reports\PartnerActivitiesReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PartnerActivitiesReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ActivityController.cs" />
+    <Compile Include="Controllers\ActivityDefinitionController.cs" />
+    <Compile Include="Migrations\201503302103367_Seventeenth.cs" />
+    <Compile Include="Migrations\201503302103367_Seventeenth.Designer.cs">
+      <DependentUpon>201503302103367_Seventeenth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503302111493_Eighteen.cs" />
+    <Compile Include="Migrations\201503302111493_Eighteen.Designer.cs">
+      <DependentUpon>201503302111493_Eighteen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503312103339_Nineteen.cs" />
+    <Compile Include="Migrations\201503312103339_Nineteen.Designer.cs">
+      <DependentUpon>201503312103339_Nineteen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201504032107022_twentieth.cs" />
+    <Compile Include="Migrations\201504032107022_twentieth.Designer.cs">
+      <DependentUpon>201504032107022_twentieth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CustomPartnerActivities.cs" />
+    <Compile Include="Models\DropdownSelect.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InternalReagentUsageController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\LocationUserController.cs" />
-    <Compile Include="Controllers\MediumPrepTypeController.cs" />
+    <Compile Include="Controllers\MeasurementsController.cs" />
+    <Compile Include="Controllers\MediumPrepTypeController.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Controllers\PartnerActivityController.cs" />
     <Compile Include="Controllers\PartnerContactController.cs" />
     <Compile Include="Controllers\PartnerController.cs" />
     <Compile Include="Controllers\ReagentController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\SpeciesController.cs" />
     <Compile Include="Controllers\VarietyController.cs" />
+    <Compile Include="Controllers\VarietyDefinitionController.cs" />
     <Compile Include="Controllers\VarietyProcessFlowController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -184,6 +224,66 @@
     <Compile Include="Migrations\201402161844035_init.cs" />
     <Compile Include="Migrations\201402161844035_init.Designer.cs">
       <DependentUpon>201402161844035_init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503191547222_Second.cs" />
+    <Compile Include="Migrations\201503191547222_Second.Designer.cs">
+      <DependentUpon>201503191547222_Second.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503191732424_Third.cs" />
+    <Compile Include="Migrations\201503191732424_Third.Designer.cs">
+      <DependentUpon>201503191732424_Third.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503192310321_Fourth.cs" />
+    <Compile Include="Migrations\201503192310321_Fourth.Designer.cs">
+      <DependentUpon>201503192310321_Fourth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503202134034_Fifth.cs" />
+    <Compile Include="Migrations\201503202134034_Fifth.Designer.cs">
+      <DependentUpon>201503202134034_Fifth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503210926267_Sixth.cs" />
+    <Compile Include="Migrations\201503210926267_Sixth.Designer.cs">
+      <DependentUpon>201503210926267_Sixth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503211220263_Seventh.cs" />
+    <Compile Include="Migrations\201503211220263_Seventh.Designer.cs">
+      <DependentUpon>201503211220263_Seventh.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503211330451_Eight.cs" />
+    <Compile Include="Migrations\201503211330451_Eight.Designer.cs">
+      <DependentUpon>201503211330451_Eight.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503211338573_Nineth.cs" />
+    <Compile Include="Migrations\201503211338573_Nineth.Designer.cs">
+      <DependentUpon>201503211338573_Nineth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503211346287_Tenth.cs" />
+    <Compile Include="Migrations\201503211346287_Tenth.Designer.cs">
+      <DependentUpon>201503211346287_Tenth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503212145141_Eleventh.cs" />
+    <Compile Include="Migrations\201503212145141_Eleventh.Designer.cs">
+      <DependentUpon>201503212145141_Eleventh.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503212147269_Twelvth.cs" />
+    <Compile Include="Migrations\201503212147269_Twelvth.Designer.cs">
+      <DependentUpon>201503212147269_Twelvth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503222058182_Thirteenth.cs" />
+    <Compile Include="Migrations\201503222058182_Thirteenth.Designer.cs">
+      <DependentUpon>201503222058182_Thirteenth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503231338454_Fourtheen.cs" />
+    <Compile Include="Migrations\201503231338454_Fourtheen.Designer.cs">
+      <DependentUpon>201503231338454_Fourtheen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503231342242_Fiftheen.cs" />
+    <Compile Include="Migrations\201503231342242_Fiftheen.Designer.cs">
+      <DependentUpon>201503231342242_Fiftheen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503241337357_Sixteen.cs" />
+    <Compile Include="Migrations\201503241337357_Sixteen.Designer.cs">
+      <DependentUpon>201503241337357_Sixteen.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -193,23 +293,34 @@
     <Compile Include="Models\ApplicationRoleGroup.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\ApplicationUserGroup.cs" />
+    <Compile Include="Models\BarCode39.cs" />
+    <Compile Include="Models\barcodecs.cs" />
     <Compile Include="Models\BaseDateEntity.cs" />
+    <Compile Include="Models\BaseEntity.cs" />
     <Compile Include="Models\BaseUserEntity.cs" />
     <Compile Include="Models\CustomActivitiesViewModel.cs" />
     <Compile Include="Models\CustomLocationViewModel.cs" />
     <Compile Include="Models\CustomReagentsViewModel.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\IdentityManager.cs" />
+    <Compile Include="Models\InternalReagentUsage.cs" />
     <Compile Include="Models\Inventory.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\LocationUser.cs" />
     <Compile Include="Models\Measurements.cs" />
+    <Compile Include="Models\ActivityDefinition.cs" />
     <Compile Include="Models\MediumPrepType.cs" />
     <Compile Include="Models\Partner.cs" />
     <Compile Include="Models\PartnerActivity.cs" />
-    <Compile Include="Models\PartnerContactPerson.cs" />
+    <Compile Include="Models\PartnerContact.cs" />
+    <Compile Include="Models\PrincipalUser.cs" />
     <Compile Include="Models\Reagent.cs" />
+    <Compile Include="Models\ReagentStockModel.cs" />
+    <Compile Include="Models\Species.cs" />
+    <Compile Include="Models\Stock.cs" />
+    <Compile Include="Models\StringExtention.cs" />
     <Compile Include="Models\Variety.cs" />
+    <Compile Include="Models\VarietyDefinition.cs" />
     <Compile Include="Models\VarietyProcessFlow.cs" />
     <Compile Include="Models\VersionedEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -222,7 +333,13 @@
     <Content Include="Content\bootswatch-bootstrap.css" />
     <Content Include="Content\bootswatch.min.css" />
     <Content Include="Content\custom-style.css" />
+    <Content Include="Content\datepicker.css" />
+    <Content Include="Content\datepicker3.css" />
+    <Content Include="Content\images\flickr.png" />
     <Content Include="Content\images\IITA_logo-standard-small.jpg" />
+    <Content Include="Content\images\twitter.png" />
+    <Content Include="Content\images\yiifswa_logo.jpg" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -231,12 +348,17 @@
     <Content Include="Content\images\iita2.png" />
     <Content Include="Content\images\iita_logo.png" />
     <Content Include="Content\images\logo.png" />
+    <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="fonts\fre3of9x.ttf" />
+    <Content Include="fonts\free3of9.ttf" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootswatch-bootstrap.min.js" />
     <Content Include="Scripts\bootswatch-jquery-1.10.2.min.js" />
     <Content Include="Scripts\bootswatch.js" />
+    <Content Include="Scripts\custom_script.js" />
+    <Content Include="Scripts\DatePickerReady.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -244,6 +366,67 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.ar.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.az.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.bg.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.bs.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.ca.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.cs.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.cy.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.da.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.de.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.el.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.en-GB.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.es.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.et.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.eu.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.fa.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.fi.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.fo.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.fr-CH.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.fr.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.gl.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.he.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.hr.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.hu.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.hy.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.id.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.is.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.it-CH.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.it.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.ja.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.ka.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.kh.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.kk.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.kr.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.lt.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.lv.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.mk.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.ms.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.nb.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.nl-BE.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.nl.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.no.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.pl.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.pt-BR.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.pt.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.ro.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.rs-latin.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.rs.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.ru.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.sk.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.sl.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.sq.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.sr-latin.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.sr.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.sv.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.sw.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.th.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.tr.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.uk.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.vi.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.zh-CN.js" />
+    <Content Include="Scripts\locales\bootstrap-datepicker.zh-TW.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -342,6 +525,33 @@
     <Content Include="Views\Variety\Edit.cshtml" />
     <Content Include="Views\Variety\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Measurements\Create.cshtml" />
+    <Content Include="Views\Measurements\Delete.cshtml" />
+    <Content Include="Views\Measurements\Details.cshtml" />
+    <Content Include="Views\Measurements\Edit.cshtml" />
+    <Content Include="Views\Measurements\Index.cshtml" />
+    <Content Include="Views\ActivityDefinition\Create.cshtml" />
+    <Content Include="Views\ActivityDefinition\Delete.cshtml" />
+    <Content Include="Views\ActivityDefinition\Details.cshtml" />
+    <Content Include="Views\ActivityDefinition\Edit.cshtml" />
+    <Content Include="Views\ActivityDefinition\Index.cshtml" />
+    <Content Include="Views\Species\Create.cshtml" />
+    <Content Include="Views\Species\Delete.cshtml" />
+    <Content Include="Views\Species\Details.cshtml" />
+    <Content Include="Views\Species\Edit.cshtml" />
+    <Content Include="Views\Species\Index.cshtml" />
+    <Content Include="Views\InternalReagentUsage\Create.cshtml" />
+    <Content Include="Views\InternalReagentUsage\Delete.cshtml" />
+    <Content Include="Views\InternalReagentUsage\Details.cshtml" />
+    <Content Include="Views\InternalReagentUsage\Edit.cshtml" />
+    <Content Include="Views\InternalReagentUsage\Index.cshtml" />
+    <Content Include="Views\VarietyDefinition\Create.cshtml" />
+    <Content Include="Views\VarietyDefinition\Delete.cshtml" />
+    <Content Include="Views\VarietyDefinition\Details.cshtml" />
+    <Content Include="Views\VarietyDefinition\Edit.cshtml" />
+    <Content Include="Views\VarietyDefinition\Index.cshtml" />
+    <Content Include="Views\Shared\_RightSideBar.cshtml" />
+    <Content Include="Views\Shared\_ReagentReOrderStatus.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -354,9 +564,73 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Content\Reports\PartnerActivitiesReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PartnerActivitiesReport.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201402161844035_init.resx">
       <DependentUpon>201402161844035_init.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503191547222_Second.resx">
+      <DependentUpon>201503191547222_Second.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503191732424_Third.resx">
+      <DependentUpon>201503191732424_Third.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503192310321_Fourth.resx">
+      <DependentUpon>201503192310321_Fourth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503202134034_Fifth.resx">
+      <DependentUpon>201503202134034_Fifth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503210926267_Sixth.resx">
+      <DependentUpon>201503210926267_Sixth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503211220263_Seventh.resx">
+      <DependentUpon>201503211220263_Seventh.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503211330451_Eight.resx">
+      <DependentUpon>201503211330451_Eight.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503211338573_Nineth.resx">
+      <DependentUpon>201503211338573_Nineth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503211346287_Tenth.resx">
+      <DependentUpon>201503211346287_Tenth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503212145141_Eleventh.resx">
+      <DependentUpon>201503212145141_Eleventh.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503212147269_Twelvth.resx">
+      <DependentUpon>201503212147269_Twelvth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503222058182_Thirteenth.resx">
+      <DependentUpon>201503222058182_Thirteenth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503231338454_Fourtheen.resx">
+      <DependentUpon>201503231338454_Fourtheen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503231342242_Fiftheen.resx">
+      <DependentUpon>201503231342242_Fiftheen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503241337357_Sixteen.resx">
+      <DependentUpon>201503241337357_Sixteen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503302103367_Seventeenth.resx">
+      <DependentUpon>201503302103367_Seventeenth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503302111493_Eighteen.resx">
+      <DependentUpon>201503302111493_Eighteen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503312103339_Nineteen.resx">
+      <DependentUpon>201503312103339_Nineteen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504032107022_twentieth.resx">
+      <DependentUpon>201504032107022_twentieth.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

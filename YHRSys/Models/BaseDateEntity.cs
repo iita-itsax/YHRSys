@@ -17,7 +17,7 @@ namespace YHRSys.Models
         public System.DateTime createdDate { get; set; }
 
         [DisplayName("UpdatedOn")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)] 
+        //[DatabaseGenerated(DatabaseGeneratedOption.Computed)] 
         public Nullable<System.DateTime> updatedDate { get; set; }
     }
 }

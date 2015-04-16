@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<YHRSys.Models.Location>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Locations";
 }
 
-<h2>Index</h2>
+<h2>Locations</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -24,16 +24,16 @@
             @Html.DisplayNameFor(model => model.description)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.baseUserEntity.createdBy)
+            @Html.DisplayNameFor(model => model.createdBy)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.baseDateEntity.createdDate)
+            @Html.DisplayNameFor(model => model.createdDate)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.baseUserEntity.updatedBy)
+            @Html.DisplayNameFor(model => model.updatedBy)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.baseDateEntity.updatedDate)
+            @Html.DisplayNameFor(model => model.updatedDate)
         </th>
         <th></th>
     </tr>
@@ -53,16 +53,16 @@
             @Html.DisplayFor(modelItem => item.description)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.baseUserEntity.createdBy)
+            @Html.DisplayFor(modelItem => item.extendCreatedBy)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.baseDateEntity.createdDate)
+            @Html.DisplayFor(modelItem => item.createdDate)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.baseUserEntity.updatedBy)
+            @Html.DisplayFor(modelItem => item.extendUpdatedBy)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.baseDateEntity.updatedDate)
+            @Html.DisplayFor(modelItem => item.updatedDate)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.locationId }) |

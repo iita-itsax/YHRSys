@@ -8,14 +8,20 @@
 
 <div class="jumbotron">
     <h2>Yam High Ratio Propagation DB System</h2>
-    <p class="lead">This system is built by ITSA Unit for Crop Breeding Unit in managing Yam High Ration Propagation data.</p>
+@if (Request.IsAuthenticated)
+    {
+        <div class="responsive">
+            <img src="@Url.Action("PartnerActivitiesChart", "PartnerActivity")" />
+        </div>
+    }
+    <p class="lead">This system is built for YIIFSWA Project in managing YHRP data.</p>
     @if (!Request.IsAuthenticated)
     {
         <p><a href="/Account/Login" class="btn btn-primary btn-large">Sign in &raquo;</a></p>
     }
     else
     {
-        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm"}))
         {
             @Html.AntiForgeryToken()
             <p><a href="/Account/Manage" class="btn btn-primary btn-large">Welcome, @User.Identity.GetUserName() &raquo;</a></p>
@@ -75,7 +81,7 @@
                             <tr>
                                 <th><span title="Location">Loc</span></th>
                                 <th><span title="Activity">Acty</span></th>
-                                <th><span title="Description">Desc.</span></th>
+                                <th><span title="Description">Date</span></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -89,7 +95,7 @@
                                         @acty.activityName
                                     </td>
                                     <td>
-                                        @acty.description
+                                        @if (acty.activityDate.HasValue) { @Convert.ToDateTime(acty.activityDate).ToShortDateString();}
                                     </td>
                                 </tr>
                             }
@@ -116,7 +122,7 @@
                                 <th>Reagent</th>
                                 <th><span title="Latest Stock Quantity">LSQ</span></th>
                                 <th><span title="Latest Stock Date">LSD</span></th>
-                                <th><span title="Total Stock Quantity">TSQ</span></th>
+                                <th><span title="Total Stock Balance">TSB</span></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -127,13 +133,13 @@
                                         @reag.rName
                                     </td>
                                     <td>
-                                        @reag.quantity
-                                    </td>
+                                        <span class="badge">@reag.quantity</span>
+</td>
                                     <td>
                                         @reag.createdDate
                                     </td>
                                     <td>
-                                        @reag.qtySum
+                                        <span class="badge">@reag.qtySum</span>
                                     </td>
                                 </tr>
                             }
@@ -148,4 +154,6 @@
             </div>
         </div>
     </div>
+    @*
+    <img src="@Url.Action("DrawChart", "Home")" />*@
 </div>

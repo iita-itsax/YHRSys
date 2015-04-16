@@ -1,15 +1,31 @@
-﻿@model YHRSys.Models.tblPartnerContact
+﻿@model YHRSys.Models.PartnerContact
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Partner Contact Person Details";
 }
 
-<h2>Details</h2>
+<h2>Partner Contact Person Details</h2>
 
 <div>
-    <h4>tblPartnerContact</h4>
+    <h4>Partner Contact Person</h4>
 	<hr />
     <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.partner.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.partner.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.personTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.personTitle)
+        </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.firstName)
         </dt>
@@ -35,6 +51,14 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.gender)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.gender)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.phoneNumber)
         </dt>
 
@@ -56,6 +80,30 @@
 
         <dd>
             @Html.DisplayFor(model => model.contactAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.contactCity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.contactCity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.contactState)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.contactState)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.contactCountry)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.contactCountry)
         </dd>
 
         <dt>
@@ -87,7 +135,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.createdBy)
+            @Html.DisplayFor(model => model.extendCreatedBy)
         </dd>
 
         <dt>
@@ -103,7 +151,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.updatedBy)
+            @Html.DisplayFor(model => model.extendUpdatedBy)
         </dd>
 
         <dt>
@@ -112,14 +160,6 @@
 
         <dd>
             @Html.DisplayFor(model => model.updatedDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.tblPartner.name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.tblPartner.name)
         </dd>
 
     </dl>

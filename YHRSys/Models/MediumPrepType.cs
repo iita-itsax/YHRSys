@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace YHRSys.Models
 {
-    public partial class MediumPrepType
+    public partial class MediumPrepType : BaseEntity
     {
         public MediumPrepType()
         {
@@ -17,14 +17,8 @@ namespace YHRSys.Models
         [Key]
         public int typeId { get; set; }
 
-        [Required]
+        [DisplayName("Type Name"), Required]
         public string typename { get; set; }
-
-        public BaseDateEntity baseDateEntity { get; set; }
-        public VersionedEntity version { get; set; }
-
-        public BaseUserEntity baseUserEntity { get; set; }
-
 
         public virtual ICollection<Activity> activities { get; set; }
     }

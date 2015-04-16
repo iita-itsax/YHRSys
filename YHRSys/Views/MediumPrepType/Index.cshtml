@@ -1,10 +1,10 @@
-﻿@model IEnumerable<YHRSys.Models.tblMediumPrepType>
+﻿@model IEnumerable<YHRSys.Models.MediumPrepType>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Medium Prep Types";
 }
 
-<h2>Index</h2>
+<h2>Medium Prep. Type</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -14,6 +14,18 @@
         <th>
             @Html.DisplayNameFor(model => model.typename)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.createdBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.updatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.updatedDate)
+        </th>
         <th></th>
     </tr>
 
@@ -21,6 +33,18 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.typename)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.extendCreatedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.createdDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.extendUpdatedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.updatedDate)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.typeId }) |

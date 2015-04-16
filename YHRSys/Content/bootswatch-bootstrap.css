@@ -1073,7 +1073,7 @@ html {
 }
 body {
   font-family: "Ubuntu", Tahoma, "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 16px;
+  font-size: 13px;
   line-height: 1.42857143;
   color: #333333;
   background-color: #ffffff;
@@ -1441,6 +1441,19 @@ dd {
   }
   .dl-horizontal dd {
     margin-left: 180px;
+  }
+
+  .dl-horizontal-wider dt {
+    float: left;
+    width: 200px;
+    clear: left;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .dl-horizontal-wider dd {
+    margin-left: 220px;
   }
 }
 abbr[title],
@@ -2543,6 +2556,10 @@ output {
   -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
+.datecontrol {
+    max-width: 280px;/**/
+}
+
 .form-control:focus {
   border-color: #66afe9;
   outline: 0;
@@ -4836,8 +4853,8 @@ a.badge:focus {
   margin-left: 3px;
 }
 .jumbotron {
-  padding: 30px 15px;
-  margin-bottom: 30px;
+  padding: 10px 5px;
+  margin-bottom: 10px;
   color: inherit;
   background-color: #eeeeee;
 }
@@ -4862,7 +4879,7 @@ a.badge:focus {
 }
 @media screen and (min-width: 768px) {
   .jumbotron {
-    padding: 48px 0;
+    padding: 18px 0;
   }
   .container .jumbotron,
   .container-fluid .jumbotron {

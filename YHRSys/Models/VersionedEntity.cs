@@ -11,6 +11,7 @@ namespace YHRSys.Models
     [ComplexType]
     public class VersionedEntity
     {
+        [ConcurrencyCheck]
         [Timestamp]
         public byte[] version { get; set; }
     }

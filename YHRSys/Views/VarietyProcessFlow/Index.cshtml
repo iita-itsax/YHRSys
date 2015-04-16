@@ -1,93 +1,106 @@
-﻿@model IEnumerable<YHRSys.Models.tblVarietyProcessFlow>
+﻿@model PagedList.IPagedList<YHRSys.Models.VarietyProcessFlow>
+@using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Variety Process Flow";
 }
 
-<h2>Index</h2>
+<h2>Variety Process Flow</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
+
+    @using (Html.BeginForm("Index", "VarietyProcessFlow", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+    {
+        <div class="form-group">
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control input-mini", placeholder = "Search phrase goes here ..." })
+        </div>;
+        <div class="form-group">
+            @Html.TextBox("SearchStartProcessDate", ViewBag.StartProcessDateFilter as string, new { @class = "form-control datecontrol input-mini", placeholder = "Process date start range .." })
+        </div>;
+        <div class="form-group">
+            @Html.TextBox("SearchEndProcessDate", ViewBag.EndProcessDateFilter as string, new { @class = "form-control datecontrol input-mini", placeholder = "Process date end range ..." })
+        </div>;
+        <button class="btn btn-primary" type="submit">Search!</button> <button class="btn btn-success" type="button" onclick="clearForm();">Clear!</button>
+    }
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.form)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.processDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.userId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.rank)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.barcode)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.createdBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.createdDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.updatedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.updatedDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.tblVariety.name)
-        </th>
-        <th></th>
-    </tr>
+<div class="table-responsive">
+    <table class="table">
+        @if (Model.PageCount > 0) {
+        <tr>
+            <th>
+                @Html.ActionLink("Variety", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Form", "Index", new { sortOrder = ViewBag.FormSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Process Date", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Officer-In-Charge", "Index", new { sortOrder = ViewBag.OiCNameSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Rank", "Index", new { sortOrder = ViewBag.RankSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Barcode", "Index", new { sortOrder = ViewBag.BarcodeSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                Description
+            </th>
+            <th></th>
+        </tr>
+        }
+        else
+        {
+            <tr>
+                <td colspan="8">
+                    <em>No records found!</em>
+                </td>
+            </tr>
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.variety.varietyDefinition.name) - @Html.DisplayFor(modelItem => item.variety.sampleNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.form)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.processDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.user.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.rank)
+                </td>
+                <td>
+                    @if (item.barcodeImageUrl != null)
+                    {
+                        var imageUrl = Convert.ToBase64String((byte[])item.barcodeImageUrl);
+                        <img src="data:image/jpg;base64,@imageUrl" />
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.description)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.processId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.processId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.processId })
+                </td>
+            </tr>
+        }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.form)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.processDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.userId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.rank)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.barcode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.createdBy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.createdDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.updatedBy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.updatedDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.tblVariety.name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.proccessId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.proccessId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.proccessId })
-        </td>
-    </tr>
-}
+    </table>
+    <br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
-</table>
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+                new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter }))
+
+</div>

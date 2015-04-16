@@ -7,19 +7,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace YHRSys.Models
 {
-    public class Measurements
+    public class Measurements : BaseEntity
     {
         [Key]
         public int measurementId { get; set; }
-        [Required]
+
+        [DisplayName("Name"), Required]
         public string name { get; set; }
 
-        [DisplayName("UoM"), Required]
+        [DisplayName("Abbreviation"), Required]
         public string uom { get; set; }
-
-        public BaseDateEntity baseDateEntity { get; set; }
-        public VersionedEntity version { get; set; }
-
-        public BaseUserEntity baseUserEntity { get; set; }
     }
 }

@@ -8,12 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YHRSys.Models
 {
-    public enum STOCK
-    {
-        IN, OUT
-    }
-
-    public partial class Inventory
+    public partial class Inventory : BaseEntity
     {
         private const int DEFAULT_VALUE = 0;
 
@@ -25,29 +20,35 @@ namespace YHRSys.Models
 
         [DisplayName("Quantity"), Required]
         [DefaultValue(DEFAULT_VALUE)]
+        [Range(1, (int)Int32.MaxValue, ErrorMessage = "Quantity must be greater than zero.")]
         public int quantity { get; set; }
 
-        [DisplayName("Stock Movement")]
-        public STOCK stock { get; set; }
-
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [DisplayName("Stock Date")]
         public Nullable<System.DateTime> stockDate { get; set; }
 
         //This property line is for the user that purchased the item/product
-        [DisplayName("Stocker(Staff/User)")]
-        public int stockUserId { get; set; }
+        [DisplayName("PurchasedBy")]
+        public string userId { get; set; }
 
         [DefaultValue(DEFAULT_VALUE)]
-        public int initialStock { get; set; }
-
-        public BaseDateEntity baseDateEntity { get; set; }
-        public VersionedEntity version { get; set; }
-
-        public BaseUserEntity baseUserEntity { get; set; }
+        [DisplayName("Stock Note")]
+        public string note { get; set; }
 
         [ForeignKey("reagentId")]
         public virtual Reagent reagent { get; set; }
+
+        [ForeignKey("userId")]
+        public virtual ApplicationUser user { get; set; }
+
+        [NotMapped]
+        public string PurchasedByFullName
+        {
+            get
+            {
+                return user.FirstName + " " + user.LastName;
+            }
+        }
     }
 }

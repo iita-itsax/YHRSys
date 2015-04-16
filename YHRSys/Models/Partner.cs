@@ -7,41 +7,56 @@ using System.ComponentModel.DataAnnotations;
 
 namespace YHRSys.Models
 {
-    public partial class Partner
+    public partial class Partner : BaseEntity
     {
         public Partner()
         {
             this.partnerActivities = new HashSet<PartnerActivity>();
-            this.partnerContacts = new HashSet<PartnerContactPerson>();
+            this.partnerContacts = new HashSet<PartnerContact>();
         }
 
         [Key]
         public int partnerId { get; set; }
 
-        [Required]
+        [DisplayName("Name"), Required]
         [MaxLength(255)]
         public string name { get; set; }
 
-        [Required]
+        [DisplayName("Contact Address"), Required]
         [MaxLength(255)]
         public string contactAddress { get; set; }
 
+        [DisplayName("City"), Required]
+        [MaxLength(255)]
+        public string contactCity { get; set; }
+
+        [DisplayName("State"), Required]
+        [MaxLength(255)]
+        public string contactState { get; set; }
+
+        [DisplayName("Country"), Required]
+        [MaxLength(255)]
+        public string contactCountry { get; set; }
+
+        [DisplayName("Phone No")]
+        [RegularExpression(@"((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}", ErrorMessage = "Invalid Phone Number! Format should be xxx-xxx-xxxx")]
         public string phoneNumber { get; set; }
 
-        [Required]
+        [EmailAddress(ErrorMessage = "Invalid Email. Format: http://www.mysite.com")]
+        [DisplayName("Email Address"), Required]
         public string emailAddress { get; set; }
 
+        [DisplayName("Web Address")]
+        [Url(ErrorMessage = "Invalid URL!")]
         public string webAddress { get; set; }
 
-        public decimal geoLongitude { get; set; }
-        public decimal geoLatitude { get; set; }
+        [DisplayName("Geo Long.")]
+        public string geoLongitude { get; set; }
 
-        public BaseDateEntity baseDateEntity { get; set; }
-        public VersionedEntity version { get; set; }
-
-        public BaseUserEntity baseUserEntity { get; set; }
+        [DisplayName("Geo Lat.")]
+        public string geoLatitude { get; set; }
 
         public virtual ICollection<PartnerActivity> partnerActivities { get; set; }
-        public virtual ICollection<PartnerContactPerson> partnerContacts { get; set; }
+        public virtual ICollection<PartnerContact> partnerContacts { get; set; }
     }
 }

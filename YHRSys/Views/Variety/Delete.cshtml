@@ -1,22 +1,22 @@
-﻿@model YHRSys.Models.tblVariety
+﻿@model YHRSys.Models.Variety
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Delete Variety";
 }
 
-<h2>Delete</h2>
+<h2>Delete Variety</h2>
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>tblVariety</h4>
+    <h4>Variety</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.name)
+            @Html.DisplayNameFor(model => model.varietyDefinitionId)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.name)
+            @Html.DisplayFor(model => model.varietyDefinition.name)
         </dd>
 
         <dt>
@@ -28,16 +28,24 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.repUser)
+            @Html.DisplayNameFor(model => model.userId)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.repUser)
+            @Html.DisplayFor(model => model.user.UserName)
         </dd>
 
         <dt>
             @Html.DisplayNameFor(model => model.testDate)
         </dt>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.locationId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.location.name)
+        </dd>
 
         <dd>
             @Html.DisplayFor(model => model.testDate)
@@ -76,11 +84,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.species)
+            @Html.DisplayNameFor(model => model.specieId)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.species)
+            @Html.DisplayFor(model => model.species.name)
         </dd>
 
         <dt>
@@ -116,27 +124,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.locationId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.locationId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.userId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.userId)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.createdBy)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.createdBy)
+            @Html.DisplayFor(model => model.extendCreatedBy)
         </dd>
 
         <dt>
@@ -152,7 +144,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.updatedBy)
+            @Html.DisplayFor(model => model.extendUpdatedBy)
         </dd>
 
         <dt>
@@ -161,14 +153,6 @@
 
         <dd>
             @Html.DisplayFor(model => model.updatedDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.tblActivity.name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.tblActivity.name)
         </dd>
 
     </dl>

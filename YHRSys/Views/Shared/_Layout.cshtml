@@ -22,7 +22,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
-                        <a href="/" id="Who-we-are" class="dropdown-toggle" data-toggle="dropdown">Home <span class="caret"></span></a>
+                        <a href="/" id="Who-we-are" class="dropdown-toggle" data-toggle="dropdown">YIIFSWA <span class="caret"></span></a>
                         <ul class="dropdown-menu" aria-labelledby="download">
                             <li>@Html.ActionLink("About", "About", "Home")</li>
                             <li class="divider"></li>
@@ -36,23 +36,32 @@
                             <li class="divider"></li>
                             <li>@Html.ActionLink("Location OiC", "Index", "LocationUser")</li>
                             <li class="divider"></li>
+                            <li>@Html.ActionLink("Units of Measurement", "Index", "Measurements")</li>
+                            <li class="divider"></li>
                             <li>@Html.ActionLink("Reagents", "Index", "Reagent")</li>
                             <li class="divider"></li>
                             <li>@Html.ActionLink("Medium Prep Types", "Index", "MediumPrepType")</li>
                             <li class="divider"></li>
-                            <li>@Html.ActionLink("Units of Measurements", "Index", "Measurements")</li>
+                            <li>@Html.ActionLink("Activity Definitions", "Index", "ActivityDefinition")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Variety Definitions", "Index", "VarietyDefinition")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Species", "Index", "Species")</li>
                         </ul>
                     </li>
                     <li class="dropdown">
                         <a href="#" id="actions" class="dropdown-toggle" data-toggle="dropdown">Contents <span class="caret"></span></a>
                         <ul class="dropdown-menu" aria-labelledby="download">
-                            <li>@Html.ActionLink("Activities", "Index", "Activity")</li>
-                            <li class="divider"></li>
-                            <li>@Html.ActionLink("Inventory", "Index", "Inventory")</li>
-                            <li class="divider"></li>
                             <li>@Html.ActionLink("Varieties", "Index", "Variety")</li>
                             <li class="divider"></li>
                             <li>@Html.ActionLink("Variety Process Flow", "Index", "VarietyProcessFlow")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Activities", "Index", "Activity")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Inventory/Stocking", "Index", "Inventory")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Internal Reagents Usage", "Index", "InternalReagentUsage")</li>
+                            
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -82,12 +91,21 @@
     </div>
 
     <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Yam High Ratio Propagation System</p>
-        </footer>
-    </div>
+        <div class="col-md-10">
+            @RenderBody()
+        </div>
+        <div class="col-md-2">
+            @Html.Partial("_RightSideBar")
+            @if (Request.IsAuthenticated)
+            {
+                @Html.Partial("_ReagentReOrderStatus")
+            }
+        </div>
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - Yam High Ratio Propagation System</p>
+            </footer>
+        </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

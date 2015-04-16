@@ -2,6 +2,8 @@
 using Microsoft.AspNet.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YHRSys.Models
 {
@@ -24,5 +26,13 @@ namespace YHRSys.Models
 
         public virtual ICollection<ApplicationUserGroup> Groups { get; set; }
 
+        [NotMapped]
+        public string FullName
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+        }
     }
 }

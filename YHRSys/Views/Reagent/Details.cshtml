@@ -1,4 +1,4 @@
-﻿@model YHRSys.Models.tblReagent
+﻿@model YHRSys.Models.Reagent
 
 @{
     ViewBag.Title = "Reagent Details";
@@ -7,7 +7,7 @@
 <h2>Details</h2>
 
 <div>
-    <h4>tblReagent</h4>
+    <h4>Reagent</h4>
 	<hr />
     <dl class="dl-horizontal">
         <dt>
@@ -19,11 +19,27 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.uom)
+            @Html.DisplayNameFor(model => model.measurementId)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.uom)
+            @Html.DisplayFor(model => model.measurements.name) (@Html.DisplayFor(model => model.measurements.uom))
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.reOrderLevel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.reOrderLevel)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.description)
         </dd>
 
         <dt>
@@ -31,7 +47,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.createdBy)
+            @Html.DisplayFor(model => model.extendCreatedBy)
         </dd>
 
         <dt>
@@ -47,7 +63,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.updatedBy)
+            @Html.DisplayFor(model => model.extendUpdatedBy)
         </dd>
 
         <dt>

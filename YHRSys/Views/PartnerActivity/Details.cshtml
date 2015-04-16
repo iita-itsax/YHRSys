@@ -1,15 +1,55 @@
-﻿@model YHRSys.Models.tblPartnerActivity
+﻿@model YHRSys.Models.PartnerActivity
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Partner Activity Details";
 }
 
-<h2>Details</h2>
+<h2>Partner Activity Details</h2>
 
 <div>
-    <h4>tblPartnerActivity</h4>
+    <h4>Partner Activity</h4>
 	<hr />
-    <dl class="dl-horizontal">
+    <dl class="dl-horizontal-wider">
+        <dt>
+            @Html.DisplayNameFor(model => model.partnerId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.partner.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.reagentId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.reagent.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.reagentQty)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.reagentQty)
+        </dd>
+
+        <dt>
+            Officer-in-Charge
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OiCFullName)
+        </dd>
+
+        <dt>
+            Activity Date
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.activityDate)
+        </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.backStopping)
         </dt>
@@ -19,7 +59,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.tcPlantletsGiven)
+            TC Plantlets Given
         </dt>
 
         <dd>
@@ -27,7 +67,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.bioreactorplantsGiven)
+            Bioreactor Plants Given
         </dt>
 
         <dd>
@@ -35,7 +75,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.tubersGiven)
+            Tubers Given
         </dt>
 
         <dd>
@@ -43,7 +83,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.tcPlantletsAvailable)
+            TC Plantlets Available
         </dt>
 
         <dd>
@@ -51,7 +91,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.tibPlantletsAvailable)
+            TIB Plantlets Available
         </dt>
 
         <dd>
@@ -59,7 +99,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.tubersAvailable)
+            Tubers Available
         </dt>
 
         <dd>
@@ -67,27 +107,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.officerInCharge)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.officerInCharge)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.activityDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.activityDate)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.createdBy)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.createdBy)
+            @Html.DisplayFor(model => model.extendCreatedBy)
         </dd>
 
         <dt>
@@ -103,7 +127,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.updatedBy)
+            @Html.DisplayFor(model => model.extendUpdatedBy)
         </dd>
 
         <dt>
@@ -112,22 +136,6 @@
 
         <dd>
             @Html.DisplayFor(model => model.updatedDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.tblReagent.name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.tblReagent.name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.tblPartner.name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.tblPartner.name)
         </dd>
 
     </dl>

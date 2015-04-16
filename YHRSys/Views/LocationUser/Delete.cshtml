@@ -1,4 +1,4 @@
-﻿@model YHRSys.Models.tblLocationUser
+﻿@model YHRSys.Models.LocationUser
 
 @{
     ViewBag.Title = "Delete";
@@ -48,7 +48,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.createdBy)
+            @Html.DisplayFor(model => model.extendCreatedBy)
         </dd>
 
         <dt>
@@ -64,7 +64,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.updatedBy)
+            @Html.DisplayFor(model => model.extendUpdatedBy)
         </dd>
 
         <dt>
@@ -76,11 +76,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.tblLocation.name)
+            @Html.DisplayNameFor(model => model.location.name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.tblLocation.name)
+            @Html.DisplayFor(model => model.location.name)
         </dd>
 
     </dl>

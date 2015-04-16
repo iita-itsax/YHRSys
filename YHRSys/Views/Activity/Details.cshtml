@@ -1,17 +1,41 @@
 ﻿@model YHRSys.Models.Activity
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Activity Details";
 }
 
-<h2>Details</h2>
+<h2>Activity Details</h2>
 
 <div>
     <h4>Activity</h4>
 	<hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.location.name)
+            @Html.DisplayNameFor(model => model.activityDefinitionId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.activityDefinition.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.activityDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.activityDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.varietyId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.variety.FullDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.locationId)
         </dt>
 
         <dd>
@@ -19,7 +43,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.mediumPrepType.typename)
+            @Html.DisplayNameFor(model => model.typeId)
         </dt>
 
         <dd>
@@ -27,11 +51,19 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.name)
+            @Html.DisplayNameFor(model => model.quantity)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.name)
+            @Html.DisplayFor(model => model.quantity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.quality)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.quality)%
         </dd>
 
         <dt>
@@ -42,6 +74,37 @@
             @Html.DisplayFor(model => model.description)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.createdBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.extendCreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.createdDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.extendUpdatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updatedDate)
+        </dd>
     </dl>
 </div>
 <p>

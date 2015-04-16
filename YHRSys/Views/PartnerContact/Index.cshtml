@@ -1,111 +1,103 @@
-﻿@model IEnumerable<YHRSys.Models.tblPartnerContact>
+﻿@model PagedList.IPagedList<YHRSys.Models.PartnerContact>
+@using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Partner Contact Person";
 }
 
-<h2>Index</h2>
+<h2>Partner Contact Person</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
+
+    @using (Html.BeginForm("Index", "PartnerContact", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+    {
+        <div class="form-group">
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control input-mini", placeholder = "Search phrase goes here ..." })
+        </div>;
+        <div class="form-group">
+            @Html.TextBox("SearchStartCreatedDate", ViewBag.StartCreatedDateFilter as string, new { @class = "form-control datecontrol input-mini", placeholder = "Added date start range .." })
+        </div>;
+        <div class="form-group">
+            @Html.TextBox("SearchEndCreatedDate", ViewBag.EndCreatedDateFilter as string, new { @class = "form-control datecontrol input-mini", placeholder = "Added date end range ..." })
+        </div>;
+        <button class="btn btn-primary" type="submit">Search!</button> <button class="btn btn-success" type="button" onclick="clearForm();">Clear!</button>
+    }
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.firstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.otherNames)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.lastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.phoneNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.emailAddress)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.contactAddress)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.webAddress)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.geoLongitude)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.geoLatitude)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.createdBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.createdDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.updatedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.updatedDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.tblPartner.name)
-        </th>
-        <th></th>
-    </tr>
+<div class="table-responsive">
+    <table class="table">
+        @if (Model.PageCount > 0)
+        {
+            <tr>
+                <th>
+                    @Html.ActionLink("Affiliation", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+                </th>
+                <th>
+                    @Html.ActionLink("Contact's Name", "Index", new { sortOrder = ViewBag.PersonSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+                </th>
+                <th>
+                    @Html.ActionLink("Gender", "Index", new { sortOrder = ViewBag.GenderSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+                </th>
+                <th>
+                    PhoneNo
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    @Html.ActionLink("Contact's Address", "Index", new { sortOrder = ViewBag.ContactSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+                </th>
+                <th>
+                    @Html.ActionLink("CreatedOn", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+                </th>
+                <th></th>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td colspan="8">
+                    <em>No records found!</em>
+                </td>
+            </tr>
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.firstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.otherNames)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.lastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.phoneNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.emailAddress)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.contactAddress)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.webAddress)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.geoLongitude)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.geoLatitude)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.createdBy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.createdDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.updatedBy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.updatedDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.tblPartner.name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.contactId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.contactId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.contactId })
-        </td>
-    </tr>
-}
+                <td>
+                    @Html.DisplayFor(modelItem => item.partner.name)
+                </td>
+                <td>
+                    @String.Concat(item.personTitle + " " + ((item.lastName != null) ? item.lastName + ", " : "") + ((item.firstName != null) ? item.firstName + " " : "") + ((item.otherNames != null) ? item.otherNames : ""))
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.gender)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.phoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.emailAddress)
+                </td>
+                <td>
+                    @String.Concat(item.contactAddress + ", " + ((!item.contactCity.IsEmpty()) ? item.contactCity + ", " : "") + ((!item.contactState.IsEmpty()) ? item.contactState + ", " : "") + ((!item.contactCountry.IsEmpty()) ? item.contactCountry : ""))
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.createdDate)
+                </td><td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.contactId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.contactId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.contactId })
+                </td>
+            </tr>
+        }
 
-</table>
+    </table>
+    <br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+                        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter }))
+
+</div>

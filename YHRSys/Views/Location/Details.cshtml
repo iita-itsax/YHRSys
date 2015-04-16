@@ -1,13 +1,13 @@
 ﻿@model YHRSys.Models.Location
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Location Details";
 }
 
-<h2>Details</h2>
+<h2>Location Details</h2>
 
 <div>
-    <h4>tblLocation</h4>
+    <h4>Details of selected location</h4>
 	<hr />
     <dl class="dl-horizontal">
         <dt>
@@ -43,35 +43,35 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.baseUserEntity.createdBy)
+            @Html.DisplayNameFor(model => model.createdBy)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.baseUserEntity.createdBy)
+            @Html.DisplayFor(model => model.extendCreatedBy)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.baseDateEntity.createdDate)
+            @Html.DisplayNameFor(model => model.createdDate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.baseDateEntity.createdDate)
+            @Html.DisplayFor(model => model.createdDate)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.baseUserEntity.updatedBy)
+            @Html.DisplayNameFor(model => model.updatedBy)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.baseUserEntity.updatedBy)
+            @Html.DisplayFor(model => model.extendUpdatedBy)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.baseDateEntity.updatedDate)
+            @Html.DisplayNameFor(model => model.updatedDate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.baseDateEntity.updatedDate)
+            @Html.DisplayFor(model => model.updatedDate)
         </dd>
 
     </dl>

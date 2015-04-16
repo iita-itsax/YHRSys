@@ -30,12 +30,17 @@ namespace YHRSys
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootswatch-bootstrap.min.js",
                       "~/Scripts/bootswatch.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/respond.js",
+                      "~/Scripts/bootstrap-datepicker.js",
+                      "~/Scripts/DatePickerReady.js",
+                      "~/Scripts/custom_script.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootswatch-bootstrap.css",
-                      "~/Content/custom-style.css",
-                      "~/Content/bootswatch.min.css"));
+                      "~/Content/bootswatch.min.css",
+                      "~/Content/Site.css",
+                      "~/Content/datepicker3.css",
+                      "~/Content/custom-style.css"));
         }
     }
 }

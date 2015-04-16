@@ -1,15 +1,29 @@
-﻿@model YHRSys.Models.tblVarietyProcessFlow
+﻿@model YHRSys.Models.VarietyProcessFlow
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Variety Process Flow Details";
 }
 
-<h2>Details</h2>
+<h2>Variety Process Flow Details</h2>
 
 <div>
-    <h4>tblVarietyProcessFlow</h4>
+    <h4>Variety Process Flow</h4>
 	<hr />
     <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.varietyId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FullIdentifier)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.variety.sampleNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.variety.sampleNumber)
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.form)
         </dt>
@@ -31,7 +45,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.userId)
+            @Html.DisplayFor(model => model.user.FullName)
         </dd>
 
         <dt>
@@ -47,7 +61,11 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.barcode)
+            @if (ViewBag.barcode != null)
+                {
+                    var imageUrl = Convert.ToBase64String((byte[])ViewBag.barcode);
+                    <img src="data:image/jpg;base64,@imageUrl" />
+                }
         </dd>
 
         <dt>
@@ -63,7 +81,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.createdBy)
+            @Html.DisplayFor(model => model.extendCreatedBy)
         </dd>
 
         <dt>
@@ -79,7 +97,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.updatedBy)
+            @Html.DisplayFor(model => model.extendUpdatedBy)
         </dd>
 
         <dt>
@@ -90,17 +108,9 @@
             @Html.DisplayFor(model => model.updatedDate)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.tblVariety.name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.tblVariety.name)
-        </dd>
-
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.proccessId }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.processId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

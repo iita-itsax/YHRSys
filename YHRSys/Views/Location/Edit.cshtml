@@ -1,10 +1,10 @@
 ﻿@model YHRSys.Models.Location
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Location Update";
 }
 
-<h2>Edit</h2>
+<h2>Location Update</h2>
 
 
 @using (Html.BeginForm())
@@ -12,15 +12,16 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>tblLocation</h4>
+        <h4>Location update form</h4>
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.locationId)
+        @Html.HiddenFor(model => model.Timestamp)
 
         <div class="form-group">
             @Html.LabelFor(model => model.name, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.name)
+                @Html.TextBoxFor(model => model.name, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.name)
             </div>
         </div>
@@ -28,7 +29,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.locNumber, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.locNumber)
+                @Html.TextBoxFor(model => model.locNumber, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.locNumber)
             </div>
         </div>
@@ -36,7 +37,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.source, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.source)
+                @Html.TextBoxFor(model => model.source, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.source)
             </div>
         </div>
@@ -44,7 +45,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.description, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.description)
+                @Html.TextArea("description", new { rows = 3, columns = 40, @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.description)
             </div>
         </div>

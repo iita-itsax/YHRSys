@@ -1,4 +1,4 @@
-﻿@model YHRSys.Models.tblLocationUser
+﻿@model YHRSys.Models.LocationUser
 
 @{
     ViewBag.Title = "Details";
@@ -7,15 +7,23 @@
 <h2>Details</h2>
 
 <div>
-    <h4>tblLocationUser</h4>
+    <h4>Location OiC</h4>
 	<hr />
     <dl class="dl-horizontal">
+        <dt>
+            Location
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.location.name)
+        </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.userId)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.userId)
+            @Html.DisplayFor(model => model.user.FullName)
         </dd>
 
         <dt>
@@ -47,7 +55,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.createdBy)
+            @Html.DisplayFor(model => model.extendCreatedBy)
         </dd>
 
         <dt>
@@ -63,7 +71,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.updatedBy)
+            @Html.DisplayFor(model => model.extendUpdatedBy)
         </dd>
 
         <dt>
@@ -72,14 +80,6 @@
 
         <dd>
             @Html.DisplayFor(model => model.updatedDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.tblLocation.name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.tblLocation.name)
         </dd>
 
     </dl>
