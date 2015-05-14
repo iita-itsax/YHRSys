@@ -5,12 +5,14 @@ using System.Text;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq.Expressions;
 
 namespace YHRSys.Models
 {
     public partial class Reagent : BaseEntity
     {
         private const int DEFAULT_VALUE = 0;
+
         public Reagent()
         {
             this.inventories = new HashSet<Inventory>();
@@ -20,6 +22,9 @@ namespace YHRSys.Models
 
         [Key]
         public int reagentId { get; set; }
+
+        [DisplayName("Type"), Required]
+        public string type { get; set; }
 
         [DisplayName("Name"), Required]
         public string name { get; set; }

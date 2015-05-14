@@ -24,7 +24,8 @@ namespace YHRSys.Controllers
         public ActionResult Index()
         {
             dynamic model = new ExpandoObject();
-            var reagents = (from rea in db.Reagents join st in db.Stocks on rea.reagentId equals st.reagentId into reagentInfo from reagentStock in reagentInfo.DefaultIfEmpty()
+            var reagents = (from rea in db.Reagents join st in db.Stocks on rea.reagentId equals st.reagentId into reagentInfo 
+                            from reagentStock in reagentInfo.DefaultIfEmpty() orderby rea.inventories.Select(j=>j.createdDate).FirstOrDefault() descending
                             select new CustomReagentsViewModel
                             {
                                 rName = rea.name,
@@ -43,7 +44,7 @@ namespace YHRSys.Controllers
                                   activityName = a.activityDefinition.name,
                                   description = a.description,
                                   activityDate = a.activityDate
-                              }).Take(3);
+                              }).OrderByDescending(j=>j.activityDate).Take(3);
             model.Activities = activities;
             ViewBag.activityCounter = activities.Count();
 
@@ -75,53 +76,18 @@ namespace YHRSys.Controllers
             return View();
         }
         
-        /*
-        public ActionResult DrawChart()
-        {
-            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            var currentUser = manager.FindById(User.Identity.GetUserId());//pn = r.partner.name, 
-            var myChart = new Chart(width: 600, height: 400)
-            .AddTitle("Resource Utilization in Projects in Week 1")
-            .AddSeries(
-                name: "Project1",
-                chartType: "Column",
-                xValue: new[] { "W1", "W2", "W3", "W4", "W5" },
-                yValues: new[] { 80, 60, 40, 20, 10 }
-            )
-            .AddSeries(
-                name: "Project2",
-                chartType: "Column",
-                xValue: new[] { "W1", "W2", "W3", "W4", "W5" },
-                yValues: new[] { 10, 10, 0, 10, 10 }
-            )
-            .AddSeries(
-                name: "Available",
-                chartType: "Column",
-                xValue: new[] { "W1", "W2", "W3", "W4", "W5" },
-                yValues: new[] { "10", "30", "50", "70", "80" }
-            )
-            .AddLegend();
-
-            myChart.Write();
-            myChart.Save("~/Content/home_chart" + currentUser.Id, "jpeg");
-            // Return the contents of the Stream to the client
-            return base.File("~/Content/home_chart" + currentUser.Id, "jpeg");
-        }
-        */
         public ActionResult ReOrderLevelStatus()
         {
             var reagentReOrderStatus = (from rea in db.Reagents
                             join st in db.Stocks on rea.reagentId equals st.reagentId into reagentInfo
-                            from reagentStock in reagentInfo.DefaultIfEmpty() where rea.reOrderLevel>=reagentStock.totalIn
+                            from stocks in reagentInfo.AsEnumerable()
+                            .DefaultIfEmpty() where rea.reOrderLevel >= stocks.totalIn || stocks.totalIn == null || stocks.totalIn == 0 orderby rea.name ascending
                             select new
                             {
                                 rName = rea.name,
-                                createdDate = rea.inventories.Select(i => i.createdDate).FirstOrDefault(),
-                                quantity = rea.inventories.Select(i => i.quantity).FirstOrDefault(),
-                                qtySum = reagentStock.totalIn 
+                                qtySum = (int?) stocks.totalIn ?? 0
                             }).ToList();
-            //model.Reagents = reagents;
-            //ViewBag.reagentCounter = reagents.Count();
+
             StringBuilder sb = new StringBuilder("");
             
             foreach(var lev in reagentReOrderStatus){

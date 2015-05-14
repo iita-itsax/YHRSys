@@ -30,7 +30,7 @@
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="#" id="manage" class="dropdown-toggle" data-toggle="dropdown">Settings<span class="caret"></span></a>
+                        <a href="#" id="manage" class="dropdown-toggle" data-toggle="dropdown">Registration<span class="caret"></span></a>
                         <ul class="dropdown-menu" aria-labelledby="download">
                             <li>@Html.ActionLink("Locations", "Index", "Location")</li>
                             <li class="divider"></li>
@@ -38,7 +38,7 @@
                             <li class="divider"></li>
                             <li>@Html.ActionLink("Units of Measurement", "Index", "Measurements")</li>
                             <li class="divider"></li>
-                            <li>@Html.ActionLink("Reagents", "Index", "Reagent")</li>
+                            <li>@Html.ActionLink("Internal Items", "Index", "Reagent")</li>
                             <li class="divider"></li>
                             <li>@Html.ActionLink("Medium Prep Types", "Index", "MediumPrepType")</li>
                             <li class="divider"></li>
@@ -50,7 +50,7 @@
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="#" id="actions" class="dropdown-toggle" data-toggle="dropdown">Contents <span class="caret"></span></a>
+                        <a href="#" id="actions" class="dropdown-toggle" data-toggle="dropdown">Actions <span class="caret"></span></a>
                         <ul class="dropdown-menu" aria-labelledby="download">
                             <li>@Html.ActionLink("Varieties", "Index", "Variety")</li>
                             <li class="divider"></li>
@@ -60,7 +60,9 @@
                             <li class="divider"></li>
                             <li>@Html.ActionLink("Inventory/Stocking", "Index", "Inventory")</li>
                             <li class="divider"></li>
-                            <li>@Html.ActionLink("Internal Reagents Usage", "Index", "InternalReagentUsage")</li>
+                            <li>@Html.ActionLink("Internal Items Usage", "Index", "InternalReagentUsage")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Barcode Scan", "Index", "Scanner")</li>
                             
                         </ul>
                     </li>
@@ -69,9 +71,9 @@
                         <ul class="dropdown-menu" aria-labelledby="download">
                             <li>@Html.ActionLink("Partners", "Index", "Partner")</li>
                             <li class="divider"></li>
-                            <li>@Html.ActionLink("Partner Activities", "Index", "PartnerActivity")</li>
-                            <li class="divider"></li>
                             <li>@Html.ActionLink("Partner Contacts", "Index", "PartnerContact")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Partner Activities", "Index", "PartnerActivity")</li>
                         </ul>
                     </li>
                     <li class="dropdown">

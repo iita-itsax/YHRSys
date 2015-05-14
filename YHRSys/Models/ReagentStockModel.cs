@@ -8,6 +8,7 @@ namespace YHRSys.Models
     public class ReagentStockModel
     {
         public int reagentId { set; get; }
+        public string reagentType { set; get; }    
         public string reagentName { set; get; }
         public string measurementName { set; get; }
         public int reOrderLevel { set; get; }

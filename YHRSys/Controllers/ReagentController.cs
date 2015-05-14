@@ -13,6 +13,10 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity.Infrastructure;
 using System.Security.Claims;
 using PagedList;
+using System.IO;
+using CrystalDecisions.CrystalReports.Engine;
+using DropdownSelect.Models;
+
 
 namespace YHRSys.Controllers
 {
@@ -21,63 +25,94 @@ namespace YHRSys.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         //PrincipalUser pUser = new PrincipalUser();
-        
-        // GET: /Reagent/
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
+        SelectedValue selVal = new SelectedValue();
+
+        private List<SelectListItem> listInternalItemType(string item)
         {
-            ViewBag.CurrentSort = sortOrder;
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
-
-            if (searchString != null)
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "--Select--", Value = "", Selected = selVal.checkForSelectedValue("", item) });
+            items.Add(new SelectListItem { Text = "Chemical", Value = "Chemical", Selected = selVal.checkForSelectedValue("Chemical", item) });
+            items.Add(new SelectListItem { Text = "Material", Value = "Material", Selected = selVal.checkForSelectedValue("Material", item) });
+            items.Add(new SelectListItem { Text = "Reagent", Value = "Reagent", Selected = selVal.checkForSelectedValue("Reagent", item) });
+            return items;
+        }
+        // GET: /Reagent/
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, string btnSubmit, string msg)
+        {
+            switch (btnSubmit)
             {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
+                case "Print Stock!":
+                    return ExportStockLevelReport(searchString);
+                default:
+                    ViewBag.CurrentSort = sortOrder;
+                    ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+                    ViewBag.TypeSortParm = sortOrder == "Type" ? "type_desc" : "Type";
+                    ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
 
-            ViewBag.CurrentFilter = searchString;
+                    if (searchString != null)
+                    {
+                        page = 1;
+                    }
+                    else
+                    {
+                        searchString = currentFilter;
+                    }
 
-            var reagents = from r in db.Reagents join s in db.Stocks on r.reagentId equals s.reagentId into reagentInfo from reagentStock in reagentInfo.DefaultIfEmpty() 
-                           select new ReagentStockModel
-                           {
-                               reagentId = r.reagentId,
-                               reagentName = r.name,
-                               measurementName = r.measurements.name,
-                               stockBalance = (reagentStock.totalIn == null ? 0 : reagentStock.totalIn),
-                               reOrderLevel = (r.reOrderLevel == null ? 0 : r.reOrderLevel),
-                               description = r.description,
-                               createdBy = r.createdBy,
-                               createdDate = r.createdDate,
-                               updatedBy = r.updatedBy,
-                               updatedDate = r.updatedDate
-                           };
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                reagents = reagents.Where(rg => rg.reagentName.Contains(searchString)
-                                       || rg.description.Contains(searchString) || rg.measurementName.Contains(searchString));
-            }
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    reagents = reagents.OrderByDescending(rg => rg.reagentName);
-                    break;
-                case "Date":
-                    reagents = reagents.OrderBy(rg => rg.createdDate);
-                    break;
-                case "date_desc":
-                    reagents = reagents.OrderByDescending(rg => rg.createdDate);
-                    break;
-                default:  // Name ascending 
-                    reagents = reagents.OrderBy(rg => rg.reagentName);
-                    break;
-            }
+                    ViewBag.CurrentFilter = searchString;
 
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
-            return View(reagents.ToPagedList(pageNumber, pageSize));
+                    var reagents = from r in db.Reagents
+                                   join s in db.Stocks on r.reagentId equals s.reagentId into reagentInfo
+                                   from reagentStock in reagentInfo.DefaultIfEmpty()
+                                   select new ReagentStockModel
+                                   {
+                                       reagentId = r.reagentId,
+                                       reagentType = r.type,
+                                       reagentName = r.name,
+                                       measurementName = r.measurements.name,
+                                       stockBalance = (reagentStock.totalIn == null ? 0 : reagentStock.totalIn),
+                                       reOrderLevel = (r.reOrderLevel == null ? 0 : r.reOrderLevel),
+                                       description = r.description,
+                                       createdBy = r.createdBy,
+                                       createdDate = r.createdDate,
+                                       updatedBy = r.updatedBy,
+                                       updatedDate = r.updatedDate
+                                   };
+                    if (!String.IsNullOrEmpty(searchString))
+                    {
+                        reagents = reagents.Where(rg => rg.reagentName.Contains(searchString) || rg.reagentType.Contains(searchString)
+                                               || rg.description.Contains(searchString) || rg.measurementName.Contains(searchString));
+                    }
+                    switch (sortOrder)
+                    {
+                        case "name_desc":
+                            reagents = reagents.OrderByDescending(rg => rg.reagentName);
+                            break;
+                        case "type_desc":
+                            reagents = reagents.OrderByDescending(rg => rg.reagentType);
+                            break;
+                        case "Type":
+                            reagents = reagents.OrderBy(rg => rg.reagentType);
+                            break;
+                        case "Date":
+                            reagents = reagents.OrderBy(rg => rg.createdDate);
+                            break;
+                        case "date_desc":
+                            reagents = reagents.OrderByDescending(rg => rg.createdDate);
+                            break;
+                        default:  // Name ascending 
+                            reagents = reagents.OrderBy(rg => rg.reagentName);
+                            break;
+                    }
+
+                int pageSize = 10;
+                int pageNumber = (page ?? 1);
+                if (TempData["msg"] != null) { ViewBag.Message = TempData["msg"].ToString(); Session.Clear(); }
+                if (msg != null && msg.Length>0)
+                {
+                    ViewBag.Message = msg;
+                }
+                return View(reagents.ToPagedList(pageNumber, pageSize));
+            }
         }
 
         // GET: /Reagent/Details/5
@@ -101,6 +136,7 @@ namespace YHRSys.Controllers
         public ActionResult Create()
         {
             ViewBag.measurementId = new SelectList(db.Measurements, "measurementId", "name");
+            ViewBag.type = listInternalItemType(null);
             return View();
         }
 
@@ -110,7 +146,7 @@ namespace YHRSys.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, CanAddReagent, Reagent")]
-        public ActionResult Create([Bind(Include = "name,measurementId,description,reOrderLevel")] Reagent tblreagent)
+        public ActionResult Create([Bind(Include = "type,name,measurementId,description,reOrderLevel")] Reagent tblreagent)
         {
             if (ModelState.IsValid)
             {
@@ -134,11 +170,13 @@ namespace YHRSys.Controllers
                 {
                     ModelState.AddModelError(string.Empty, "Reagent already registered: " + tblreagent.name);
                     ViewBag.measurementId = new SelectList(db.Measurements, "measurementId", "name");
+                    ViewBag.type = listInternalItemType(tblreagent.type);
                     return View(tblreagent);
                 }
                 return RedirectToAction("Index");
             }
             ViewBag.measurementId = new SelectList(db.Measurements, "measurementId", "name");
+            ViewBag.type = listInternalItemType(tblreagent.type);
             return View(tblreagent);
         }
 
@@ -156,6 +194,7 @@ namespace YHRSys.Controllers
                 return HttpNotFound();
             }
             ViewBag.measurementId = new SelectList(db.Measurements, "measurementId", "name", "uom");
+            ViewBag.type = listInternalItemType(tblreagent.type);
             return View(tblreagent);
         }
 
@@ -165,7 +204,7 @@ namespace YHRSys.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, CanEditReagent, Reagent")]
-        public ActionResult Edit([Bind(Include = "reagentId,name,measurementId,description,reOrderLevel")] Reagent tblreagent)
+        public ActionResult Edit([Bind(Include = "reagentId,type,name,measurementId,description,reOrderLevel")] Reagent tblreagent)
         {
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
             var currentUser = manager.FindById(User.Identity.GetUserId());
@@ -180,6 +219,7 @@ namespace YHRSys.Controllers
                     r.name = tblreagent.name;
                     r.description = tblreagent.description;
                     r.reOrderLevel = tblreagent.reOrderLevel;
+                    r.type = tblreagent.type;
                     if (currentUser != null)
                         r.updatedBy = currentUser.UserName;
                     else
@@ -206,17 +246,20 @@ namespace YHRSys.Controllers
 
                     tblreagent.Timestamp = databaseValues.Timestamp;
                     ViewBag.measurementId = new SelectList(db.Measurements, "measurementId", "name");
+                    ViewBag.type = listInternalItemType(tblreagent.type);
                     return View();
                 }
                 catch (Exception e)
                 {
                     ModelState.AddModelError(string.Empty, e.Message);
                     ViewBag.measurementId = new SelectList(db.Measurements, "measurementId", "name");
+                    ViewBag.type = listInternalItemType(tblreagent.type);
                     return View();
                 }
                 return RedirectToAction("Index");
             }
             ViewBag.measurementId = new SelectList(db.Measurements, "measurementId", "name");
+            ViewBag.type = listInternalItemType(tblreagent.type);
             return View(tblreagent);
         }
 
@@ -260,6 +303,74 @@ namespace YHRSys.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        [HttpPost]
+        public ActionResult ExportStockLevelReport(string searchString)
+        {
+            /*LEFT OUTER JOIN*/
+            var stockLevelReport = (from rea in db.Reagents
+                                    join st in db.Stocks on rea.reagentId equals st.reagentId into reagentInfo
+                                    from stocks in reagentInfo.AsEnumerable().OrderBy(j=>j.reagent.name).DefaultIfEmpty()
+                               select new CustomStockLevel
+                               {
+                                   reagentName = rea.name,
+                                   reOrderLevel = rea.reOrderLevel,
+                                   totalIn = rea.inventories.DefaultIfEmpty().Sum(i => (decimal?) i.quantity) ?? 0,
+                                   totalPartnerActivitiesOut = rea.partnerActivities.DefaultIfEmpty().Sum(q => (decimal?) q.reagentQty) ?? 0,
+                                   totalInHouseOut = rea.internalReagentUsages.DefaultIfEmpty().Sum(k => (decimal?) k.quantity) ?? 0,
+                                   balance = (decimal?)stocks.totalIn ?? 0
+                               }).DefaultIfEmpty().ToArray();
+
+            if (searchString != null && searchString.Length>0)
+            {
+                /*LEFT OUT JOIN */
+                /*from rea in db.Reagents
+                                    join st in db.Stocks on rea.reagentId equals st.reagentId into reagentInfo
+                                    from stocks in reagentInfo.AsEnumerable().Where(r => r.reagent.name.Contains(searchString)).OrderBy(j => j.reagent.name)*/
+                stockLevelReport = (from rea in db.Reagents
+                                    join st in db.Stocks on rea.reagentId equals st.reagentId into reagentInfo
+                                    from stocks in reagentInfo.AsEnumerable().DefaultIfEmpty()
+                                    where rea.name.Contains(searchString)
+                                    orderby (rea.name) ascending
+                                    select new CustomStockLevel
+                                   {
+                                       reagentName = rea.name,
+                                       reOrderLevel = rea.reOrderLevel,
+                                       totalIn = rea.inventories.DefaultIfEmpty().Sum(i => (decimal?)i.quantity) ?? 0,
+                                       totalPartnerActivitiesOut = rea.partnerActivities.DefaultIfEmpty().Sum(q => (decimal?)q.reagentQty) ?? 0,
+                                       totalInHouseOut = rea.internalReagentUsages.DefaultIfEmpty().Sum(k => (decimal?)k.quantity) ?? 0,
+                                       balance = (decimal?) stocks.totalIn ?? 0
+                                   }).ToArray();
+                }
+            
+            ReportDocument read = new ReportDocument();
+
+            read.Load(Path.Combine(Server.MapPath("~/Content/Reports"), "StockLevel.rpt"));
+            read.SetDataSource(stockLevelReport);
+            Response.Buffer = false;
+            Response.ClearContent();
+            Response.ClearHeaders();
+
+            try
+            {
+                if (stockLevelReport.Length > 0)
+                {
+                    Stream stream = read.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+                    stream.Seek(0, SeekOrigin.Begin);
+                    return File(stream, "application/pdf", "ReagentStockRpt.pdf");
+                }
+                else
+                {
+                    //string message = "No matching record(s) found for your query!";
+                    TempData["msg"] = "No matching record(s) found using your query to the expected generate report!";
+                    return RedirectToAction("Index", "Reagent");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

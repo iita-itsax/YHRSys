@@ -8,7 +8,7 @@
 
 <div>
     <h4>Details of selected location</h4>
-	<hr />
+    <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.name)
@@ -80,3 +80,128 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.locationId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+@if (Model.LocationUsers.Count() > 0)
+{
+    <div class="table-responsive">
+        <h2>Related Officers-In-Charge</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    Location
+                </th>
+                <th>
+                    Officer-In-Charge
+                </th>
+                <th>
+                    Enrolled Date
+                </th>
+                <th>
+                    Exit Date
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Created By
+                </th>
+                <th>
+                    Created Date
+                </th>
+            </tr>
+
+            @foreach (var item in Model.LocationUsers)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.location.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </td>
+                    <td>
+                        @if (item.startDate != null)
+                        { @Html.DisplayFor(modelItem => item.startDate)}
+                    </td>
+                    <td>
+                        @if (item.endDate != null)
+                        { @Html.DisplayFor(modelItem => item.endDate)}
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.extendCreatedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.createdDate)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+@if (Model.Activities.Count() > 0)
+{
+    <div class="table-responsive">
+        <h2>Related Activities</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Variety
+                </th>
+                <th>
+                    Location
+                </th>
+                <th>
+                    Type
+                </th>
+                <th>
+                    Quality
+                </th>
+                <th>
+                   Quantity
+                </th>
+                <th>
+                    Activity Date
+                </th>
+                <th>
+                    Description
+                </th>
+            </tr>
+            @foreach (var item in Model.Activities)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.activityDefinition.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.variety.FullDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.location.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.mediumPrepType.typename)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.quality)%
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.activityDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.description)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}

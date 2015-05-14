@@ -5,7 +5,29 @@
 }
 
 <h2>Variety Process Flow Details</h2>
-
+@{
+    if (ViewBag.Message != null)
+    {
+        <div class="bs-component">
+            <div class="alert alert-dismissible alert-danger">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <h4>Warning!</h4>
+                <p>@Html.Encode(ViewBag.Message)</p>
+            </div>
+        </div>
+    }
+}
+@using (Html.BeginForm("PrintDetails", "VarietyProcessFlow", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.processId)
+    <div class="form-group">
+        @Html.TextBox("copies", ViewBag.CurrentFilter as string, new { @class = "form-control input-mini", placeholder = "No. of Barcode Label Copies ...", pattern="\\d*" })
+    </div>;
+    <button class="btn btn-primary" type="submit">Print Details!</button>
+    <input class="btn btn-success" type="submit" id="printButton" name="btnSubmit" value="Print Label!" />
+    <button class="btn btn-success" type="button" onclick="clearForm();">Clear!</button>
+}
 <div>
     <h4>Variety Process Flow</h4>
 	<hr />

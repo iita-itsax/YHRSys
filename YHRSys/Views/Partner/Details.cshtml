@@ -128,3 +128,151 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.partnerId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+@if(Model.partnerContacts.Count()>0){
+    <div class="table-responsive">
+        <h2>Related Contact Person(s)</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    Affiliation
+                </th>
+                <th>
+                    Contact's Name
+                </th>
+                <th>
+                    Gender
+                </th>
+                <th>
+                    PhoneNo
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Contact's Address
+                </th>
+                <th>
+                    CreatedOn
+                </th>
+            </tr>
+
+            @foreach (var item in Model.partnerContacts)
+            {
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.partner.name)
+                    </td>
+                    <td>
+                        @String.Concat(item.personTitle + " " + ((item.lastName != null) ? item.lastName + ", " : "") + ((item.firstName != null) ? item.firstName + " " : "") + ((item.otherNames != null) ? item.otherNames : ""))
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.gender)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.phoneNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.emailAddress)
+                    </td>
+                    <td>
+                        @String.Concat(item.contactAddress + ", " + ((!item.contactCity.IsEmpty()) ? item.contactCity + ", " : "") + ((!item.contactState.IsEmpty()) ? item.contactState + ", " : "") + ((!item.contactCountry.IsEmpty()) ? item.contactCountry : ""))
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.createdDate)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+@if (Model.partnerActivities.Count() > 0)
+{
+    <div class="table-responsive">
+        <h2>Related Activities</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    Partner
+                </th>
+
+                <th>
+                    Reagent
+                </th>
+                <th>
+                    Reag. Qty
+                </th>
+                <th>
+                    Officer-in-Charge
+                </th>
+                <th>
+                    Acty Date
+                </th>
+                <th>
+                    BackStopping
+                </th>
+                <th>
+                    <span title="TC Plantlets Given">TCPG</span>
+                </th>
+                <th>
+                    <span title="Bioreactor Plants Given">BioRPG</span>
+                </th>
+                <th>
+                    <span title="Tubers Given">TG</span>
+                </th>
+                <th>
+                    <span title="TC Plantlets Available">TCPA</span>
+                </th>
+                <th>
+                    <span title="TI Plantlets Available">TIPA</span>
+                </th>
+                <th>
+                    <span title="Tubers Available">TA</span>
+                </th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model.partnerActivities)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.partner.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.reagent.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.reagentQty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.oic.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.activityDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.backStopping)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tcPlantletsGiven)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.bioreactorplantsGiven)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tubersGiven)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tcPlantletsAvailable)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tibPlantletsAvailable)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tubersAvailable)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}

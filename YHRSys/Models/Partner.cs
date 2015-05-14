@@ -42,12 +42,12 @@ namespace YHRSys.Models
         [RegularExpression(@"((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}", ErrorMessage = "Invalid Phone Number! Format should be xxx-xxx-xxxx")]
         public string phoneNumber { get; set; }
 
-        [EmailAddress(ErrorMessage = "Invalid Email. Format: http://www.mysite.com")]
+        [EmailAddress(ErrorMessage = "Invalid Email. Format: yourname@yoursite.com")]
         [DisplayName("Email Address"), Required]
         public string emailAddress { get; set; }
 
         [DisplayName("Web Address")]
-        [Url(ErrorMessage = "Invalid URL!")]
+        [Url(ErrorMessage = "Invalid URL! Format: http://www.yoursite.com")]
         public string webAddress { get; set; }
 
         [DisplayName("Geo Long.")]

@@ -56,3 +56,65 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.varietyDefinitionId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+@if(Model.varieties.Count()>0){
+    <div class="table-responsive">
+        <h2>Related Varieties</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Sample No
+                </th>
+                <th>
+                    Officer-In-Charge
+                </th>
+                <th>
+                    Test Date
+                </th>
+                <th>
+                    Species
+                </th>
+                <th>
+                    Location
+                </th>
+                <th>
+                    CreatedBy
+                </th>
+                <th>
+                    CreatedOn
+                </th>
+            </tr>
+            @foreach (var item in Model.varieties)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.varietyDefinition.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sampleNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.testDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.species.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.location.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.extendCreatedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.createdDate)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}

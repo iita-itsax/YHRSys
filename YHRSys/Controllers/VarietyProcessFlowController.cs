@@ -15,6 +15,8 @@ using System.Security.Claims;
 using BarCode.Models;
 using DropdownSelect.Models;
 using PagedList;
+using System.IO;
+using CrystalDecisions.CrystalReports.Engine;
 
 namespace YHRSys.Controllers
 {
@@ -183,6 +185,9 @@ namespace YHRSys.Controllers
             {
                 return HttpNotFound();
             }
+
+            if (TempData["msg"] != null) { ViewBag.Message = TempData["msg"].ToString(); Session.Clear(); }
+
             ViewBag.barcode = tblvarietyprocessflow.barcodeImageUrl;
             return View(tblvarietyprocessflow);
         }
@@ -448,6 +453,141 @@ namespace YHRSys.Controllers
             db.VarietyProcessFlows.Remove(tblvarietyprocessflow);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        // POST: /VarietyProcessFlow/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, CanViewVarietyProcessFlow, VarietyProcessFlow")]
+        public ActionResult PrintDetails(long? processId, string copies, string btnSubmit)
+        {
+            int intOutput;
+            bool isInt = false;
+            isInt = int.TryParse(copies, out intOutput);
+            if (!isInt) {
+                intOutput = 1;
+            }
+            switch (btnSubmit)
+            {
+                   case "Print Label!":
+                    return GenerateReport(processId, intOutput, "label");
+                default://Print Details code goes here
+                    return GenerateReport(processId, intOutput, "detail");
+            }
+        }
+
+        //GENERATE REPORT HERE
+        [HttpPost]
+        public ActionResult GenerateReport(long? id, long? copies, string target)
+        {
+            if (copies > 1)
+            {
+                var query = from pa in db.VarietyProcessFlows.Where(pa => pa.processId == id)
+                            select new
+                                                       {
+                                                           barcode = pa.barcode
+                                                       };
+
+                List<CustomVarietyProcessFlow> customVPF = new List<CustomVarietyProcessFlow>();
+                for (int i = 0; i < copies; i++)
+                {
+                    //query.Concat(query.Where(pa => pa.processId == id));
+                    foreach (var q in query) { 
+                        CustomVarietyProcessFlow cvpf = new CustomVarietyProcessFlow();
+                        cvpf.barcode = q.barcode;
+                        customVPF.Add(cvpf);
+                    }
+                }
+
+                ReportDocument read = new ReportDocument();
+
+                if (target == "label")
+                    read.Load(Path.Combine(Server.MapPath("~/Content/Reports"), "BarcodeLabels.rpt"));
+                else
+                    read.Load(Path.Combine(Server.MapPath("~/Content/Reports"), "VPFlowDetails.rpt"));
+
+                if (query!=null)
+                    read.SetDataSource(customVPF.ToArray());
+
+                //read.SetParameterValue("copies", Convert.ToDecimal(copies));
+                Response.Buffer = false;
+                Response.ClearContent();
+                Response.ClearHeaders();
+
+                try
+                {
+                    if (query != null)
+                    {
+                        Stream stream = read.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+                        stream.Seek(0, SeekOrigin.Begin);
+                        if (target == "label")
+                            return File(stream, "application/pdf", "BarcodeLabelRpt.pdf");
+                        else
+                            return File(stream, "application/pdf", "VPFlowDetailsRpt.pdf");
+                    }
+                    else
+                    {
+                        //string message = "No matching record(s) found for your query!";
+                        TempData["msg"] = "No matching record(s) found using your query to the expected generate report!";
+
+                        return RedirectToAction("Details", "VarietyProcessFlow", new { id });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            else {
+                var vpf = (from pa in db.VarietyProcessFlows.AsEnumerable().Where(pa => pa.processId == id)
+                           select new CustomVarietyProcessFlow
+                           {
+                               variety = pa.variety.varietyDefinition.name,
+                               OiC = pa.user.FirstName + " " + pa.user.LastName,
+                               form = pa.form,
+                               processDate = pa.processDate.HasValue ? pa.processDate.Value.ToString("dd/MM/yyyy") : String.Empty,
+                               rank = pa.rank,
+                               barcode = pa.barcode,
+                               barcodeImageUrl = Convert.ToString(pa.barcodeImageUrl),
+                               description = pa.description
+                           }).ToArray();
+                ReportDocument read = new ReportDocument();
+
+                if (target == "label")
+                    read.Load(Path.Combine(Server.MapPath("~/Content/Reports"), "BarcodeLabels.rpt"));
+                else
+                    read.Load(Path.Combine(Server.MapPath("~/Content/Reports"), "VPFlowDetails.rpt"));
+                read.SetDataSource(vpf);
+
+                //read.SetParameterValue("copies", Convert.ToDecimal(copies));
+                Response.Buffer = false;
+                Response.ClearContent();
+                Response.ClearHeaders();
+
+                try
+                {
+                    if (vpf != null)
+                    {
+                        Stream stream = read.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+                        stream.Seek(0, SeekOrigin.Begin);
+                        if (target == "label")
+                            return File(stream, "application/pdf", "BarcodeLabelRpt.pdf");
+                        else
+                            return File(stream, "application/pdf", "VPFlowDetailsRpt.pdf");
+                    }
+                    else
+                    {
+                        //string message = "No matching record(s) found for your query!";
+                        TempData["msg"] = "No matching record(s) found using your query to the expected generate report!";
+
+                        return RedirectToAction("Details", "VarietyProcessFlow", new { id });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
 
         protected override void Dispose(bool disposing)

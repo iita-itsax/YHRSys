@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "Barcode Scanning...";
+}
+
+<h2>Barcode Scanning...</h2>
+
+<div class="table-responsive">
+    @{
+        if (ViewBag.Message != null)
+        {
+            <div class="bs-component">
+                <div class="alert alert-dismissible alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <h4>Warning!</h4>
+                    <p>@Html.Encode(ViewBag.Message)</p>
+                </div>
+            </div>
+        }
+    }
+    <p>
+        @using (Html.BeginForm("Index", "Scanner", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+        {
+            <div class="form-group">
+                @Html.TextBox("barcodeText", ViewBag.CurrentFilter as string, new { @class = "form-control input-lg", placeholder = "Search for ... Barcode" })
+            </div>;
+            <input class="btn btn-primary btn-lg" type="submit" id="searchButton" name="btnSubmit" value="Search!" />
+            <button class="btn btn-success btn-lg" type="button" onclick="clearForm();">Clear!</button>
+        }
+        </p>
+
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <h4>Hint!</h4>
+            Enter <strong>barcode text</strong> through the keyboard if <strong>Barcode Scanner</strong> was not available. Else, use the <strong>barcode scanner</strong> for the search action. When using <strong>Barcode Scanner</strong>, the system would automatically redirect you to <strong>Barcode Details page</strong> when barcode search returned <strong>valid response</strong>.
+        </div>
+        </div>

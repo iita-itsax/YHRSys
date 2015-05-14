@@ -2557,7 +2557,7 @@ output {
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 .datecontrol {
-    max-width: 280px;/**/
+    max-width: 100%;/**/
 }
 
 .form-control:focus {

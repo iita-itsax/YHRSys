@@ -39,6 +39,7 @@ namespace YHRSys.Models
         public string phoneNumber { get; set; }
 
         [DisplayName("Email address")]
+        [EmailAddress(ErrorMessage = "Invalid Email. Format: yourname@yoursite.com")]
         public string emailAddress { get; set; }
 
         [DisplayName("Contact address")]
@@ -57,6 +58,7 @@ namespace YHRSys.Models
         public string contactCountry { get; set; }
 
         [DisplayName("Web address")]
+        [Url(ErrorMessage = "Invalid URL! Format: http://www.yoursite.com")]
         public string webAddress { get; set; }
 
         [DisplayName("Geo long")]

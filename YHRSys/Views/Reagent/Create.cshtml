@@ -1,7 +1,7 @@
 ﻿@model YHRSys.Models.Reagent
 
 @{
-    ViewBag.Title = "Create Reagent";
+    ViewBag.Title = "Create Internal Item";
 }
 
 <h2>Create</h2>
@@ -12,9 +12,17 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Reagent</h4>
+        <h4>Internal Item</h4>
         <hr />
         @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.type, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("type", String.Empty)
+                @Html.ValidationMessageFor(model => model.type)
+            </div>
+        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.name, new { @class = "control-label col-md-2" })

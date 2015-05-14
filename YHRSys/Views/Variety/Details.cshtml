@@ -7,8 +7,8 @@
 <h2>Details</h2>
 
 <div>
-    <h4>tblVariety</h4>
-	<hr />
+    <h4>Variety</h4>
+    <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.varietyDefinitionId)
@@ -160,3 +160,128 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.varietyId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+@if (Model.varietyProcessFlows.Count() > 0)
+{
+    <div class="table-responsive">
+        <h2>Related Variety Process Flows</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    Variety
+                </th>
+                <th>
+                    Form
+                </th>
+                <th>
+                    Process Date
+                </th>
+                <th>
+                    Officer-In-Charge
+                </th>
+                <th>
+                    Rank
+                </th>
+                <th>
+                    Barcode
+                </th>
+                <th>
+                    Description
+                </th>
+            </tr>
+
+            @foreach (var item in Model.varietyProcessFlows)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.variety.varietyDefinition.name) - @Html.DisplayFor(modelItem => item.variety.sampleNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.form)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.processDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.user.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.rank)
+                    </td>
+                    <td>
+                        @if (item.barcodeImageUrl != null)
+                        {
+                            var imageUrl = Convert.ToBase64String((byte[])item.barcodeImageUrl);
+                            <img src="data:image/jpg;base64,@imageUrl" />
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.description)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+@if (Model.activities.Count() > 0) { 
+    <div class="table-responsive">
+        <h2>Related Activities</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Variety
+                </th>
+                <th>
+                    Location
+                </th>
+                <th>
+                    Type
+                </th>
+                <th>
+                    Quality
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Activity Date
+                </th>
+                <th>
+                    Description
+                </th>
+            </tr>
+            @foreach (var item in Model.activities)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.activityDefinition.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.variety.FullDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.location.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.mediumPrepType.typename)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.quality)%
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.activityDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.description)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}

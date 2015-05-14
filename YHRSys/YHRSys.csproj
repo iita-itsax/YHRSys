@@ -172,15 +172,34 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Content\Reports\BarcodeLabel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BarcodeLabel.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Content\Reports\BarcodeLabels.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BarcodeLabels.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Content\Reports\PartnerActivitiesReport.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PartnerActivitiesReport.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Content\Reports\StockLevel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StockLevel.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ActivityController.cs" />
     <Compile Include="Controllers\ActivityDefinitionController.cs" />
+    <Compile Include="Controllers\ScannerController.cs" />
     <Compile Include="Migrations\201503302103367_Seventeenth.cs" />
     <Compile Include="Migrations\201503302103367_Seventeenth.Designer.cs">
       <DependentUpon>201503302103367_Seventeenth.cs</DependentUpon>
@@ -197,7 +216,30 @@
     <Compile Include="Migrations\201504032107022_twentieth.Designer.cs">
       <DependentUpon>201504032107022_twentieth.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201504182135544_twenthy-first.cs" />
+    <Compile Include="Migrations\201504182135544_twenthy-first.Designer.cs">
+      <DependentUpon>201504182135544_twenthy-first.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201504212115389_twenty-second.cs" />
+    <Compile Include="Migrations\201504212115389_twenty-second.Designer.cs">
+      <DependentUpon>201504212115389_twenty-second.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201504212201021_twenty-third.cs" />
+    <Compile Include="Migrations\201504212201021_twenty-third.Designer.cs">
+      <DependentUpon>201504212201021_twenty-third.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201504220622166_twenty-fourth.cs" />
+    <Compile Include="Migrations\201504220622166_twenty-fourth.Designer.cs">
+      <DependentUpon>201504220622166_twenty-fourth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505071834140_twenthy-fifth.cs" />
+    <Compile Include="Migrations\201505071834140_twenthy-fifth.Designer.cs">
+      <DependentUpon>201505071834140_twenthy-fifth.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\CustomPartnerActivities.cs" />
+    <Compile Include="Models\CustomReagentInventory.cs" />
+    <Compile Include="Models\CustomStockLevel.cs" />
+    <Compile Include="Models\CustomVarietyProcessFlow.cs" />
     <Compile Include="Models\DropdownSelect.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -353,6 +395,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="fonts\fre3of9x.ttf" />
     <Content Include="fonts\free3of9.ttf" />
+    <None Include="Properties\PublishProfiles\yhrsys.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootswatch-bootstrap.min.js" />
     <Content Include="Scripts\bootswatch-jquery-1.10.2.min.js" />
@@ -431,7 +474,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -552,6 +597,7 @@
     <Content Include="Views\VarietyDefinition\Index.cshtml" />
     <Content Include="Views\Shared\_RightSideBar.cshtml" />
     <Content Include="Views\Shared\_ReagentReOrderStatus.cshtml" />
+    <Content Include="Views\Scanner\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -564,9 +610,21 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Content\Reports\BarcodeLabel.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BarcodeLabel.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\Reports\BarcodeLabels.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BarcodeLabels.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Content\Reports\PartnerActivitiesReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>PartnerActivitiesReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\Reports\StockLevel.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>StockLevel.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201402161844035_init.resx">
       <DependentUpon>201402161844035_init.cs</DependentUpon>
@@ -627,6 +685,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201504032107022_twentieth.resx">
       <DependentUpon>201504032107022_twentieth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504182135544_twenthy-first.resx">
+      <DependentUpon>201504182135544_twenthy-first.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504212115389_twenty-second.resx">
+      <DependentUpon>201504212115389_twenty-second.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504212201021_twenty-third.resx">
+      <DependentUpon>201504212201021_twenty-third.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504220622166_twenty-fourth.resx">
+      <DependentUpon>201504220622166_twenty-fourth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505071834140_twenthy-fifth.resx">
+      <DependentUpon>201505071834140_twenthy-fifth.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
