@@ -30,6 +30,7 @@ namespace YHRSys.Controllers
             ViewBag.OiCNameSortParm = sortOrder == "OiC" ? "oicname_desc" : "OiC";
             ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
             ViewBag.QuantitySortParm = sortOrder == "Quantity" ? "quantity_desc" : "Quantity";
+            ViewBag.ReceivedBySortParm = sortOrder == "ReceivedBy" ? "receivedBy_desc" : "ReceivedBy";
 
             if (searchString != null)
             {
@@ -76,25 +77,25 @@ namespace YHRSys.Controllers
                 if (searchStartDispatchDate != null && searchStartDispatchDate != null)
                 {
                     internalReagentUsages = internalReagentUsages.Where(rg => (rg.reagent.name.Contains(searchString)
-                                       || rg.note.Contains(searchString) || rg.user.LastName.Contains(searchString)
+                                       || rg.note.Contains(searchString) || rg.receivedBy.Contains(searchString) || rg.user.LastName.Contains(searchString)
                                           || rg.user.FirstName.Contains(searchString)) && (rg.dispatchDate >= (DateTime)searchStartDispatchDate && rg.dispatchDate <= (DateTime)searchEndDispatchDate));
                 }
                 else if (searchStartDispatchDate != null)
                 {
                     internalReagentUsages = internalReagentUsages.Where(rg => (rg.reagent.name.Contains(searchString)
-                                       || rg.note.Contains(searchString) || rg.user.LastName.Contains(searchString)
+                                       || rg.note.Contains(searchString) || rg.receivedBy.Contains(searchString) || rg.user.LastName.Contains(searchString)
                                           || rg.user.FirstName.Contains(searchString)) && (rg.dispatchDate == (DateTime)searchStartDispatchDate));
                 }
                 else if (searchEndDispatchDate != null)
                 {
                     internalReagentUsages = internalReagentUsages.Where(rg => (rg.reagent.name.Contains(searchString)
-                                       || rg.note.Contains(searchString) || rg.user.LastName.Contains(searchString)
+                                       || rg.note.Contains(searchString) || rg.receivedBy.Contains(searchString) || rg.user.LastName.Contains(searchString)
                                           || rg.user.FirstName.Contains(searchString)) && (rg.dispatchDate == (DateTime)searchEndDispatchDate));
                 }
                 else
                 {
                     internalReagentUsages = internalReagentUsages.Where(rg => (rg.reagent.name.Contains(searchString)
-                                       || rg.note.Contains(searchString) || rg.user.LastName.Contains(searchString)
+                                       || rg.note.Contains(searchString) || rg.receivedBy.Contains(searchString) || rg.user.LastName.Contains(searchString)
                                           || rg.user.FirstName.Contains(searchString)));
                 }
             }
@@ -130,6 +131,12 @@ namespace YHRSys.Controllers
                     break;
                 case "Quantity":
                     internalReagentUsages = internalReagentUsages.OrderBy(rg => rg.quantity);
+                    break;
+                case "receivedBy_desc":
+                    internalReagentUsages = internalReagentUsages.OrderByDescending(rg => rg.receivedBy);
+                    break;
+                case "ReceivedBy":
+                    internalReagentUsages = internalReagentUsages.OrderBy(rg => rg.receivedBy);
                     break;
                 case "Date":
                     internalReagentUsages = internalReagentUsages.OrderBy(rg => rg.dispatchDate);
@@ -181,7 +188,7 @@ namespace YHRSys.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, CanAddInternalReagentUsage, InternalReagentUsage")]
-        public ActionResult Create([Bind(Include = "reagentId,quantity,dispatchDate,userId,note")] InternalReagentUsage tblreagentusage)
+        public ActionResult Create([Bind(Include = "reagentId,quantity,dispatchDate,userId,note,receivedBy")] InternalReagentUsage tblreagentusage)
         {
             if (ModelState.IsValid)
             {
@@ -280,7 +287,7 @@ namespace YHRSys.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, CanEditInternalReagentUsage, InternalReagentUsage")]
-        public ActionResult Edit([Bind(Include = "usageId,reagentId,quantity,dispatchDate,userId,note")] InternalReagentUsage tblreagentusage)
+        public ActionResult Edit([Bind(Include = "usageId,reagentId,quantity,dispatchDate,userId,note,receivedBy")] InternalReagentUsage tblreagentusage)
         {
             if (ModelState.IsValid)
             {

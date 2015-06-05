@@ -52,13 +52,16 @@
                 <th>
                     Description
                 </th>
+                <th>
+                    @Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.StatusSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+                </th>
                 <th></th>
             </tr>
         }
         else
         {
             <tr>
-                <td colspan="8">
+                <td colspan="9">
                     <em>No records found!</em>
                 </td>
             </tr>
@@ -90,6 +93,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.status)
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.activityId }) |

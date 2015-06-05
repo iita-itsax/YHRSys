@@ -1,0 +1,10 @@
+﻿@model YHRSys.Models.SiteContent
+
+
+@{
+    ViewBag.Title = Model.caption;
+}
+
+<h2>@Model.caption</h2>
+<hr />
+@MvcHtmlString.Create(Model.fullArticle)

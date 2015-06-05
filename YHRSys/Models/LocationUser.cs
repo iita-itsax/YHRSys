@@ -14,6 +14,12 @@ namespace YHRSys.Models
 
     public partial class LocationUser : BaseEntity
     {
+        public LocationUser()
+        {
+            this.locationSubordinates = new HashSet<LocationSubordinate>();
+        }
+
+
         [Key]
         public int locationUserId { get; set; }
         //This property line is for the user that is in-charge of this location
@@ -39,6 +45,8 @@ namespace YHRSys.Models
 
         [ForeignKey("userId")]
         public virtual ApplicationUser user { get; set; }
+
+        public virtual ICollection<LocationSubordinate> locationSubordinates { get; set; }
 
         [NotMapped]
         public string FullName

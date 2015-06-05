@@ -30,7 +30,7 @@
         {
         <tr>
             <th>
-                @Html.ActionLink("Reagent", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+                @Html.ActionLink("Item", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
             </th>
             <th>
                 @Html.ActionLink("Quanity", "Index", new { sortOrder = ViewBag.QuantitySortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
@@ -40,6 +40,9 @@
             </th>
             <th>
                 @Html.ActionLink("DispatchedBy", "Index", new { sortOrder = ViewBag.OiCNameSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                @Html.ActionLink("ReceivedBy", "Index", new { sortOrder = ViewBag.ReceivedBySortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
             </th>
             <th>
                 Stock Note
@@ -56,7 +59,7 @@
         else
         {
         <tr>
-            <td colspan="8">
+            <td colspan="9">
                 <em>No records found!</em>
             </td>
         </tr>
@@ -75,6 +78,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.user.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.receivedBy)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.note)

@@ -25,6 +25,14 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.giverId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("giverId", String.Empty)
+                @Html.ValidationMessageFor(model => model.giverId)
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.reagentId, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("reagentId", String.Empty)
@@ -89,6 +97,14 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.seedsGiven, new { @class = "control-label col-md-2", title = "Seeds Given" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.seedsGiven, new { @class = "form-control", title = "Seeds Given", placeholder = ".. Seeds Given" })
+                @Html.ValidationMessageFor(model => model.seedsGiven)
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.tcPlantletsAvailable, new { @class = "control-label col-md-2", title = "TC Plantlets Available" })
             <div class="col-md-10">
                 @Html.TextBoxFor(model => model.tcPlantletsAvailable, new { @class = "form-control", title = "TC Plantlets Available", placeholder = ".. TC Plantlets Available" })
@@ -109,6 +125,14 @@
             <div class="col-md-10">
                 @Html.TextBoxFor(model => model.tubersAvailable, new { @class = "form-control", title = "Tubers Available", placeholder = ".. Tubers Available" })
                 @Html.ValidationMessageFor(model => model.tubersAvailable)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.seedsAvailable, new { @class = "control-label col-md-2", title = "Seeds Available" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.seedsAvailable, new { @class = "form-control", title = "Seeds Available", placeholder = ".. Seeds Available" })
+                @Html.ValidationMessageFor(model => model.seedsAvailable)
             </div>
         </div>
 

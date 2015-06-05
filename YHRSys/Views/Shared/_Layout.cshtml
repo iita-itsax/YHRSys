@@ -3,10 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />-->
     <title>@ViewBag.Title - Yam High Ratio Propagation System</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    @Scripts.Render("~/bundles/bootstrap")
 </head>
 <body>
     <div class="navbar navbar-default navbar-fixed-top">
@@ -23,10 +24,8 @@
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
                         <a href="/" id="Who-we-are" class="dropdown-toggle" data-toggle="dropdown">YIIFSWA <span class="caret"></span></a>
-                        <ul class="dropdown-menu" aria-labelledby="download">
-                            <li>@Html.ActionLink("About", "About", "Home")</li>
-                            <li class="divider"></li>
-                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        <ul class="dropdown-menu" aria-labelledby="download" id="menu">
+                            @Html.Partial("_SiteMenuList")
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -63,7 +62,10 @@
                             <li>@Html.ActionLink("Internal Items Usage", "Index", "InternalReagentUsage")</li>
                             <li class="divider"></li>
                             <li>@Html.ActionLink("Barcode Scan", "Index", "Scanner")</li>
-                            
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Publish Contents", "Index", "SiteContent")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Weekly Activity Logs", "Index", "WeeklyActivityLog")</li>                            
                         </ul>
                     </li>
                     <li class="dropdown">

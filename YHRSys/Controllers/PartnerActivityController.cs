@@ -36,6 +36,7 @@ namespace YHRSys.Controllers
                     ViewBag.CurrentSort = sortOrder;
                     ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
                     ViewBag.ReagentSortParm = sortOrder == "Reagent" ? "reagent_desc" : "Reagent";
+                    ViewBag.GiverSortParm = sortOrder == "Giver" ? "giver_desc" : "Giver";
                     ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
                     ViewBag.OiCNameSortParm = sortOrder == "OiC" ? "oicnaame_desc" : "OiC";
                     ViewBag.QuantitySortParm = sortOrder == "Quantity" ? "quantity_desc" : "Quantity";
@@ -84,25 +85,29 @@ namespace YHRSys.Controllers
                     {
                         if (searchStartActivityDate != null && searchEndActivityDate != null)
                         {
-                            activities = activities.Where(rg => (rg.partner.name.Contains(searchString)
+                            activities = activities.Where(rg => (rg.giver.name.Contains(searchString)
+                                               || rg.partner.name.Contains(searchString)
                                                || rg.reagent.name.Contains(searchString) || rg.oic.LastName.Contains(searchString)
                                                   || rg.oic.FirstName.Contains(searchString) || rg.backStopping.Contains(searchString)) && (rg.activityDate >= (DateTime)searchStartActivityDate && rg.activityDate <= (DateTime)searchEndActivityDate));
                         }
                         else if (searchStartActivityDate != null)
                         {
-                            activities = activities.Where(rg => (rg.partner.name.Contains(searchString)
+                            activities = activities.Where(rg => (rg.giver.name.Contains(searchString)
+                                               || rg.partner.name.Contains(searchString)
                                                || rg.reagent.name.Contains(searchString) || rg.oic.LastName.Contains(searchString)
                                                   || rg.oic.FirstName.Contains(searchString) || rg.backStopping.Contains(searchString)) && (rg.activityDate == (DateTime)searchStartActivityDate));
                         }
                         else if (searchEndActivityDate != null)
                         {
-                            activities = activities.Where(rg => (rg.partner.name.Contains(searchString)
+                            activities = activities.Where(rg => (rg.giver.name.Contains(searchString)
+                                               || rg.partner.name.Contains(searchString)
                                                || rg.reagent.name.Contains(searchString) || rg.oic.LastName.Contains(searchString)
                                                   || rg.oic.FirstName.Contains(searchString) || rg.backStopping.Contains(searchString)) && (rg.activityDate == (DateTime)searchEndActivityDate));
                         }
                         else
                         {
-                            activities = activities.Where(rg => rg.partner.name.Contains(searchString)
+                            activities = activities.Where(rg => rg.giver.name.Contains(searchString)
+                                               || rg.partner.name.Contains(searchString)
                                                || rg.reagent.name.Contains(searchString) || rg.oic.LastName.Contains(searchString)
                                                   || rg.oic.FirstName.Contains(searchString) || rg.backStopping.Contains(searchString));
                         }
@@ -127,6 +132,12 @@ namespace YHRSys.Controllers
                     {
                         case "name_desc":
                             activities = activities.OrderByDescending(rg => rg.partner.name);
+                            break;
+                        case "giver_desc":
+                            activities = activities.OrderByDescending(rg => rg.giver.name);
+                            break;
+                        case "Giver":
+                            activities = activities.OrderBy(rg => rg.giver.name);
                             break;
                         case "reagent_desc":
                             activities = activities.OrderByDescending(rg => rg.reagent.name);
@@ -186,9 +197,15 @@ namespace YHRSys.Controllers
         [Authorize(Roles = "Admin, CanAddPartnerActivity, PartnerActivity")]
         public ActionResult Create()
         {
-            ViewBag.reagentId = new SelectList(db.Reagents, "reagentId", "name");
-            ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name");
-            ViewBag.userId = new SelectList(db.Users, "Id", "FullName");
+            try { 
+                ViewBag.reagentId = new SelectList(db.Reagents, "reagentId", "name");
+                ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name");
+                ViewBag.giverId = new SelectList(db.Partners, "partnerId", "name");
+                ViewBag.userId = new SelectList(db.Users, "Id", "FullName");
+
+            }catch(Exception ex){
+                throw ex;
+            }
             return View();
         }
 
@@ -198,7 +215,7 @@ namespace YHRSys.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, CanAddPartnerActivity, PartnerActivity")]
-        public ActionResult Create([Bind(Include = "partnerId,reagentId,reagentQty,backStopping,tcPlantletsGiven,bioreactorplantsGiven,tubersGiven,tcPlantletsAvailable,tibPlantletsAvailable,tubersAvailable,activityDate,userId")] PartnerActivity tblpartneractivity)
+        public ActionResult Create([Bind(Include = "partnerId,giverId,reagentId,reagentQty,backStopping,tcPlantletsGiven,bioreactorplantsGiven,tubersGiven,tcPlantletsAvailable,tibPlantletsAvailable,tubersAvailable,activityDate,userId,seedsGiven,seedsAvailable")] PartnerActivity tblpartneractivity)
         {
             if (ModelState.IsValid)
             {
@@ -206,7 +223,7 @@ namespace YHRSys.Controllers
                 {
                     try
                     {
-                        var loc = db.PartnerActivities.FirstOrDefault(p => p.partnerId == tblpartneractivity.partnerId && p.reagentId == tblpartneractivity.reagentId && p.userId == tblpartneractivity.userId && p.activityDate == tblpartneractivity.activityDate);
+                        var loc = db.PartnerActivities.FirstOrDefault(p => p.partner.partnerId == tblpartneractivity.partner.partnerId && p.giver.partnerId == tblpartneractivity.giver.partnerId && p.reagentId == tblpartneractivity.reagentId && p.userId == tblpartneractivity.userId && p.activityDate == tblpartneractivity.activityDate);
                         if (loc == null)
                         {
                             //Call stock tracker table for STOCK-IN TRANSACTION
@@ -239,7 +256,8 @@ namespace YHRSys.Controllers
                                     ModelState.AddModelError(string.Empty, "Reagent quantity entered: {" + tblpartneractivity.reagentQty + "} is more than Stock level: {" + stocklevel.totalIn + "}!. "
                                     + "Reduce quantity entered and try again.");
                                     ViewBag.reagentId = new SelectList(db.Reagents, "reagentId", "name", tblpartneractivity.reagentId);
-                                    ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partnerId);
+                                    ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partner.partnerId);
+                                    ViewBag.giverId = new SelectList(db.Partners, "giverId", "name", tblpartneractivity.giver.partnerId);
                                     ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblpartneractivity.userId);
                                     return View(tblpartneractivity);
                                 }
@@ -249,7 +267,8 @@ namespace YHRSys.Controllers
                                 ModelState.AddModelError(string.Empty, "Reagent selected could not be found in the system!. "
                                     + "Please try again or contact the System Administrator.");
                                 ViewBag.reagentId = new SelectList(db.Reagents, "reagentId", "name", tblpartneractivity.reagentId);
-                                ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partnerId);
+                                ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partner.partnerId);
+                                ViewBag.giverId = new SelectList(db.Partners, "giverId", "name", tblpartneractivity.giver.partnerId);
                                 ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblpartneractivity.userId);
                                 return View(tblpartneractivity);
                             }
@@ -258,7 +277,8 @@ namespace YHRSys.Controllers
                         {
                             ModelState.AddModelError(string.Empty, "Partner activity and/or reagent usage already entered & quantity also deducted from the stock: " + tblpartneractivity.reagent.name);
                             ViewBag.reagentId = new SelectList(db.Reagents, "reagentId", "name", tblpartneractivity.reagentId);
-                            ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partnerId);
+                            ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partner.partnerId);
+                            ViewBag.giverId = new SelectList(db.Partners, "giverId", "name", tblpartneractivity.giver.partnerId);
                             ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblpartneractivity.userId);
 
                             return View(tblpartneractivity);
@@ -270,14 +290,16 @@ namespace YHRSys.Controllers
                         if (dbContextTransaction != null) dbContextTransaction.Rollback();
                         ModelState.AddModelError(string.Empty, "Error occurred saving internal reagent usage. " + "\n\nError message: " + ex.Message);
                         ViewBag.reagentId = new SelectList(db.Reagents, "reagentId", "name", tblpartneractivity.reagentId);
-                        ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partnerId);
+                        ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partner.partnerId);
+                        ViewBag.giverId = new SelectList(db.Partners, "giverId", "name", tblpartneractivity.giver.partnerId);
                         ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblpartneractivity.userId);
                         return View(tblpartneractivity);
                     }
                 }
             }
             ViewBag.reagentId = new SelectList(db.Reagents, "reagentId", "name", tblpartneractivity.reagentId);
-            ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partnerId);
+            ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partner.partnerId);
+            ViewBag.giverId = new SelectList(db.Partners, "giverId", "name", tblpartneractivity.giver.partnerId);
             ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblpartneractivity.userId);
 
             return View(tblpartneractivity);
@@ -297,7 +319,8 @@ namespace YHRSys.Controllers
                 return HttpNotFound();
             }
             ViewBag.reagentId = new SelectList(db.Reagents, "reagentId", "name", tblpartneractivity.reagentId);
-            ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partnerId);
+            ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partner.partnerId);
+            ViewBag.giverId = new SelectList(db.Partners, "giverId", "name", tblpartneractivity.giver.partnerId);
             ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblpartneractivity.userId);
             return View(tblpartneractivity);
         }
@@ -308,7 +331,7 @@ namespace YHRSys.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, CanEditPartnerActivity, PartnerActivity")]
-        public ActionResult Edit([Bind(Include="partnerActivityId,partnerId,reagentId,reagentQty,backStopping,tcPlantletsGiven,bioreactorplantsGiven,tubersGiven,tcPlantletsAvailable,tibPlantletsAvailable,tubersAvailable,userId,activityDate")] PartnerActivity tblpartneractivity)
+        public ActionResult Edit([Bind(Include = "partnerActivityId,partnerId,giverId,reagentId,reagentQty,backStopping,tcPlantletsGiven,bioreactorplantsGiven,tubersGiven,tcPlantletsAvailable,tibPlantletsAvailable,tubersAvailable,userId,activityDate,seedsGiven,seedsAvailable")] PartnerActivity tblpartneractivity)
         {
             if (ModelState.IsValid)
             {
@@ -332,7 +355,8 @@ namespace YHRSys.Controllers
                             {
                                 if (stocklevel.totalIn > diffInQty)
                                 {
-                                    act.partnerId = tblpartneractivity.partnerId;
+                                    act.partner.partnerId = tblpartneractivity.partner.partnerId;
+                                    act.giver.partnerId = tblpartneractivity.giver.partnerId;
                                     act.reagentId = tblpartneractivity.reagentId;
                                     act.userId = tblpartneractivity.userId;
                                     act.activityDate = tblpartneractivity.activityDate;
@@ -343,6 +367,10 @@ namespace YHRSys.Controllers
                                     act.tcPlantletsAvailable = tblpartneractivity.tcPlantletsAvailable;
                                     act.tibPlantletsAvailable = tblpartneractivity.tibPlantletsAvailable;
                                     act.tubersAvailable = tblpartneractivity.tubersAvailable;
+
+                                    act.seedsAvailable = tblpartneractivity.seedsAvailable;
+                                    act.seedsGiven = tblpartneractivity.seedsGiven;
+
                                     act.reagentQty = tblpartneractivity.reagentQty;
 
                                     if (currentUser != null)
@@ -365,7 +393,7 @@ namespace YHRSys.Controllers
                                     ModelState.AddModelError(string.Empty, "Balance of Reagent quantity entered to be deducted from the stock level: {" + diffInQty + "} is more than Stock level: {" + stocklevel.totalIn + "}!. "
                                     + "Reduce quantity entered and try again.");
                                     ViewBag.reagentId = new SelectList(db.Reagents, "reagentId", "name", tblpartneractivity.reagentId);
-                                    ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partnerId);
+                                    ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partner.partnerId);
                                     ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblpartneractivity.userId);
                                     return View(tblpartneractivity);
                                 }
@@ -375,14 +403,16 @@ namespace YHRSys.Controllers
                                 ModelState.AddModelError(string.Empty, "Reagent selected to be updated could not be found in the system!. "
                                     + "Please try again or contact the System Administrator.");
                                 ViewBag.reagentId = new SelectList(db.Reagents, "reagentId", "name", tblpartneractivity.reagentId);
-                                ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partnerId);
+                                ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partner.partnerId);
+                                ViewBag.giverId = new SelectList(db.Partners, "giverId", "name", tblpartneractivity.giver.partnerId);
                                 ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblpartneractivity.userId);
                                 return View(tblpartneractivity);
                             }
                         }
                         else if (diffInQty == 0)//Update the inventory table but no update on the stock table
                         {
-                            act.partnerId = tblpartneractivity.partnerId;
+                            act.partner.partnerId = tblpartneractivity.partner.partnerId;
+                            act.giver.partnerId = tblpartneractivity.giver.partnerId;
                             act.reagentId = tblpartneractivity.reagentId;
                             act.userId = tblpartneractivity.userId;
                             act.activityDate = tblpartneractivity.activityDate;
@@ -393,6 +423,10 @@ namespace YHRSys.Controllers
                             act.tcPlantletsAvailable = tblpartneractivity.tcPlantletsAvailable;
                             act.tibPlantletsAvailable = tblpartneractivity.tibPlantletsAvailable;
                             act.tubersAvailable = tblpartneractivity.tubersAvailable;
+
+                            act.seedsAvailable = tblpartneractivity.seedsAvailable;
+                            act.seedsGiven = tblpartneractivity.seedsGiven;
+
                             act.reagentQty = tblpartneractivity.reagentQty;
 
                             if (currentUser != null)
@@ -412,7 +446,8 @@ namespace YHRSys.Controllers
                             var stocklevel = db.Stocks.Where(c => c.reagentId == tblpartneractivity.reagentId).FirstOrDefault();
                             if (stocklevel != null)
                             {
-                                act.partnerId = tblpartneractivity.partnerId;
+                                act.partner.partnerId = tblpartneractivity.partner.partnerId;
+                                act.giver.partnerId = tblpartneractivity.giver.partnerId;
                                 act.reagentId = tblpartneractivity.reagentId;
                                 act.userId = tblpartneractivity.userId;
                                 act.activityDate = tblpartneractivity.activityDate;
@@ -423,6 +458,10 @@ namespace YHRSys.Controllers
                                 act.tcPlantletsAvailable = tblpartneractivity.tcPlantletsAvailable;
                                 act.tibPlantletsAvailable = tblpartneractivity.tibPlantletsAvailable;
                                 act.tubersAvailable = tblpartneractivity.tubersAvailable;
+
+                                act.seedsAvailable = tblpartneractivity.seedsAvailable;
+                                act.seedsGiven = tblpartneractivity.seedsGiven;
+
                                 act.reagentQty = tblpartneractivity.reagentQty;
 
                                 if (currentUser != null)
@@ -445,7 +484,8 @@ namespace YHRSys.Controllers
                                 ModelState.AddModelError(string.Empty, "Reagent selected to be updated could not be found in the system!. "
                                     + "Please try again or contact the System Administrator.");
                                 ViewBag.reagentId = new SelectList(db.Reagents, "reagentId", "name", tblpartneractivity.reagentId);
-                                ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partnerId);
+                                ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partner.partnerId);
+                                ViewBag.giverId = new SelectList(db.Partners, "giverId", "name", tblpartneractivity.giver.partnerId);
                                 ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblpartneractivity.userId);
                                 return View(tblpartneractivity);
                             }
@@ -472,7 +512,8 @@ namespace YHRSys.Controllers
 
                         tblpartneractivity.Timestamp = databaseValues.Timestamp;
                         ViewBag.reagentId = new SelectList(db.Reagents, "reagentId", "name", tblpartneractivity.reagentId);
-                        ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partnerId);
+                        ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partner.partnerId);
+                        ViewBag.giverId = new SelectList(db.Partners, "giverId", "name", tblpartneractivity.giver.partnerId);
                         ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblpartneractivity.userId);
                         return View(tblpartneractivity);
                     }
@@ -481,7 +522,8 @@ namespace YHRSys.Controllers
                         if (dbContextTransaction != null) dbContextTransaction.Rollback();
                         ModelState.AddModelError(string.Empty, "Error occurred saving inventory. " + "\n\nError message: " + ex.Message);
                         ViewBag.reagentId = new SelectList(db.Reagents, "reagentId", "name", tblpartneractivity.reagentId);
-                        ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partnerId);
+                        ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partner.partnerId);
+                        ViewBag.giverId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.giver.partnerId);
                         ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblpartneractivity.userId);
                         return View(tblpartneractivity);
                     }
@@ -489,7 +531,8 @@ namespace YHRSys.Controllers
             }
 
             ViewBag.reagentId = new SelectList(db.Reagents, "reagentId", "name", tblpartneractivity.reagentId);
-            ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partnerId);
+            ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartneractivity.partner.partnerId);
+            ViewBag.giverId = new SelectList(db.Partners, "giverId", "name", tblpartneractivity.giver.partnerId);
             ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblpartneractivity.userId);
             return View(tblpartneractivity);
         }
@@ -544,13 +587,16 @@ namespace YHRSys.Controllers
                                    BioRPG = Convert.ToDecimal(pa.bioreactorplantsGiven),
                                    OiCFullName = pa.oic.FirstName + " " + pa.oic.LastName,
                                    PartnerName = pa.partner.name,
+                                   GiverName = pa.giver.name,
                                    ReagentName = pa.reagent.name,
                                    ReagentQty = Convert.ToInt32(pa.reagentQty),
                                    TA = Convert.ToDecimal(pa.tubersAvailable),
                                    TCPA = Convert.ToDecimal(pa.tcPlantletsAvailable),
                                    TCPG = Convert.ToDecimal(pa.tcPlantletsGiven),
                                    TG = Convert.ToDecimal(pa.tubersGiven),
-                                   TIPA = Convert.ToDecimal(pa.tibPlantletsAvailable)
+                                   TIPA = Convert.ToDecimal(pa.tibPlantletsAvailable),
+                                   SA = Convert.ToDecimal(pa.seedsAvailable),
+                                   SG = Convert.ToDecimal(pa.seedsGiven)
                                }).ToArray();
             ReportDocument read = new ReportDocument();
 
@@ -568,13 +614,16 @@ namespace YHRSys.Controllers
                                        BioRPG = Convert.ToDecimal(pa.bioreactorplantsGiven),
                                        OiCFullName = pa.oic.FirstName + " " + pa.oic.LastName,
                                        PartnerName = pa.partner.name,
+                                       GiverName = pa.giver.name,
                                        ReagentName = pa.reagent.name,
                                        ReagentQty = Convert.ToInt32(pa.reagentQty),
                                        TA = Convert.ToDecimal(pa.tubersAvailable),
                                        TCPA = Convert.ToDecimal(pa.tcPlantletsAvailable),
                                        TCPG = Convert.ToDecimal(pa.tcPlantletsGiven),
                                        TG = Convert.ToDecimal(pa.tubersGiven),
-                                       TIPA = Convert.ToDecimal(pa.tibPlantletsAvailable)
+                                       TIPA = Convert.ToDecimal(pa.tibPlantletsAvailable),
+                                       SA = Convert.ToDecimal(pa.seedsAvailable),
+                                       SG = Convert.ToDecimal(pa.seedsGiven)
                                    }).ToArray();
                 }
                 else if (searchStartActivityDate != null && searchEndActivityDate == null)
@@ -588,13 +637,16 @@ namespace YHRSys.Controllers
                                        BioRPG = Convert.ToDecimal(pa.bioreactorplantsGiven),
                                        OiCFullName = pa.oic.FirstName + " " + pa.oic.LastName,
                                        PartnerName = pa.partner.name,
+                                       GiverName = pa.giver.name,
                                        ReagentName = pa.reagent.name,
                                        ReagentQty = Convert.ToInt32(pa.reagentQty),
                                        TA = Convert.ToDecimal(pa.tubersAvailable),
                                        TCPA = Convert.ToDecimal(pa.tcPlantletsAvailable),
                                        TCPG = Convert.ToDecimal(pa.tcPlantletsGiven),
                                        TG = Convert.ToDecimal(pa.tubersGiven),
-                                       TIPA = Convert.ToDecimal(pa.tibPlantletsAvailable)
+                                       TIPA = Convert.ToDecimal(pa.tibPlantletsAvailable),
+                                       SA = Convert.ToDecimal(pa.seedsAvailable),
+                                       SG = Convert.ToDecimal(pa.seedsGiven)
                                    }).ToArray();
                 }
                 else if (searchStartActivityDate == null && searchEndActivityDate != null)
@@ -608,13 +660,16 @@ namespace YHRSys.Controllers
                                        BioRPG = Convert.ToDecimal(pa.bioreactorplantsGiven),
                                        OiCFullName = pa.oic.FirstName + " " + pa.oic.LastName,
                                        PartnerName = pa.partner.name,
+                                       GiverName = pa.giver.name,
                                        ReagentName = pa.reagent.name,
                                        ReagentQty = Convert.ToInt32(pa.reagentQty),
                                        TA = Convert.ToDecimal(pa.tubersAvailable),
                                        TCPA = Convert.ToDecimal(pa.tcPlantletsAvailable),
                                        TCPG = Convert.ToDecimal(pa.tcPlantletsGiven),
                                        TG = Convert.ToDecimal(pa.tubersGiven),
-                                       TIPA = Convert.ToDecimal(pa.tibPlantletsAvailable)
+                                       TIPA = Convert.ToDecimal(pa.tibPlantletsAvailable),
+                                       SA = Convert.ToDecimal(pa.seedsAvailable),
+                                       SG = Convert.ToDecimal(pa.seedsGiven)
                                    }).ToArray();
                 }
                 else
@@ -627,13 +682,16 @@ namespace YHRSys.Controllers
                                        BioRPG = Convert.ToDecimal(pa.bioreactorplantsGiven),
                                        OiCFullName = pa.oic.FirstName + " " + pa.oic.LastName,
                                        PartnerName = pa.partner.name,
+                                       GiverName = pa.giver.name,
                                        ReagentName = pa.reagent.name,
                                        ReagentQty = Convert.ToInt32(pa.reagentQty),
                                        TA = Convert.ToDecimal(pa.tubersAvailable),
                                        TCPA = Convert.ToDecimal(pa.tcPlantletsAvailable),
                                        TCPG = Convert.ToDecimal(pa.tcPlantletsGiven),
                                        TG = Convert.ToDecimal(pa.tubersGiven),
-                                       TIPA = Convert.ToDecimal(pa.tibPlantletsAvailable)
+                                       TIPA = Convert.ToDecimal(pa.tibPlantletsAvailable),
+                                       SA = Convert.ToDecimal(pa.seedsAvailable),
+                                       SG = Convert.ToDecimal(pa.seedsGiven)
                                    }).ToArray();
                 }
             }
@@ -650,13 +708,16 @@ namespace YHRSys.Controllers
                                        BioRPG = Convert.ToDecimal(pa.bioreactorplantsGiven),
                                        OiCFullName = pa.oic.FirstName + " " + pa.oic.LastName,
                                        PartnerName = pa.partner.name,
+                                       GiverName = pa.giver.name,
                                        ReagentName = pa.reagent.name,
                                        ReagentQty = Convert.ToInt32(pa.reagentQty),
                                        TA = Convert.ToDecimal(pa.tubersAvailable),
                                        TCPA = Convert.ToDecimal(pa.tcPlantletsAvailable),
                                        TCPG = Convert.ToDecimal(pa.tcPlantletsGiven),
                                        TG = Convert.ToDecimal(pa.tubersGiven),
-                                       TIPA = Convert.ToDecimal(pa.tibPlantletsAvailable)
+                                       TIPA = Convert.ToDecimal(pa.tibPlantletsAvailable),
+                                       SA = Convert.ToDecimal(pa.seedsAvailable),
+                                       SG = Convert.ToDecimal(pa.seedsGiven)
                                    }).ToArray();
                 }
                 else if (searchStartActivityDate != null && searchEndActivityDate == null)
@@ -670,13 +731,16 @@ namespace YHRSys.Controllers
                                        BioRPG = Convert.ToDecimal(pa.bioreactorplantsGiven),
                                        OiCFullName = pa.oic.FirstName + " " + pa.oic.LastName,
                                        PartnerName = pa.partner.name,
+                                       GiverName = pa.giver.name,
                                        ReagentName = pa.reagent.name,
                                        ReagentQty = Convert.ToInt32(pa.reagentQty),
                                        TA = Convert.ToDecimal(pa.tubersAvailable),
                                        TCPA = Convert.ToDecimal(pa.tcPlantletsAvailable),
                                        TCPG = Convert.ToDecimal(pa.tcPlantletsGiven),
                                        TG = Convert.ToDecimal(pa.tubersGiven),
-                                       TIPA = Convert.ToDecimal(pa.tibPlantletsAvailable)
+                                       TIPA = Convert.ToDecimal(pa.tibPlantletsAvailable),
+                                       SA = Convert.ToDecimal(pa.seedsAvailable),
+                                       SG = Convert.ToDecimal(pa.seedsGiven)
                                    }).ToArray();
                 }
                 else if (searchEndActivityDate != null && searchStartActivityDate == null)
@@ -690,13 +754,16 @@ namespace YHRSys.Controllers
                                        BioRPG = Convert.ToDecimal(pa.bioreactorplantsGiven),
                                        OiCFullName = pa.oic.FirstName + " " + pa.oic.LastName,
                                        PartnerName = pa.partner.name,
+                                       GiverName = pa.giver.name,
                                        ReagentName = pa.reagent.name,
                                        ReagentQty = Convert.ToInt32(pa.reagentQty),
                                        TA = Convert.ToDecimal(pa.tubersAvailable),
                                        TCPA = Convert.ToDecimal(pa.tcPlantletsAvailable),
                                        TCPG = Convert.ToDecimal(pa.tcPlantletsGiven),
                                        TG = Convert.ToDecimal(pa.tubersGiven),
-                                       TIPA = Convert.ToDecimal(pa.tibPlantletsAvailable)
+                                       TIPA = Convert.ToDecimal(pa.tibPlantletsAvailable),
+                                       SA = Convert.ToDecimal(pa.seedsAvailable),
+                                       SG = Convert.ToDecimal(pa.seedsGiven)
                                    }).ToArray();
                 }
             }
@@ -753,6 +820,7 @@ namespace YHRSys.Controllers
                     ArrayList reagentArray = new ArrayList();
                     foreach (var reagent in dataReagents) {
                         reagentArray.Add(reagent.reagentName);
+                        //var dataQty = db.PartnerActivities.Where(a => a.partner.name.Contains(partner.partnerName) && a.giver.name.Contains(partner.partnerName) && a.reagent.name.Contains(reagent.reagentName))
                         var dataQty = db.PartnerActivities.Where(a => a.partner.name.Contains(partner.partnerName) && a.reagent.name.Contains(reagent.reagentName))
                             .GroupBy(r => new { r.reagent.name, partnerName = r.partner.name }).AsEnumerable()
                             .Select(a => new { Qty = a.Sum(b => b.reagentQty) })
@@ -768,9 +836,9 @@ namespace YHRSys.Controllers
                 myChart.AddLegend(title: "Partners");
                 myChart.AddTitle("Reagents Usage");
                 myChart.Write();
-            myChart.Save("~/Content/chart" + currentUser.Id, "jpeg");
+            myChart.Save("~/Content/uploads/chart" + currentUser.Id, "jpeg");
             // Return the contents of the Stream to the client
-            return base.File("~/Content/chart" + currentUser.Id, "jpeg");
+            return base.File("~/Content/uploads/chart" + currentUser.Id, "jpeg");
         }
     }
 }

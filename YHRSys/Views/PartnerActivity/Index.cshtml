@@ -2,6 +2,12 @@
 @using PagedList.Mvc;
 
 @{
+    if (Model.PageCount > 0)
+    {
+        Layout = "~/Views/Shared/_Layout_PartnerActivities.cshtml";
+    }
+}
+@{
     ViewBag.Title = "Partner Activities";
 }
 
@@ -33,14 +39,18 @@
         {
         <tr>
             <th>
-                @Html.ActionLink("Partner", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+                @Html.ActionLink("Receiver", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
             </th>
 
             <th>
-                @Html.ActionLink("Reagent", "Index", new { sortOrder = ViewBag.ReagentSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+                @Html.ActionLink("Giver", "Index", new { sortOrder = ViewBag.GiverSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+
+            <th>
+                @Html.ActionLink("Item", "Index", new { sortOrder = ViewBag.ReagentSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
             </th>
             <th>
-                @Html.ActionLink("Reag. Qty", "Index", new { sortOrder = ViewBag.QuantitySortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter }, new { title = "Reagent Quantity" })
+                @Html.ActionLink("Qty", "Index", new { sortOrder = ViewBag.QuantitySortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter }, new { title = "Reagent Quantity" })
             </th>
             <th>
                 @Html.ActionLink("OiC", "Index", new { sortOrder = ViewBag.OiCNameSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter }, new { title = "Officer-in-Charge" })
@@ -61,6 +71,9 @@
                 <span title="Tubers Given">TG</span>
             </th>
             <th>
+                <span title="Seeds Given">SG</span>
+            </th>
+            <th>
                 <span title="TC Plantlets Available">TCPA</span>
             </th>
             <th>
@@ -68,6 +81,9 @@
             </th>
             <th>
                 <span title="Tubers Available">TA</span>
+            </th>
+            <th>
+                <span title="Seeds Available">SA</span>
             </th>
             <th></th>
         </tr>
@@ -85,6 +101,10 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.partner.name)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.giver.name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.reagent.name)
@@ -111,6 +131,9 @@
                     @Html.DisplayFor(modelItem => item.tubersGiven)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.seedsGiven)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.tcPlantletsAvailable)
                 </td>
                 <td>
@@ -118,6 +141,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.tubersAvailable)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.seedsAvailable)
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.partnerActivityId }) |

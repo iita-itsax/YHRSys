@@ -16,8 +16,12 @@ namespace YHRSys.Controllers
         {
             if (barcodeText != null)
             {
+                int x = 0;
+                if (Int32.TryParse(barcodeText, out x))
+                    x = Int32.Parse(barcodeText);
+
                 var varietyProcessFlow = from r in db.VarietyProcessFlows select r;
-                varietyProcessFlow = varietyProcessFlow.Where(rg => rg.barcode.Contains(barcodeText));
+                varietyProcessFlow = varietyProcessFlow.Where(rg => rg.barcode.Contains(barcodeText) || rg.processId==x);
                 if (varietyProcessFlow == null)
                 {
                     return HttpNotFound();

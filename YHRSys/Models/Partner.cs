@@ -11,7 +11,7 @@ namespace YHRSys.Models
     {
         public Partner()
         {
-            this.partnerActivities = new HashSet<PartnerActivity>();
+           // this.partnerActivities = new HashSet<PartnerActivity>();
             this.partnerContacts = new HashSet<PartnerContact>();
         }
 
@@ -56,7 +56,7 @@ namespace YHRSys.Models
         [DisplayName("Geo Lat.")]
         public string geoLatitude { get; set; }
 
-        public virtual ICollection<PartnerActivity> partnerActivities { get; set; }
+        //public virtual ICollection<PartnerActivity> partnerActivities { get; set; }
         public virtual ICollection<PartnerContact> partnerContacts { get; set; }
     }
 }

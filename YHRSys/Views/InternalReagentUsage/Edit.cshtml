@@ -52,6 +52,14 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.receivedBy, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.receivedBy, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.receivedBy)
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.note, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.TextAreaFor(model => model.note, new { rows = 2, columns = 40, @class = "form-control" })

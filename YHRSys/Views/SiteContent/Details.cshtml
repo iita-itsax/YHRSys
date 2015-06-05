@@ -1,0 +1,90 @@
+﻿@model YHRSys.Models.SiteContent
+
+@{
+    ViewBag.Title = "Site Content Details";
+}
+
+<h2>Site Content Details</h2>
+
+<div>
+    <h4>Site Content</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.userId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.user.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.caption)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.caption)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.summary)
+        </dt>
+
+        <dd>
+            @MvcHtmlString.Create(Model.summary)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fullArticle)
+        </dt>
+
+        <dd>
+            @MvcHtmlString.Create(Model.fullArticle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.createdDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.createdBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updatedBy)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

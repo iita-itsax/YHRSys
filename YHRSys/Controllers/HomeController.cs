@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Net;
 using System.Web.Mvc;
 using YHRSys.Models;
 using System.Dynamic;
@@ -62,20 +63,6 @@ namespace YHRSys.Controllers
             return View(model);
         }
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "About Us";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Our Contacts";
-
-            return View();
-        }
-        
         public ActionResult ReOrderLevelStatus()
         {
             var reagentReOrderStatus = (from rea in db.Reagents
@@ -99,6 +86,57 @@ namespace YHRSys.Controllers
             }
             ViewBag.Status = sb.ToString();
             return PartialView("_ReagentReOrderStatus");
+        }
+
+        public ActionResult SiteMenuList()
+        {
+            var menus = (from rea in db.SiteContents
+                                        where rea.status == PUBLISHSTATUS.Published
+                                        orderby rea.caption ascending
+                                        select new
+                                        {
+                                            rName = rea.caption,
+                                            id = (int?)rea.id ?? 0
+                                        }).ToList();
+
+            StringBuilder sb = new StringBuilder("");
+
+            foreach (var menu in menus)
+            {
+                if (sb.Length > 0) { 
+                    sb.Append("<li class=\"divider\"></li>");
+                    sb.Append("<li><a href=\"/Home/Content/").Append(menu.id).Append("\">").Append(menu.rName).Append("</a></li>");
+                }
+                else
+                {
+                    sb.Append("<li><a href=\"/Home/Content/").Append(menu.id).Append("\">").Append(menu.rName).Append("</a></li>");
+                }
+            }
+            ViewBag.Menus = sb.ToString();
+            return PartialView("_SiteMenuList");
+        }
+
+        public ActionResult Content(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            SiteContent sitecontent = db.SiteContents.Find(id);
+            if (sitecontent == null)
+            {
+                return HttpNotFound();
+            }
+            return View(sitecontent);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

@@ -1,0 +1,12 @@
+Challenges:
+
+1. Server was not responding to ajax and datecontrol was not working
+Solution:
+
+- Cleared the server contents
+- Updated pending plugins, Assemblies and Frameworks through NUGET Package
+- Ran this command on the PM Console: Install-Package Microsoft.AspNet.Web.Optimization
+- Copied necessary contents back to the server
+- Voila!!! It came up working fine
+
+Documented by Kenn

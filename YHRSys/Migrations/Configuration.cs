@@ -28,7 +28,7 @@ namespace YHRSys.Migrations
         private readonly string[] _userRoleNames = { "User" };
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
         protected override void Seed(ApplicationDbContext context)
         {
@@ -120,9 +120,19 @@ namespace YHRSys.Migrations
             _idManager.CreateRole("CanViewSpecies", "View Species");
 
             _idManager.CreateRole("CanEditInternalReagentUsage", "Modify Internal Reagent Usage");
-            _idManager.CreateRole("CanAddInternalReagentUsage", "Add Internal Reagent Usagen");
+            _idManager.CreateRole("CanAddInternalReagentUsage", "Add Internal Reagent Usage");
             _idManager.CreateRole("CanDeleteInternalReagentUsage", "Delete Internal Reagent Usage");
             _idManager.CreateRole("CanViewInternalReagentUsage", "View Internal Reagent Usage");
+
+            _idManager.CreateRole("CanEditWeeklyActivityLog", "Modify Weekly Activity Log");
+            _idManager.CreateRole("CanAddWeeklyActivityLog", "Add Weekly Activity Log");
+            _idManager.CreateRole("CanDeleteWeeklyActivityLog", "Delete Weekly Activity Log");
+            _idManager.CreateRole("CanViewWeeklyActivityLog", "View Weekly Activity Log");
+
+            _idManager.CreateRole("CanEditSiteContents", "Modify Site Contents");
+            _idManager.CreateRole("CanAddSiteContents", "Add/Publish Site Contents");
+            _idManager.CreateRole("CanDeleteSiteContents", "Delete Site Contents");
+            _idManager.CreateRole("CanViewSiteContents", "View Site Contents");
         }
         private void AddRolesToGroups()
         {

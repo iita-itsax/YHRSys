@@ -22,14 +22,19 @@
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.processId)
     <div class="form-group">
+        @Html.DropDownList("labeltype", new SelectListItem[]{
+                new SelectListItem() {Text = "Barcode 25mm x 13mm", Value="Barcode25x13mm"},
+                new SelectListItem() {Text = "Barcode 51mm x 19mm", Value="Barcode51x19mm"},
+                new SelectListItem() {Text = "Select Label Type", Value=""}}, new { @class = "form-control" })
         @Html.TextBox("copies", ViewBag.CurrentFilter as string, new { @class = "form-control input-mini", placeholder = "No. of Barcode Label Copies ...", pattern="\\d*" })
     </div>;
     <button class="btn btn-primary" type="submit">Print Details!</button>
-    <input class="btn btn-success" type="submit" id="printButton" name="btnSubmit" value="Print Label!" />
+    <!--<input class="btn btn-success" type="submit" id="printButton" name="btnSubmit" value="Generate Label!" />-->
+    <!--<input class="btn btn-success" type="submit" id="printButton1" name="btnSubmit" value="Print Labels!" onclick="return confirm('Print label anyway?');" />-->
+    <input class="btn btn-success" type="button" id="printButton2" name="btnSubmit" value="Print Labels!" onclick="if (confirm('Print labels anyway?')) { printLocally(); }" />
     <button class="btn btn-success" type="button" onclick="clearForm();">Clear!</button>
 }
 <div>
-    <h4>Variety Process Flow</h4>
 	<hr />
     <dl class="dl-horizontal">
         <dt>
@@ -136,3 +141,5 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.processId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+<script src="~/Scripts/DYMO.Label.Framework.1.2.6.latest.js"></script>
+<script src="~/Scripts/labels.js"></script>

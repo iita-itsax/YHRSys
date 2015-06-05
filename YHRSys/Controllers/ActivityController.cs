@@ -45,6 +45,7 @@ namespace YHRSys.Controllers
             ViewBag.VarietySortParm = sortOrder == "Variety" ? "variety_desc" : "Variety";
             ViewBag.QualitySortParm = sortOrder == "Quality" ? "quality_desc" : "Quality";
             ViewBag.QuantitySortParm = sortOrder == "Quantity" ? "quantity_desc" : "Quantity";
+            ViewBag.StatusSortParm = sortOrder == "Status" ? "status_desc" : "Status";
 
             if (searchString != null)
             {
@@ -91,25 +92,25 @@ namespace YHRSys.Controllers
                 if (searchStartActivityDate != null && searchEndActivityDate != null)
                 {
                     activities = activities.Where(rg => (rg.variety.varietyDefinition.name.Contains(searchString)
-                                       || rg.activityDefinition.name.Contains(searchString) || rg.mediumPrepType.typename.Contains(searchString)
+                                       || rg.activityDefinition.name.Contains(searchString) || rg.mediumPrepType.typename.Contains(searchString) || rg.status.Equals(searchString)
                                           || rg.location.name.Contains(searchString) || rg.description.Contains(searchString)) && (rg.activityDate >= (DateTime)searchStartActivityDate && rg.activityDate <= (DateTime)searchEndActivityDate));
                 }
                 else if (searchStartActivityDate != null)
                 {
                     activities = activities.Where(rg => (rg.variety.varietyDefinition.name.Contains(searchString)
-                                          || rg.activityDefinition.name.Contains(searchString) || rg.mediumPrepType.typename.Contains(searchString)
+                                          || rg.activityDefinition.name.Contains(searchString) || rg.mediumPrepType.typename.Contains(searchString) || rg.status.Equals(searchString)
                                           || rg.location.name.Contains(searchString) || rg.description.Contains(searchString)) && (rg.activityDate == (DateTime)searchStartActivityDate));
                 }
                 else if (searchEndActivityDate != null)
                 {
                     activities = activities.Where(rg => (rg.variety.varietyDefinition.name.Contains(searchString)
-                                          || rg.activityDefinition.name.Contains(searchString) || rg.mediumPrepType.typename.Contains(searchString)
+                                          || rg.activityDefinition.name.Contains(searchString) || rg.mediumPrepType.typename.Contains(searchString) || rg.status.Equals(searchString)
                                           || rg.location.name.Contains(searchString) || rg.description.Contains(searchString)) && (rg.activityDate == (DateTime)searchEndActivityDate));
                 }
                 else
                 {
                     activities = activities.Where(rg => rg.variety.varietyDefinition.name.Contains(searchString)
-                                          || rg.activityDefinition.name.Contains(searchString) || rg.mediumPrepType.typename.Contains(searchString)
+                                          || rg.activityDefinition.name.Contains(searchString) || rg.mediumPrepType.typename.Contains(searchString) || rg.status.Equals(searchString)
                                           || rg.location.name.Contains(searchString) || rg.description.Contains(searchString));
                 }
             }
@@ -170,6 +171,12 @@ namespace YHRSys.Controllers
                 case "date_desc":
                     activities = activities.OrderByDescending(rg => rg.activityDate);
                     break;
+                case "Status":
+                    activities = activities.OrderBy(rg => rg.status);
+                    break;
+                case "status_desc":
+                    activities = activities.OrderByDescending(rg => rg.status);
+                    break;
                 default:  // Name ascending 
                     activities = activities.OrderBy(rg => rg.activityDefinition.name);
                     break;
@@ -194,6 +201,7 @@ namespace YHRSys.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.userId = new SelectList(db.Users, "Id", "FullName");
             return View(activity);
         }
 
@@ -206,6 +214,7 @@ namespace YHRSys.Controllers
             ViewBag.typeId = new SelectList(db.MediumPrepTypes, "typeId", "typename");
             ViewBag.activityDefinitionId = new SelectList(db.ActivityDefinitions, "activityDefinitionId", "name");
             ViewBag.varietyId = new SelectList(db.Varieties, "varietyId", "FullDescription");
+            //ViewBag.assignedToId = new SelectList(db.Users, "userId", "FullName");
             ViewBag.quality = listQuality(0);
             return View();
         }
@@ -215,7 +224,7 @@ namespace YHRSys.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, CanAddActivity, Activity")]
-        public ActionResult Create([Bind(Include = "activityDefinitionId,locationId,typeId,varietyId,quantity,quality,description,activityDate")] Activity tblactivity)
+        public ActionResult Create([Bind(Include = "activityDefinitionId,locationId,typeId,varietyId,quantity,quality,description,activityDate,status")] Activity tblactivity)
         {
             //Activity activity = new Activity();
             try
@@ -245,6 +254,7 @@ namespace YHRSys.Controllers
                         ViewBag.typeId = new SelectList(db.MediumPrepTypes, "typeId", "typename", tblactivity.typeId);
                         ViewBag.activityDefinitionId = new SelectList(db.ActivityDefinitions, "activityDefinitionId", "name", tblactivity.activityDefinitionId);
                         ViewBag.varietyId = new SelectList(db.Varieties, "varietyId", "FullDescription");
+                        //ViewBag.assignedToId = new SelectList(db.Users, "userId", "FullName", tblactivity.userId);
                         ViewBag.quality = listQuality(tblactivity.quality);
 
                         return View(tblactivity);
@@ -256,6 +266,7 @@ namespace YHRSys.Controllers
                 ViewBag.typeId = new SelectList(db.MediumPrepTypes, "typeId", "typename", tblactivity.typeId);
                 ViewBag.activityDefinitionId = new SelectList(db.ActivityDefinitions, "activityDefinitionId", "name", tblactivity.activityDefinitionId);
                 ViewBag.varietyId = new SelectList(db.Varieties, "varietyId", "FullDescription");
+                //ViewBag.assignedToId = new SelectList(db.Users, "userId", "FullName", tblactivity.userId);
                 ViewBag.quality = listQuality(tblactivity.quality);
 
                 return View(tblactivity);
@@ -267,6 +278,7 @@ namespace YHRSys.Controllers
                 ViewBag.typeId = new SelectList(db.MediumPrepTypes, "typeId", "typename", tblactivity.typeId);
                 ViewBag.activityDefinitionId = new SelectList(db.ActivityDefinitions, "activityDefinitionId", "name", tblactivity.activityDefinitionId);
                 ViewBag.varietyId = new SelectList(db.Varieties, "varietyId", "FullDescription");
+                //ViewBag.assignedToId = new SelectList(db.Users, "userId", "FullName", tblactivity.userId);
                 ViewBag.quality = listQuality(tblactivity.quality);
                 return View();
             }
@@ -290,6 +302,7 @@ namespace YHRSys.Controllers
             ViewBag.typeId = new SelectList(db.MediumPrepTypes, "typeId", "typename", activity.typeId);
             ViewBag.activityDefinitionId = new SelectList(db.ActivityDefinitions, "activityDefinitionId", "name", activity.activityDefinitionId);
             ViewBag.varietyId = new SelectList(db.Varieties, "varietyId", "FullDescription");
+            //ViewBag.assignedToId = new SelectList(db.Users, "userId", "FullName", tblactivity.userId);
             ViewBag.quality = listQuality(activity.quality);
             return View(activity);
         }
@@ -299,7 +312,7 @@ namespace YHRSys.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, CanEditActivity, Activity")]
-        public ActionResult Edit([Bind(Include = "activityId,locationId,typeId,activityDefinitionId,varietyId,quantity,quality,description,activityDate")] Activity tblactivity)
+        public ActionResult Edit([Bind(Include = "activityId,locationId,typeId,activityDefinitionId,varietyId,quantity,quality,description,activityDate,status")] Activity tblactivity)
         {
             try
             {
@@ -320,6 +333,7 @@ namespace YHRSys.Controllers
                         act.quality = tblactivity.quality;
                         act.quantity = tblactivity.quantity;
                         act.activityDate = tblactivity.activityDate;
+                        act.status = tblactivity.status;
 
                         if (currentUser != null)
                             act.updatedBy = currentUser.UserName;
@@ -353,6 +367,7 @@ namespace YHRSys.Controllers
                         ViewBag.typeId = new SelectList(db.MediumPrepTypes, "typeId", "typename", tblactivity.typeId);
                         ViewBag.activityDefinitionId = new SelectList(db.ActivityDefinitions, "activityDefinitionId", "name", tblactivity.activityDefinitionId);
                         ViewBag.varietyId = new SelectList(db.Varieties, "varietyId", "FullDescription");
+                        //ViewBag.assignedToId = new SelectList(db.Users, "userId", "FullName, tblactivity.userId");
                         ViewBag.quality = listQuality(tblactivity.quality);
                         return View();
                     }
@@ -361,7 +376,8 @@ namespace YHRSys.Controllers
                 ViewBag.locationId = new SelectList(db.Locations, "locationId", "name", tblactivity.locationId);
                 ViewBag.typeId = new SelectList(db.MediumPrepTypes, "typeId", "typename", tblactivity.typeId);
                 ViewBag.activityDefinitionId = new SelectList(db.ActivityDefinitions, "activityDefinitionId", "name", tblactivity.activityDefinitionId);
-                ViewBag.varietyId = new SelectList(db.Varieties, "varietyId", "FullDescription");
+                ViewBag.varietyId = new SelectList(db.Varieties, "varietyId", "FullDescription", tblactivity.varietyId);
+                //ViewBag.assignedToId = new SelectList(db.Users, "userId", "FullName", tblactivity.userId);
                 ViewBag.quality = listQuality(tblactivity.quality);
                 return View(tblactivity);
             }
@@ -371,6 +387,7 @@ namespace YHRSys.Controllers
                 ViewBag.typeId = new SelectList(db.MediumPrepTypes, "typeId", "typename", tblactivity.typeId);
                 ViewBag.activityDefinitionId = new SelectList(db.ActivityDefinitions, "activityDefinitionId", "name", tblactivity.activityDefinitionId);
                 ViewBag.varietyId = new SelectList(db.Varieties, "varietyId", "FullDescription");
+                //ViewBag.assignedToId = new SelectList(db.Users, "userId", "FullName", tblactivity.userId);
                 ViewBag.quality = listQuality(tblactivity.quality);
                 return View(tblactivity);
             }
@@ -414,6 +431,154 @@ namespace YHRSys.Controllers
             }
         }
 
+
+        // GET: /ActivityAssignment/Delete/5
+        [Authorize(Roles = "Admin, CanDeleteActivity, Activity")]
+        public ActionResult DeleteAssignee(long? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ActivityAssignment tblactivityassignment = db.ActivityAssignments.Find(id);
+            if (tblactivityassignment == null)
+            {
+                return HttpNotFound();
+            }
+            return View(tblactivityassignment);
+        }
+
+        // POST: /LocationUser/Delete/5
+        [HttpPost, ActionName("DeleteAssignee")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, CanDeleteActivity, Activity")]
+        public ActionResult DeleteAssigneeConfirmed(long id, long activityId)
+        {
+            ActivityAssignment tblactivityassignment = db.ActivityAssignments.Find(id);
+            db.ActivityAssignments.Remove(tblactivityassignment);
+            db.SaveChanges();
+            return RedirectToAction("Details", new { id = activityId });
+        }
+
+        // POST: /LocationUser/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, CanAddActivity, Activity")]
+        public ActionResult AddAssignee([Bind(Include = "activityId,userId,todo")] ActivityAssignment tblactivityassignment)
+        {
+            if (ModelState.IsValid)
+            {
+                var activityassignment = db.ActivityAssignments.FirstOrDefault(p => p.userId == tblactivityassignment.userId
+                    && p.activityId == tblactivityassignment.activityId
+                    && p.todo == tblactivityassignment.todo);
+                if (activityassignment == null)
+                {
+                    var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                    var currentUser = manager.FindById(User.Identity.GetUserId());
+
+                    if (currentUser != null)
+                        tblactivityassignment.createdBy = currentUser.UserName;
+                    else
+                        tblactivityassignment.createdBy = User.Identity.Name;
+
+                    tblactivityassignment.createdDate = DateTime.Now;
+
+                    db.ActivityAssignments.Add(tblactivityassignment);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    var user = db.ActivityAssignments.SingleOrDefault(p => p.userId == tblactivityassignment.userId);
+                    ModelState.AddModelError(string.Empty, "Activity already assigned to user: " + user.AssigneeFullName + " and activity: " + tblactivityassignment.activity.activityDefinition.name);
+                    ViewBag.userId = new SelectList(db.Users, "Id", "FullName");
+                    //return View(tbllocationsubordinate);
+                }
+
+                return RedirectToAction("Details", new { id = tblactivityassignment.activityId });
+            }
+
+            ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblactivityassignment.userId);
+            return RedirectToAction("Details", new { id = tblactivityassignment.activityId });
+        }
+
+        // GET: /Activity/EditAssignment/5
+        [Authorize(Roles = "Admin, CanEditActivity, Activity")]
+        public ActionResult EditAssignee(long? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ActivityAssignment tblactivityassignment = db.ActivityAssignments.Find(id);
+            if (tblactivityassignment == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblactivityassignment.userId);
+            return View(tblactivityassignment);
+        }
+
+        // POST: /Activity/EditAssignment/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, CanEditActivity, Activity")]
+        public ActionResult EditAssignee([Bind(Include = "assignmentId,activityId,userId,todo")] ActivityAssignment tblactivityassignment)
+        {
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var currentUser = manager.FindById(User.Identity.GetUserId());
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    //db.Entry(tbllocationuser).State = EntityState.Modified;
+                    var activityassignment = db.ActivityAssignments.Where(c => c.assignmentId == tblactivityassignment.assignmentId).FirstOrDefault();
+                    activityassignment.userId = tblactivityassignment.userId;
+                    activityassignment.todo = tblactivityassignment.todo;
+                    if (currentUser != null)
+                        activityassignment.updatedBy = currentUser.UserName;
+                    else
+                        activityassignment.updatedBy = User.Identity.Name;
+
+                    activityassignment.updatedDate = DateTime.Now;
+                    db.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException ex)
+                {
+                    var entry = ex.Entries.Single();
+                    var databaseValues = (ActivityAssignment)entry.GetDatabaseValues().ToObject();
+                    var clientValues = (ActivityAssignment)entry.Entity;
+                    if (databaseValues.activity.activityDefinition.name != clientValues.activity.activityDefinition.name)
+                        ModelState.AddModelError("Activity", "Current value: " + databaseValues.activity.activityDefinition.name);
+                    if (databaseValues.AssigneeFullName != clientValues.AssigneeFullName)
+                        ModelState.AddModelError("Activity Assignee", "Current value: " + databaseValues.AssigneeFullName);
+
+                    ModelState.AddModelError(string.Empty, "The record you attempted to edit "
+                      + "was modified by another user after you got the original value. The "
+                      + "edit operation was canceled and the current values in the database "
+                      + "have been displayed. If you still want to edit this record, click "
+                      + "the Save button again. Otherwise click the Back to List hyperlink.");
+
+                    tblactivityassignment.Timestamp = databaseValues.Timestamp;
+                    ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblactivityassignment.userId);
+                    return View();
+                }
+                catch (Exception e)
+                {
+                    ModelState.AddModelError(string.Empty, e.Message);
+                    ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblactivityassignment.userId);
+                    return View();
+                }
+                return RedirectToAction("Details", new { id = tblactivityassignment.activityId });
+            }
+            ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblactivityassignment.userId);
+            return View(tblactivityassignment);
+        }
 
         protected override void Dispose(bool disposing)
         {

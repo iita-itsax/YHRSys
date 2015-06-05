@@ -1,0 +1,56 @@
+﻿@model YHRSys.Models.LocationSubordinate
+
+@{
+    ViewBag.Title = "Delete Subordinate";
+}
+
+<h2>Delete Subordinate</h2>
+
+<h3>Are you sure you want to delete this subordinate?</h3>
+    <div>
+        <h4>Location Subordinate</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.locationUser.userId)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.locationUser.FullName)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.subordinateId)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.SubordinateFullName)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.status)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.status)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.workBrief)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.workBrief)
+            </dd>
+    
+        </dl>
+    
+        @using (Html.BeginForm()) {
+            @Html.AntiForgeryToken()
+            @Html.Hidden("locationUserId", Model.locationUserId )
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete Subordinate" class="btn btn-default" /> |
+                @Html.ActionLink("Back to Details", "Details", new { id=Model.locationUser.locationUserId})
+            </div>
+        }
+    </div>

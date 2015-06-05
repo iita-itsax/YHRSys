@@ -8,6 +8,7 @@ namespace YHRSys.Models
     public class CustomPartnerActivities
     {
         public String PartnerName { set; get; }
+        public String GiverName { set; get; }
         public String ReagentName { set; get; }
         public Decimal ReagentQty { set; get; }
         public String OiCFullName { set; get; }
@@ -19,5 +20,7 @@ namespace YHRSys.Models
         public Decimal TIPA { set; get; }
         public Decimal TA { set; get; }
         public String ActivityDate { set; get; }
+        public Decimal SA { set; get; }
+        public Decimal SG { set; get; }
     }
 }

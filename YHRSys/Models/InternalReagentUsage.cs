@@ -37,6 +37,9 @@ namespace YHRSys.Models
         [DisplayName("DispatchedBy")]
         public string userId { get; set; }
 
+        [DisplayName("ReceivedBy")]
+        public string receivedBy { get; set; }
+
         [DisplayName("Note"), Required]
         public string note { get; set; }
 

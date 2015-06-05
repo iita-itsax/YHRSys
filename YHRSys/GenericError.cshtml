@@ -1,0 +1,6 @@
+﻿@using System.Diagnostics
+@Model System.Web.Mvc.HandleErrorInfo
+
+    @Html.ValidationMessage("Error")
+@Html.Raw(Model.Exception.InnerException.Message)
+

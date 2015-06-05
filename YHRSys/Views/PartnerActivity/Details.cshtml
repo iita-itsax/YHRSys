@@ -19,6 +19,14 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.giverId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.giver.name)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.reagentId)
         </dt>
 
@@ -83,6 +91,14 @@
         </dd>
 
         <dt>
+            Seeds Given
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.seedsGiven)
+        </dd>
+
+        <dt>
             TC Plantlets Available
         </dt>
 
@@ -104,6 +120,14 @@
 
         <dd>
             @Html.DisplayFor(model => model.tubersAvailable)
+        </dd>
+
+        <dt>
+            Seeds Available
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.seedsAvailable)
         </dd>
 
         <dt>

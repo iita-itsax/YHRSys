@@ -29,7 +29,10 @@ namespace YHRSys.Models
         public virtual IDbSet<Species> Species { get; set; }
         public virtual IDbSet<VarietyDefinition> VarietyDefinitions { get; set; }
         public virtual IDbSet<InternalReagentUsage> InternalReagentUsages { get; set; }
-
+        public virtual IDbSet<ActivityAssignment> ActivityAssignments { get; set; }
+        public virtual IDbSet<LocationSubordinate> LocationSubordinates { get; set; }
+        public virtual IDbSet<WeeklyActivityLog> WeeklyActivityLogs { get; set; }
+        public virtual IDbSet<SiteContent> SiteContents { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection")

@@ -41,6 +41,7 @@ namespace YHRSys.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.userSubordinateId = new SelectList(db.Users, "Id", "FullName");
             return View(tbllocationuser);
         }
 
@@ -203,6 +204,155 @@ namespace YHRSys.Controllers
             db.LocationUsers.Remove(tbllocationuser);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        // GET: /LocationSubordinate/Delete/5
+        [Authorize(Roles = "Admin, CanDeleteLocationUser, LocationUser")]
+        public ActionResult DeleteSubordinate(long? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            LocationSubordinate tbllocationsubordinate = db.LocationSubordinates.Find(id);
+            if (tbllocationsubordinate == null)
+            {
+                return HttpNotFound();
+            }
+            return View(tbllocationsubordinate);
+        }
+
+        // POST: /LocationUser/Delete/5
+        [HttpPost, ActionName("DeleteSubordinate")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, CanDeleteLocationUser, LocationUser")]
+        public ActionResult DeleteSubordinateConfirmed(long id, long locationUserId)
+        {
+            LocationSubordinate tbllocationuser = db.LocationSubordinates.Find(id);
+            db.LocationSubordinates.Remove(tbllocationuser);
+            db.SaveChanges();
+            return RedirectToAction("Details", new { id = locationUserId });
+        }
+
+        // POST: /LocationUser/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, CanAddLocationUser, LocationUser")]
+        public ActionResult AddSubordinate([Bind(Include = "locationUserId,userSubordinateId,status,workBrief")] LocationSubordinate tbllocationsubordinate)
+        {
+            if (ModelState.IsValid)
+            {
+                var locsubordinate = db.LocationSubordinates.FirstOrDefault(p => p.userSubordinateId == tbllocationsubordinate.userSubordinateId
+                    && p.locationUserId == tbllocationsubordinate.locationUserId
+                    && p.status == tbllocationsubordinate.status && p.workBrief == tbllocationsubordinate.workBrief);
+                if (locsubordinate == null)
+                {
+                    var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                    var currentUser = manager.FindById(User.Identity.GetUserId());
+
+                   if (currentUser != null)
+                        tbllocationsubordinate.createdBy = currentUser.UserName;
+                    else
+                        tbllocationsubordinate.createdBy = User.Identity.Name;
+
+                    tbllocationsubordinate.createdDate = DateTime.Now;
+
+                    db.LocationSubordinates.Add(tbllocationsubordinate);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    var user = db.LocationSubordinates.SingleOrDefault(p => p.userSubordinateId == tbllocationsubordinate.userSubordinateId);
+                    ModelState.AddModelError(string.Empty, "Location user already registered for user: " + user.SubordinateFullName + " and location: " + tbllocationsubordinate.locationUser.location.name);
+                    ViewBag.userSubordinateId = new SelectList(db.Users, "Id", "FullName");
+                    //return View(tbllocationsubordinate);
+                }
+
+                return RedirectToAction("Details", new { id = tbllocationsubordinate.locationUserId });
+            }
+
+            ViewBag.userSubordinateId = new SelectList(db.Users, "Id", "FullName", tbllocationsubordinate.userSubordinateId);
+            return RedirectToAction("Details", new { id = tbllocationsubordinate.locationUserId });
+        }
+
+        // GET: /LocationUser/Edit/5
+        [Authorize(Roles = "Admin, CanEditLocationUser, LocationUser")]
+        public ActionResult EditSubordinate(long? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            LocationSubordinate tbllocationsubordinate = db.LocationSubordinates.Find(id);
+            if (tbllocationsubordinate == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.userSubordinateId = new SelectList(db.Users, "Id", "FullName", tbllocationsubordinate.userSubordinateId);
+            return View(tbllocationsubordinate);
+        }
+
+        // POST: /LocationUser/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, CanEditLocationUser, LocationUser")]
+        public ActionResult EditSubordinate([Bind(Include = "subordinateId,locationUserId,userSubordinateId,status,workBrief")] LocationSubordinate tbllocationsubordinate)
+        {
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var currentUser = manager.FindById(User.Identity.GetUserId());
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    //db.Entry(tbllocationuser).State = EntityState.Modified;
+                    var locsubord = db.LocationSubordinates.Where(c => c.subordinateId == tbllocationsubordinate.subordinateId).FirstOrDefault();
+                    locsubord.userSubordinateId = tbllocationsubordinate.userSubordinateId;
+                    locsubord.status = tbllocationsubordinate.status;
+                    locsubord.workBrief = tbllocationsubordinate.workBrief;
+                    if (currentUser != null)
+                        locsubord.updatedBy = currentUser.UserName;
+                    else
+                        locsubord.updatedBy = User.Identity.Name;
+
+                    locsubord.updatedDate = DateTime.Now;
+                    db.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException ex)
+                {
+                    var entry = ex.Entries.Single();
+                    var databaseValues = (LocationSubordinate)entry.GetDatabaseValues().ToObject();
+                    var clientValues = (LocationSubordinate)entry.Entity;
+                    if (databaseValues.locationUser.location.name != clientValues.locationUser.location.name)
+                        ModelState.AddModelError("Location", "Current value: " + databaseValues.locationUser.location.name);
+                    if (databaseValues.SubordinateFullName != clientValues.SubordinateFullName)
+                        ModelState.AddModelError("Loc. Subordinate", "Current value: " + databaseValues.SubordinateFullName);
+
+                    ModelState.AddModelError(string.Empty, "The record you attempted to edit "
+                      + "was modified by another user after you got the original value. The "
+                      + "edit operation was canceled and the current values in the database "
+                      + "have been displayed. If you still want to edit this record, click "
+                      + "the Save button again. Otherwise click the Back to List hyperlink.");
+
+                    tbllocationsubordinate.Timestamp = databaseValues.Timestamp;
+                    ViewBag.userSubordinateId = new SelectList(db.Users, "Id", "FullName", tbllocationsubordinate.userSubordinateId);
+                    return View();
+                }
+                catch (Exception e)
+                {
+                    ModelState.AddModelError(string.Empty, e.Message);
+                    ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tbllocationsubordinate.userSubordinateId);
+                    return View();
+                }
+                return RedirectToAction("Details", new { id = tbllocationsubordinate.locationUserId});
+            }
+            ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tbllocationsubordinate.userSubordinateId);
+            return View(tbllocationsubordinate);
         }
 
         protected override void Dispose(bool disposing)

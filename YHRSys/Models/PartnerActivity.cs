@@ -15,8 +15,12 @@ namespace YHRSys.Models
         [Key]
         public int partnerActivityId { get; set; }
 
-        [DisplayName("Partner"), Required]
+        [DisplayName("Partner")]
         public int partnerId { get; set; }
+
+        [DisplayName("Giver")]
+        [DefaultValue(DEFAULT_VALUE)]
+        public int giverId { get; set; }
 
         [DisplayName("Reagent")]
         public Nullable<int> reagentId { get; set; }
@@ -67,6 +71,18 @@ namespace YHRSys.Models
         [Range(0, (int)Int32.MaxValue, ErrorMessage = "Tubers available must be greater than zero.")]
         public Nullable<int> tubersAvailable { get; set; }
 
+        [DefaultValue(DEFAULT_VALUE)]
+        //[DisplayName("Seeds available")]
+        [DisplayName("SA")]
+        [Range(0, (int)Int32.MaxValue, ErrorMessage = "Seed available must be greater than zero.")]
+        public Nullable<int> seedsAvailable { get; set; }
+
+        [DefaultValue(DEFAULT_VALUE)]
+        //[DisplayName("Seeds given")]
+        [DisplayName("SG")]
+        [Range(0, (int)Int32.MaxValue, ErrorMessage = "Seed given must be greater than zero.")]
+        public Nullable<int> seedsGiven { get; set; }
+
         //This property line is for the user that is in-charge of this partner activity
         //[DisplayName("Officer-In-Charge")]
         [ForeignKey("userId")]
@@ -81,6 +97,9 @@ namespace YHRSys.Models
 
         [ForeignKey("partnerId")]
         public virtual Partner partner { get; set; }
+
+        [ForeignKey("giverId")]
+        public virtual Partner giver { get; set; }
 
         [NotMapped]
         [DisplayName("OiC")]

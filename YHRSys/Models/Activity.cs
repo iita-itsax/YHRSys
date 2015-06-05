@@ -8,10 +8,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace YHRSys.Models
 {
+    public enum ACTIVITYSTATUS
+    {
+        NEW, ASSIGNED, PENDING, COMPLETED, UNFINISHED
+    }
+
     public partial class Activity : BaseEntity
     {
         public Activity()
         {
+            this.activityAssignments = new HashSet<ActivityAssignment>();
         }
         private const int DEFAULT_VALUE = 0;
 
@@ -52,6 +58,9 @@ namespace YHRSys.Models
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> activityDate { get; set; }
 
+        [DisplayName("Status")]
+        public ACTIVITYSTATUS status { get; set; }
+
         [ForeignKey("varietyId")]
         public virtual Variety variety { get; set; }
         
@@ -66,5 +75,7 @@ namespace YHRSys.Models
 
         [ForeignKey("userId")]
         public virtual ApplicationUser user { get; set; }
+
+        public virtual ICollection<ActivityAssignment> activityAssignments { get; set; }
     }
 }
