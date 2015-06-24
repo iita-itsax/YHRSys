@@ -1,0 +1,133 @@
+﻿@model PagedList.IPagedList<YHRSys.Models.VarietyProcessFlow>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Variety Process Flow";
+}
+
+<h2>Variety Process Flow</h2>
+@{
+    if (ViewBag.Message != null)
+    {
+        <div class="bs-component">
+            <div class="alert alert-dismissible alert-danger">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <h4>Warning!</h4>
+                <p>@Html.Raw(ViewBag.Message)</p>
+            </div>
+        </div>
+    }
+}
+<p>
+    @Html.ActionLink("Create New", "Create")
+
+    @using (Html.BeginForm("Index", "VarietyProcessFlow", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+    {
+        <div class="form-group">
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control input-mini", placeholder = "Search phrase goes here ..." })
+        </div>;
+        <div class="form-group">
+            @Html.TextBox("SearchStartProcessDate", ViewBag.StartProcessDateFilter as string, new { @class = "form-control datecontrol input-mini", placeholder = "Process date start range .." })
+        </div>;
+        <div class="form-group">
+            @Html.TextBox("SearchEndProcessDate", ViewBag.EndProcessDateFilter as string, new { @class = "form-control datecontrol input-mini", placeholder = "Process date end range ..." })
+        </div>;
+        <button class="btn btn-primary" type="submit">Search!</button> <button class="btn btn-success" type="button" onclick="clearForm();">Clear!</button>
+
+<div class="table-responsive">
+    <table class="table">
+        @if (Model.PageCount > 0) {
+        <tr>
+            <th>
+                @Html.ActionLink("Variety", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Form", "Index", new { sortOrder = ViewBag.FormSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Process Date", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Officer-In-Charge", "Index", new { sortOrder = ViewBag.OiCNameSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Rank", "Index", new { sortOrder = ViewBag.RankSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Barcode", "Index", new { sortOrder = ViewBag.BarcodeSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                Description
+            </th>
+            <th></th>
+        </tr>
+        }
+        else
+        {
+            <tr>
+                <td colspan="8">
+                    <em>No records found!</em>
+                </td>
+            </tr>
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.variety.varietyDefinition.name) - @Html.DisplayFor(modelItem => item.variety.sampleNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.form)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.processDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.user.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.rank)
+                </td>
+                <td>
+                    @if (item.barcodeImageUrl != null)
+                    {
+                        var imageUrl = Convert.ToBase64String((byte[])item.barcodeImageUrl);
+                        <img src="data:image/jpg;base64,@imageUrl" />
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.description)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.processId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.processId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.processId })
+                </td>
+            </tr>
+        }
+        <tr>
+            <td colspan="8">
+                <div class="form-group">
+                    @Html.DropDownList("labeltype", new SelectListItem[]{
+                        new SelectListItem() {Text = "Barcode 25mm x 13mm", Value="Barcode25x13mm"},
+                        new SelectListItem() {Text = "Barcode 51mm x 19mm", Value="Barcode51x19mm"},
+                        new SelectListItem() {Text = "Select Label Type", Value=""}}, new { @class = "form-control" })
+                    @Html.TextBox("copies", ViewBag.CurrentFilter as string, new { @class = "form-control input-mini", placeholder = "No. of Barcode Label Copies ...", pattern = "\\d*" })
+                </div>
+                <!--<input class="btn btn-success" type="submit" id="printButton1" name="btnSubmit" value="Print Labels!" onclick="return confirm('Print labels anyway?');" />-->
+                <input class="btn btn-success" type="button" id="printButton2" name="btnSubmit" value="Print Labels!" onclick="if (confirm('Print labels anyway?')) { printLocally(); }" />
+            </td>
+        </tr>
+
+    </table>
+    <br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+                new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter }))
+
+</div>
+        }
+</p>
+<script src="~/Scripts/DYMO.Label.Framework.1.2.6.latest.js"></script>
+<script src="~/Scripts/labels.js"></script>

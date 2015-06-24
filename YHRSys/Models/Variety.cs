@@ -11,6 +11,8 @@ namespace YHRSys.Models
 {
     public partial class Variety : BaseEntity
     {
+        private const int DEFAULT_VALUE = 0;
+
         public Variety()
         {
             this.varietyProcessFlows = new HashSet<VarietyProcessFlow>();
@@ -68,6 +70,19 @@ namespace YHRSys.Models
         [DisplayName("Location")]
         public Nullable<int> locationId { get; set; }
 
+        [DisplayName("Available Quantity"), Required]
+        [DefaultValue(DEFAULT_VALUE)]
+        [Range(0, (int)Int32.MaxValue, ErrorMessage = "Available qantity must be greater than zero.")]
+        public int availableQuantity { get; set; }
+
+        [DisplayName("Total Weight"), Required]
+        [DefaultValue(DEFAULT_VALUE)]
+        [Range(0, (int)Int32.MaxValue, ErrorMessage = "Total weight must be greater than zero.")]
+        public int totalWeight { get; set; }
+
+        [DisplayName("UoM")]
+        public Nullable<int> uomId { get; set; }
+
         [ForeignKey("locationId")]
         public virtual Location location { get; set; }
         
@@ -83,6 +98,9 @@ namespace YHRSys.Models
         public virtual ICollection<VarietyProcessFlow> varietyProcessFlows { get; set; }
 
         public virtual ICollection<Activity> activities { get; set; }
+
+        [ForeignKey("uomId")]
+        public virtual Measurements uoms { get; set; }
 
         [NotMapped]
         public string FullName

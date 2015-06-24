@@ -1,0 +1,292 @@
+﻿@model YHRSys.Models.Reagent
+
+@{
+    ViewBag.Title = "Internal Item Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Internal Item</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.measurementId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.measurements.name) (@Html.DisplayFor(model => model.measurements.uom))
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.reOrderLevel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.reOrderLevel)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.extendCreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.createdDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.extendUpdatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updatedDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.reagentId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+@if(Model.inventories.Count()>0){
+    <div class="table-responsive">
+        <h2>Related Inventories</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    Reagent
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Stock Date
+                </th>
+                <th>
+                    PurchasedBy
+                </th>
+                <th>
+                    Stock Note
+                </th>
+                <th>
+                    CreatedBy
+                </th>
+                <th>
+                    CreatedOn
+                </th>
+            </tr>
+            @foreach (var item in Model.inventories)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.reagent.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.stockDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.user.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.note)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.extendCreatedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.createdDate)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+@if (Model.partnerActivities.Count()>0) { 
+    <div class="table-responsive">
+        <h2>Related Partner Activities</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    Partner
+                </th>
+
+                <th>
+                    Reagent
+                </th>
+                <th>
+                   Reag. Qty
+                </th>
+                <th>
+                    Officer-in-Charge
+                </th>
+                <th>
+                    Acty Date
+                </th>
+                <th>
+                    BackStopping
+                </th>
+                <th>
+                    <span title="TC Plantlets Given">TCPG</span>
+                </th>
+                <th>
+                    <span title="Bioreactor Plants Given">BioRPG</span>
+                </th>
+                <th>
+                    <span title="Tubers Given">TG</span>
+                </th>
+                <th>
+                    <span title="TC Plantlets Available">TCPA</span>
+                </th>
+                <th>
+                    <span title="TI Plantlets Available">TIPA</span>
+                </th>
+                <th>
+                    <span title="Tubers Available">TA</span>
+                </th>
+            </tr>
+            @foreach (var item in Model.partnerActivities)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.partner.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.reagent.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.reagentQty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.oic.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.activityDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.backStopping)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tcPlantletsGiven)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.bioreactorplantsGiven)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tubersGiven)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tcPlantletsAvailable)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tibPlantletsAvailable)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tubersAvailable)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+@if (Model.internalReagentUsages.Count() > 0)
+{
+    <div class="table-responsive">
+    <h2>Related Internal Reagent Usages</h2>
+    <table class="table">
+        <tr>
+            <th>
+                Reagent
+            </th>
+            <th>
+                Quanity
+            </th>
+            <th>
+                Dispatch Date
+            </th>
+            <th>
+                DispatchedBy
+            </th>
+            <th>
+                Stock Note
+            </th>
+            <th>
+                CreatedBy
+            </th>
+            <th>
+                CreatedOn
+            </th>
+        </tr>
+        @foreach (var item in Model.internalReagentUsages)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.reagent.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dispatchDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.user.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.note)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.extendCreatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.createdDate)
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+}

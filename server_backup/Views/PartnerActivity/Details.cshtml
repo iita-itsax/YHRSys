@@ -1,0 +1,170 @@
+﻿@model YHRSys.Models.PartnerActivity
+
+@{
+    ViewBag.Title = "Partner Activity Details";
+}
+
+<h2>Partner Activity Details</h2>
+
+<div>
+    <h4>Partner Activity</h4>
+	<hr />
+    <dl class="dl-horizontal-wider">
+        <dt>
+            @Html.DisplayNameFor(model => model.partnerId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.partner.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.giverId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.giver.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.reagentId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.reagent.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.reagentQty)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.reagentQty)
+        </dd>
+
+        <dt>
+            Officer-in-Charge
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OiCFullName)
+        </dd>
+
+        <dt>
+            Activity Date
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.activityDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.backStopping)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.backStopping)
+        </dd>
+
+        <dt>
+            TC Plantlets Given
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tcPlantletsGiven)
+        </dd>
+
+        <dt>
+            Bioreactor Plants Given
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.bioreactorplantsGiven)
+        </dd>
+
+        <dt>
+            Tubers Given
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tubersGiven)
+        </dd>
+
+        <dt>
+            Seeds Given
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.seedsGiven)
+        </dd>
+
+        <dt>
+            TC Plantlets Available
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tcPlantletsAvailable)
+        </dd>
+
+        <dt>
+            TIB Plantlets Available
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tibPlantletsAvailable)
+        </dd>
+
+        <dt>
+            Tubers Available
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tubersAvailable)
+        </dd>
+
+        <dt>
+            Seeds Available
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.seedsAvailable)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.extendCreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.createdDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.extendUpdatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updatedDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.partnerActivityId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

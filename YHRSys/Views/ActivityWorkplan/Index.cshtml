@@ -1,0 +1,102 @@
+﻿@model PagedList.IPagedList<YHRSys.Models.ActivityWorkplan>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Activity Workplans";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Activity Workplans</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+
+    @using (Html.BeginForm("Index", "ActivityWorkplan", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+    {
+        <div class="form-group">
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control input-mini", placeholder = "Search phrase goes here ..." })
+        </div>;
+        <div class="form-group">
+            @Html.TextBox("SearchStartActivityDate", ViewBag.StartActivityDateFilter as string, new { @class = "form-control datecontrol input-mini", placeholder = "Workplan date start range .." })
+        </div>;
+        <div class="form-group">
+            @Html.TextBox("SearchEndActivityDate", ViewBag.EndActivityDateFilter as string, new { @class = "form-control datecontrol input-mini", placeholder = "Workplan date end range ..." })
+        </div>;
+        <button class="btn btn-primary" type="submit">Search!</button> <button class="btn btn-success" type="button" onclick="clearForm();">Clear!</button>
+    }
+</p>
+<div class="table-responsive">
+    <table class="table">
+    @if (Model.PageCount > 0)
+    {
+        <tr>
+            <th>
+                @Html.ActionLink("Objective", "Index", new { sortOrder = ViewBag.ObjectiveSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Performance Indicator", "Index", new { sortOrder = ViewBag.PISortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+
+            <th>
+                @Html.ActionLink("Start Period", "Index", new { sortOrder = ViewBag.StartDateSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                @Html.ActionLink("End Period", "Index", new { sortOrder = ViewBag.EndDateSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                CreatedBy
+            </th>
+            
+            <th>
+                CreatedDate
+            </th>
+            <th></th>
+        </tr>
+        }
+        else
+        {
+        <tr>
+            <td colspan="7">
+                <em>No records found!</em>
+            </td>
+        </tr>
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Objective)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PerformanceIndicator)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartPeriod)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndPeriod)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.extendCreatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.createdDate)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.workplanId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.workplanId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.workplanId })
+                </td>
+            </tr>
+        }
+
+    </table>
+    <br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+                        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter }))
+
+</div>

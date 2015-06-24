@@ -123,6 +123,30 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.availableQuantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.availableQuantity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.totalWeight)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.totalWeight)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.uomId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.uoms.name)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.createdBy)
         </dt>
 
@@ -182,6 +206,9 @@
                     Rank
                 </th>
                 <th>
+                    Quality
+                </th>
+                <th>
                     Barcode
                 </th>
                 <th>
@@ -206,6 +233,9 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.rank)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.quality)
                     </td>
                     <td>
                         @if (item.barcodeImageUrl != null)

@@ -1,0 +1,91 @@
+﻿@model PagedList.IPagedList<YHRSys.Models.ActivityAchievement>
+@using PagedList.Mvc;
+
+    @{
+        ViewBag.Title = "Activity Achievements";
+    }
+
+    <h2>Activity Achievements</h2>
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+
+        @using (Html.BeginForm("Index", "ActivityAchievement", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+        {
+            <div class="form-group">
+                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control input-mini", placeholder = "Search phrase goes here ..." })
+            </div>;
+            <div class="form-group">
+                @Html.TextBox("SearchStartActivityDate", ViewBag.StartActivityDateFilter as string, new { @class = "form-control datecontrol input-mini", placeholder = "Achievement date start range .." })
+            </div>;
+            <div class="form-group">
+                @Html.TextBox("SearchEndActivityDate", ViewBag.EndActivityDateFilter as string, new { @class = "form-control datecontrol input-mini", placeholder = "Achievement date end range ..." })
+            </div>;
+            <button class="btn btn-primary" type="submit">Search!</button> <button class="btn btn-success" type="button" onclick="clearForm();">Clear!</button>
+        }
+    </p>
+    <div class="table-responsive">
+        <table class="table">
+        @if (Model.PageCount > 0)
+        {
+            <tr>
+                <th>
+                    @Html.ActionLink("Weekly Activity Log", "Index", new { sortOrder = ViewBag.ActivityLogSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+                </th>
+                <th>
+                    @Html.ActionLink("Description", "Index", new { sortOrder = ViewBag.DescriptionSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+                </th>
+                <th>
+                    @Html.ActionLink("Achievement Date", "Index", new { sortOrder = ViewBag.AchievementDateSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+                </th>
+                <th>
+                    CreatedBy
+                </th>
+                <th>
+                    CreatedDate
+                </th>
+                <th></th>
+            </tr>
+            }
+            else
+            {
+            <tr>
+                <td colspan="7">
+                    <em>No records found!</em>
+                </td>
+            </tr>
+            }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.WeeklyActivityLog.FullDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.achievementDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.extendCreatedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.createdDate)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.achievementId }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.achievementId }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.achievementId })
+                    </td>
+                </tr>
+            }
+
+        </table>
+        <br />
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+        @Html.PagedListPager(Model, page => Url.Action("Index",
+                        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter }))
+
+    </div>

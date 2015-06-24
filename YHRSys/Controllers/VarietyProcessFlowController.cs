@@ -32,6 +32,17 @@ namespace YHRSys.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
         SelectedValue selVal = new SelectedValue();
 
+        private List<SelectListItem> listQuality(int quality)
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "--Select--", Value = "", Selected = selVal.checkForSelectedValue(0, quality) });
+            items.Add(new SelectListItem { Text = "100%", Value = "100", Selected = selVal.checkForSelectedValue(100, quality) });
+            items.Add(new SelectListItem { Text = "80%", Value = "80", Selected = selVal.checkForSelectedValue(80, quality) });
+            items.Add(new SelectListItem { Text = "60%", Value = "60", Selected = selVal.checkForSelectedValue(60, quality) });
+            items.Add(new SelectListItem { Text = "40%", Value = "40", Selected = selVal.checkForSelectedValue(40, quality) });
+            items.Add(new SelectListItem { Text = "20%", Value = "20", Selected = selVal.checkForSelectedValue(20, quality) });
+            return items;
+        }
         // GET: /VarietyProcessFlow/
         public ActionResult Index(string sortOrder, string currentFilter, string currentStartDateFilter, string currentEndDateFilter, string searchString, DateTime? searchStartProcessDate, DateTime? searchEndProcessDate, int? page, string btnSubmit, string labeltype, long? copies)
         {
@@ -41,6 +52,7 @@ namespace YHRSys.Controllers
             ViewBag.OiCNameSortParm = sortOrder == "OiC" ? "oicname_desc" : "OiC";
             ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
             ViewBag.RankSortParm = sortOrder == "Rank" ? "rank_desc" : "Rank";
+            ViewBag.RankSortParm = sortOrder == "Quality" ? "quality_desc" : "Quality";
             ViewBag.BarcodeSortParm = sortOrder == "Barcode" ? "barcode_desc" : "Barcode";
 
             if (searchString != null)
@@ -160,6 +172,12 @@ namespace YHRSys.Controllers
                 case "Rank":
                     varietyProcessFlow = varietyProcessFlow.OrderBy(rg => rg.rank);
                     break;
+                case "quality_desc":
+                    varietyProcessFlow = varietyProcessFlow.OrderByDescending(rg => rg.quality);
+                    break;
+                case "Quality":
+                    varietyProcessFlow = varietyProcessFlow.OrderBy(rg => rg.quality);
+                    break;
                 case "barcode_desc":
                     varietyProcessFlow = varietyProcessFlow.OrderByDescending(rg => rg.barcode);
                     break;
@@ -251,6 +269,7 @@ namespace YHRSys.Controllers
             ViewBag.userId = new SelectList(db.Users, "Id", "FullName");
             ViewBag.form = listForm(null);
             ViewBag.rank = listRank(null);
+            ViewBag.quality = listQuality(0);
             return View();
         }
 
@@ -260,7 +279,7 @@ namespace YHRSys.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, CanAddVarietyProcessFlow, VarietyProcessFlow")]
-        public ActionResult Create([Bind(Include="varietyId,form,processDate,userId,rank,description")] VarietyProcessFlow tblvarietyprocessflow)
+        public ActionResult Create([Bind(Include="varietyId,form,processDate,userId,rank,description,quality")] VarietyProcessFlow tblvarietyprocessflow)
         {
             if (ModelState.IsValid)
             {
@@ -314,6 +333,7 @@ namespace YHRSys.Controllers
             ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblvarietyprocessflow.userId);
             ViewBag.form = listForm(tblvarietyprocessflow.form);
             ViewBag.rank = listRank(tblvarietyprocessflow.rank);
+            ViewBag.quality = listQuality(tblvarietyprocessflow.quality);
             return View(tblvarietyprocessflow);
         }
 
@@ -341,6 +361,7 @@ namespace YHRSys.Controllers
             ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblvarietyprocessflow.userId);
             ViewBag.form = listForm(tblvarietyprocessflow.form);
             ViewBag.rank = listRank(tblvarietyprocessflow.rank);
+            ViewBag.quality = listQuality(tblvarietyprocessflow.quality);
             ViewBag.barcode = tblvarietyprocessflow.barcodeImageUrl;
             return View(tblvarietyprocessflow);
         }
@@ -351,7 +372,7 @@ namespace YHRSys.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, CanEditVarietyProcessFlow, VarietyProcessFlow")]
-        public ActionResult Edit([Bind(Include="processId,varietyId,form,processDate,userId,rank,description")] VarietyProcessFlow tblvarietyprocessflow)
+        public ActionResult Edit([Bind(Include="processId,varietyId,form,processDate,userId,rank,description,quality")] VarietyProcessFlow tblvarietyprocessflow)
         {
             try
             {
@@ -370,6 +391,7 @@ namespace YHRSys.Controllers
                         act.processDate = tblvarietyprocessflow.processDate;
                         act.userId = tblvarietyprocessflow.userId;
                         act.rank = tblvarietyprocessflow.rank;
+                        act.quality = tblvarietyprocessflow.quality;
                         act.description = tblvarietyprocessflow.description;
 
                         if (currentUser != null)
@@ -406,6 +428,8 @@ namespace YHRSys.Controllers
                             ModelState.AddModelError("Form", "Current value: " + databaseValues.form);
                         if (databaseValues.rank != clientValues.rank)
                             ModelState.AddModelError("Rank", "Current value: " + databaseValues.rank);
+                        if (databaseValues.quality != clientValues.quality)
+                            ModelState.AddModelError("Quality", "Current value: " + databaseValues.quality);
                         if (databaseValues.processDate != clientValues.processDate)
                             ModelState.AddModelError("Process Date", "Current value: " + databaseValues.processDate);
 
@@ -430,6 +454,7 @@ namespace YHRSys.Controllers
                 ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblvarietyprocessflow.userId);
                 ViewBag.form = listForm(tblvarietyprocessflow.form);
                 ViewBag.rank = listRank(tblvarietyprocessflow.rank);
+                ViewBag.quality = listQuality(tblvarietyprocessflow.quality);
                 ViewBag.barcode = tblvarietyprocessflow.barcodeImageUrl;
                 return View(tblvarietyprocessflow);
             }
@@ -447,6 +472,7 @@ namespace YHRSys.Controllers
 
                 ViewBag.form = listForm(tblvarietyprocessflow.form);
                 ViewBag.rank = listRank(tblvarietyprocessflow.rank);
+                ViewBag.quality = listQuality(tblvarietyprocessflow.quality);
                 ViewBag.barcode = tblvarietyprocessflow.barcodeImageUrl;
                 return View();
             }

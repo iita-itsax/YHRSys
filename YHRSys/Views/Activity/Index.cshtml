@@ -21,7 +21,9 @@
         <div class="form-group">
             @Html.TextBox("SearchEndActivityDate", ViewBag.EndActivityDateFilter as string, new { @class = "form-control datecontrol input-mini", placeholder = "Activity date end range ..." })
         </div>;
-        <button class="btn btn-primary" type="submit">Search!</button> <button class="btn btn-success" type="button" onclick="clearForm();">Clear!</button>
+        <input class="btn btn-primary" type="submit" id="searchButton" name="btnSubmit" value="Search!" /> 
+        <button class="btn btn-success" type="button" onclick="clearForm();">Clear!</button>
+        <input class="btn btn-primary" type="submit" id="printButton" name="btnSubmit" value="Export To Excel" />
     }
 </p>
 <div class="table-responsive">

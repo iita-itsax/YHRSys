@@ -59,7 +59,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.releaseStatus, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextAreaFor(model => model.releaseStatus, new { rows=2, columns=40, @class = "form-control" })
+                @Html.DropDownList("releaseStatus", String.Empty)
                 @Html.ValidationMessageFor(model => model.releaseStatus)
             </div>
         </div>
@@ -125,6 +125,30 @@
             <div class="col-md-10">
                 @Html.TextBoxFor(model => model.value, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.value)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.availableQuantity, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.availableQuantity, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.availableQuantity)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.totalWeight, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.totalWeight, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.totalWeight)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.uomId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("measurementId", String.Empty)
+                @Html.ValidationMessageFor(model => model.uomId)
             </div>
         </div>
 

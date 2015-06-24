@@ -15,10 +15,14 @@ namespace YHRSys.Models
 
         public WeeklyActivityLog()
         {
+            this.ActivityAchievements = new HashSet<ActivityAchievement>();
         }
 
         [Key]
         public int activityLogId { get; set; }
+
+        [DisplayName("Activity Workplan")]
+        public int workplanId { get; set; }
 
         [DisplayName("Staff")]
         public string userId { get; set; }
@@ -31,11 +35,20 @@ namespace YHRSys.Models
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> endDate { get; set; }
 
+        [MaxLength]
         [DisplayName("Description")]
         public string description { get; set; }
 
+        [DisplayName("Status")]
+        public string status { get; set; }
+
         [ForeignKey("userId")]
         public virtual ApplicationUser staff { get; set; }
+
+        [ForeignKey("workplanId")]
+        public virtual ActivityWorkplan activityWorkplan { get; set; }
+
+        public ICollection<ActivityAchievement> ActivityAchievements { get; set; }
 
         [NotMapped]
         [DisplayName("OiC")]
@@ -44,6 +57,15 @@ namespace YHRSys.Models
             get
             {
                 return staff.FirstName + " " + staff.LastName;
+            }
+        }
+
+        [NotMapped]
+        public string FullDescription
+        {
+            get
+            {
+                return description + " (" + startDate.Value.ToString("dd/MM/yyyy") + " - " + endDate.Value.ToString("dd/MM/yyyy") +")";
             }
         }
     }

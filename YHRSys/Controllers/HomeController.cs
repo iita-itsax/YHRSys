@@ -100,7 +100,7 @@ namespace YHRSys.Controllers
                                         }).ToList();
 
             StringBuilder sb = new StringBuilder("");
-
+            sb.Append("<li><a href=\"/Home/Index\">Home</a></li>");
             foreach (var menu in menus)
             {
                 if (sb.Length > 0) { 

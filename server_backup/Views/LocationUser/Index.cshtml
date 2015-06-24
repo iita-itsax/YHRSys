@@ -1,0 +1,70 @@
+﻿@model IEnumerable<YHRSys.Models.LocationUser>
+
+@{
+    ViewBag.Title = "Location OiCs";
+}
+
+<h2>List of Location OiCs</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Location
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.userId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.startDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.endDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.createdBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.location.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FullName)
+        </td>
+        <td>
+            @if (item.startDate != null){ @Html.DisplayFor(modelItem => item.startDate)}
+        </td>
+        <td>
+            @if (item.endDate != null)
+{ @Html.DisplayFor(modelItem => item.endDate)}
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.extendCreatedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.createdDate)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.locationUserId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.locationUserId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.locationUserId })
+        </td>
+    </tr>
+}
+
+</table>

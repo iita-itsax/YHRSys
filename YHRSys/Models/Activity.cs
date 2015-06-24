@@ -59,7 +59,7 @@ namespace YHRSys.Models
         public Nullable<System.DateTime> activityDate { get; set; }
 
         [DisplayName("Status")]
-        public ACTIVITYSTATUS status { get; set; }
+        public string status { get; set; }
 
         [ForeignKey("varietyId")]
         public virtual Variety variety { get; set; }
@@ -77,5 +77,6 @@ namespace YHRSys.Models
         public virtual ApplicationUser user { get; set; }
 
         public virtual ICollection<ActivityAssignment> activityAssignments { get; set; }
+        
     }
 }

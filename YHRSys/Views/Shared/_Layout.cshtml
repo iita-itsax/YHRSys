@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />-->
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
     <title>@ViewBag.Title - Yam High Ratio Propagation System</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -65,7 +65,11 @@
                             <li class="divider"></li>
                             <li>@Html.ActionLink("Publish Contents", "Index", "SiteContent")</li>
                             <li class="divider"></li>
-                            <li>@Html.ActionLink("Weekly Activity Logs", "Index", "WeeklyActivityLog")</li>                            
+                            <li>@Html.ActionLink("Activity Workplans", "Index", "ActivityWorkplan")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Weekly Activity Logs", "Index", "WeeklyActivityLog")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Activity Achievements", "Index", "ActivityAchievement")</li>                          
                         </ul>
                     </li>
                     <li class="dropdown">

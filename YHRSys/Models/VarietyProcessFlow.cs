@@ -48,6 +48,11 @@ namespace YHRSys.Models
         [DisplayName("Description")]
         public string description { get; set; }
 
+        [DisplayName("Quality"), Required]
+        [DefaultValue(DEFAULT_VALUE)]
+        [Range(1, 100, ErrorMessage = "Quality must be greater than zero.")]
+        public int quality { get; set; }
+
         [ForeignKey("varietyId")]
         public virtual Variety variety { get; set; }
 

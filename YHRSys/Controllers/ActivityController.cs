@@ -13,6 +13,15 @@ using Microsoft.Owin.Security;
 using System.Security.Claims;
 using DropdownSelect.Models;
 using PagedList;
+using System.Xml;
+using System.Xml.Serialization;
+using System.IO;
+using System.Text;
+
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using Microsoft.Office.Tools;
+using Microsoft.Office.Interop.Excel;
 
 namespace YHRSys.Controllers
 {
@@ -35,156 +44,162 @@ namespace YHRSys.Controllers
         }
 
         // GET: /Activity/
-        public ActionResult Index(string sortOrder, string currentFilter, string currentStartDateFilter, string currentEndDateFilter, string searchString, DateTime? searchStartActivityDate, DateTime? searchEndActivityDate, int? page)
+        public ActionResult Index(string sortOrder, string currentFilter, string currentStartDateFilter, string currentEndDateFilter, string searchString, DateTime? searchStartActivityDate, DateTime? searchEndActivityDate, int? page, string btnSubmit)
         {
-            ViewBag.CurrentSort = sortOrder;
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewBag.LocationSortParm = sortOrder == "Location" ? "location_desc" : "Location";
-            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
-            ViewBag.TypeSortParm = sortOrder == "Type" ? "type_desc" : "Type";
-            ViewBag.VarietySortParm = sortOrder == "Variety" ? "variety_desc" : "Variety";
-            ViewBag.QualitySortParm = sortOrder == "Quality" ? "quality_desc" : "Quality";
-            ViewBag.QuantitySortParm = sortOrder == "Quantity" ? "quantity_desc" : "Quantity";
-            ViewBag.StatusSortParm = sortOrder == "Status" ? "status_desc" : "Status";
-
-            if (searchString != null)
+            switch (btnSubmit)
             {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
+                case "Export To Excel":
+                    return ExportActivity(searchString, searchStartActivityDate, searchEndActivityDate);
+                default:
+                    ViewBag.CurrentSort = sortOrder;
+                    ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+                    ViewBag.LocationSortParm = sortOrder == "Location" ? "location_desc" : "Location";
+                    ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+                    ViewBag.TypeSortParm = sortOrder == "Type" ? "type_desc" : "Type";
+                    ViewBag.VarietySortParm = sortOrder == "Variety" ? "variety_desc" : "Variety";
+                    ViewBag.QualitySortParm = sortOrder == "Quality" ? "quality_desc" : "Quality";
+                    ViewBag.QuantitySortParm = sortOrder == "Quantity" ? "quantity_desc" : "Quantity";
+                    ViewBag.StatusSortParm = sortOrder == "Status" ? "status_desc" : "Status";
 
-            ViewBag.CurrentFilter = searchString;
+                    if (searchString != null)
+                    {
+                        page = 1;
+                    }
+                    else
+                    {
+                        searchString = currentFilter;
+                    }
 
-            if (searchStartActivityDate != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                if (currentStartDateFilter != null)
-                    searchStartActivityDate = DateTime.Parse(currentStartDateFilter.ToString());
-            }
-            ViewBag.CurrentStartDateFilter = searchStartActivityDate;
+                    ViewBag.CurrentFilter = searchString;
 
-            if (searchEndActivityDate != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                if (currentEndDateFilter != null)
-                    searchEndActivityDate = DateTime.Parse(currentEndDateFilter.ToString());
-            }
-            ViewBag.CurrentEndDateFilter = searchEndActivityDate;
+                    if (searchStartActivityDate != null)
+                    {
+                        page = 1;
+                    }
+                    else
+                    {
+                        if (currentStartDateFilter != null)
+                            searchStartActivityDate = DateTime.Parse(currentStartDateFilter.ToString());
+                    }
+                    ViewBag.CurrentStartDateFilter = searchStartActivityDate;
 
-            if (searchStartActivityDate != null)
-                searchStartActivityDate = DateTime.Parse(searchStartActivityDate.ToString());
-            if (searchEndActivityDate != null)
-                searchEndActivityDate = DateTime.Parse(searchEndActivityDate.ToString());
+                    if (searchEndActivityDate != null)
+                    {
+                        page = 1;
+                    }
+                    else
+                    {
+                        if (currentEndDateFilter != null)
+                            searchEndActivityDate = DateTime.Parse(currentEndDateFilter.ToString());
+                    }
+                    ViewBag.CurrentEndDateFilter = searchEndActivityDate;
 
-            var activities = from r in db.Activities select r;
+                    if (searchStartActivityDate != null)
+                        searchStartActivityDate = DateTime.Parse(searchStartActivityDate.ToString());
+                    if (searchEndActivityDate != null)
+                        searchEndActivityDate = DateTime.Parse(searchEndActivityDate.ToString());
 
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                if (searchStartActivityDate != null && searchEndActivityDate != null)
-                {
-                    activities = activities.Where(rg => (rg.variety.varietyDefinition.name.Contains(searchString)
-                                       || rg.activityDefinition.name.Contains(searchString) || rg.mediumPrepType.typename.Contains(searchString) || rg.status.Equals(searchString)
-                                          || rg.location.name.Contains(searchString) || rg.description.Contains(searchString)) && (rg.activityDate >= (DateTime)searchStartActivityDate && rg.activityDate <= (DateTime)searchEndActivityDate));
-                }
-                else if (searchStartActivityDate != null)
-                {
-                    activities = activities.Where(rg => (rg.variety.varietyDefinition.name.Contains(searchString)
-                                          || rg.activityDefinition.name.Contains(searchString) || rg.mediumPrepType.typename.Contains(searchString) || rg.status.Equals(searchString)
-                                          || rg.location.name.Contains(searchString) || rg.description.Contains(searchString)) && (rg.activityDate == (DateTime)searchStartActivityDate));
-                }
-                else if (searchEndActivityDate != null)
-                {
-                    activities = activities.Where(rg => (rg.variety.varietyDefinition.name.Contains(searchString)
-                                          || rg.activityDefinition.name.Contains(searchString) || rg.mediumPrepType.typename.Contains(searchString) || rg.status.Equals(searchString)
-                                          || rg.location.name.Contains(searchString) || rg.description.Contains(searchString)) && (rg.activityDate == (DateTime)searchEndActivityDate));
-                }
-                else
-                {
-                    activities = activities.Where(rg => rg.variety.varietyDefinition.name.Contains(searchString)
-                                          || rg.activityDefinition.name.Contains(searchString) || rg.mediumPrepType.typename.Contains(searchString) || rg.status.Equals(searchString)
-                                          || rg.location.name.Contains(searchString) || rg.description.Contains(searchString));
-                }
+                    var activities = from r in db.Activities select r;
+
+                    if (!String.IsNullOrEmpty(searchString))
+                    {
+                        if (searchStartActivityDate != null && searchEndActivityDate != null)
+                        {
+                            activities = activities.Where(rg => (rg.variety.varietyDefinition.name.Contains(searchString)
+                                               || rg.activityDefinition.name.Contains(searchString) || rg.mediumPrepType.typename.Contains(searchString) || rg.status.Contains(searchString)
+                                                  || rg.location.name.Contains(searchString) || rg.description.Contains(searchString)) && (rg.activityDate >= (DateTime)searchStartActivityDate && rg.activityDate <= (DateTime)searchEndActivityDate));
+                        }
+                        else if (searchStartActivityDate != null)
+                        {
+                            activities = activities.Where(rg => (rg.variety.varietyDefinition.name.Contains(searchString)
+                                                  || rg.activityDefinition.name.Contains(searchString) || rg.mediumPrepType.typename.Contains(searchString) || rg.status.Contains(searchString)
+                                                  || rg.location.name.Contains(searchString) || rg.description.Contains(searchString)) && (rg.activityDate == (DateTime)searchStartActivityDate));
+                        }
+                        else if (searchEndActivityDate != null)
+                        {
+                            activities = activities.Where(rg => (rg.variety.varietyDefinition.name.Contains(searchString)
+                                                  || rg.activityDefinition.name.Contains(searchString) || rg.mediumPrepType.typename.Contains(searchString) || rg.status.Contains(searchString)
+                                                  || rg.location.name.Contains(searchString) || rg.description.Contains(searchString)) && (rg.activityDate == (DateTime)searchEndActivityDate));
+                        }
+                        else
+                        {
+                            activities = activities.Where(rg => rg.variety.varietyDefinition.name.Contains(searchString)
+                                                   || rg.activityDefinition.name.Contains(searchString) || rg.mediumPrepType.typename.Contains(searchString) || rg.status.Contains(searchString)
+                                                   || rg.location.name.Contains(searchString) || rg.description.Contains(searchString));
+                        }
+                    }
+                    else
+                    {
+                        if (searchStartActivityDate != null && searchEndActivityDate != null)
+                        {
+                            activities = activities.Where(rg => (rg.activityDate >= (DateTime)searchStartActivityDate && rg.activityDate <= (DateTime)searchEndActivityDate));
+                        }
+                        else if (searchStartActivityDate != null)
+                        {
+                            activities = activities.Where(rg => rg.activityDate == (DateTime)searchStartActivityDate);
+                        }
+                        else if (searchEndActivityDate != null)
+                        {
+                            activities = activities.Where(rg => rg.activityDate <= (DateTime)searchEndActivityDate);
+                        }
+                    }
+
+                    switch (sortOrder)
+                    {
+                        case "name_desc":
+                            activities = activities.OrderByDescending(rg => rg.activityDefinition.name);
+                            break;
+                        case "location_desc":
+                            activities = activities.OrderByDescending(rg => rg.location.name);
+                            break;
+                        case "Location":
+                            activities = activities.OrderBy(rg => rg.location.name);
+                            break;
+                        case "type_desc":
+                            activities = activities.OrderByDescending(rg => rg.mediumPrepType.typename);
+                            break;
+                        case "Type":
+                            activities = activities.OrderBy(rg => rg.mediumPrepType.typename);
+                            break;
+                        case "Variety":
+                            activities = activities.OrderBy(rg => rg.variety.sampleNumber).ThenBy(rg => rg.variety.varietyDefinition.name);
+                            break;
+                        case "variety_desc":
+                            activities = activities.OrderByDescending(rg => rg.variety.sampleNumber).ThenBy(rg => rg.variety.varietyDefinition.name);
+                            break;
+                        case "quality_desc":
+                            activities = activities.OrderByDescending(rg => rg.quality);
+                            break;
+                        case "Quality":
+                            activities = activities.OrderBy(rg => rg.quality);
+                            break;
+                        case "quantity_desc":
+                            activities = activities.OrderByDescending(rg => rg.quantity);
+                            break;
+                        case "Quantity":
+                            activities = activities.OrderBy(rg => rg.quantity);
+                            break;
+                        case "Date":
+                            activities = activities.OrderBy(rg => rg.activityDate);
+                            break;
+                        case "date_desc":
+                            activities = activities.OrderByDescending(rg => rg.activityDate);
+                            break;
+                        case "Status":
+                            activities = activities.OrderBy(rg => rg.status);
+                            break;
+                        case "status_desc":
+                            activities = activities.OrderByDescending(rg => rg.status);
+                            break;
+                        default:  // Name ascending 
+                            activities = activities.OrderBy(rg => rg.activityDefinition.name);
+                            break;
+                    }
+            
+                int pageSize = 10;
+                int pageNumber = (page ?? 1);
+                return View(activities.ToPagedList(pageNumber, pageSize));
             }
-            else
-            {
-                if (searchStartActivityDate != null && searchEndActivityDate != null)
-                {
-                    activities = activities.Where(rg => (rg.activityDate >= (DateTime)searchStartActivityDate && rg.activityDate <= (DateTime)searchEndActivityDate));
-                }
-                else if (searchStartActivityDate != null)
-                {
-                    activities = activities.Where(rg => rg.activityDate == (DateTime)searchStartActivityDate);
-                }
-                else if (searchEndActivityDate != null)
-                {
-                    activities = activities.Where(rg => rg.activityDate <= (DateTime)searchEndActivityDate);
-                }
-            }
-
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    activities = activities.OrderByDescending(rg => rg.activityDefinition.name);
-                    break;
-                case "location_desc":
-                    activities = activities.OrderByDescending(rg => rg.location.name);
-                    break;
-                case "Location":
-                    activities = activities.OrderBy(rg => rg.location.name);
-                    break;
-                case "type_desc":
-                    activities = activities.OrderByDescending(rg => rg.mediumPrepType.typename);
-                    break;
-                case "Type":
-                    activities = activities.OrderBy(rg => rg.mediumPrepType.typename);
-                    break;
-                case "Variety":
-                    activities = activities.OrderBy(rg => rg.variety.sampleNumber).ThenBy(rg => rg.variety.varietyDefinition.name);
-                    break;
-                case "variety_desc":
-                    activities = activities.OrderByDescending(rg => rg.variety.sampleNumber).ThenBy(rg => rg.variety.varietyDefinition.name);
-                    break;
-                case "quality_desc":
-                    activities = activities.OrderByDescending(rg => rg.quality);
-                    break;
-                case "Quality":
-                    activities = activities.OrderBy(rg => rg.quality);
-                    break;
-                case "quantity_desc":
-                    activities = activities.OrderByDescending(rg => rg.quantity);
-                    break;
-                case "Quantity":
-                    activities = activities.OrderBy(rg => rg.quantity);
-                    break;
-                case "Date":
-                    activities = activities.OrderBy(rg => rg.activityDate);
-                    break;
-                case "date_desc":
-                    activities = activities.OrderByDescending(rg => rg.activityDate);
-                    break;
-                case "Status":
-                    activities = activities.OrderBy(rg => rg.status);
-                    break;
-                case "status_desc":
-                    activities = activities.OrderByDescending(rg => rg.status);
-                    break;
-                default:  // Name ascending 
-                    activities = activities.OrderBy(rg => rg.activityDefinition.name);
-                    break;
-            }
-
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
-            return View(activities.ToPagedList(pageNumber, pageSize));
         }
 
         //
@@ -578,6 +593,103 @@ namespace YHRSys.Controllers
             }
             ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblactivityassignment.userId);
             return View(tblactivityassignment);
+        }
+
+        //Get all assignees for each activity for export to excel
+        //private string GetAssigneeDetails(int activityId)
+        //{
+        //    StringBuilder sb = new StringBuilder("");
+        //    var activityAssignments = from a in db.ActivityAssignments where a.activityId == activityId select a;
+        //    foreach (ActivityAssignment ax in activityAssignments)
+        //    {
+        //        if (sb.Length > 0)
+        //            sb.Append("CHAR( 10 )").Append("Assignee: ").Append(ax.assignee.FirstName).Append(" ").Append(ax.assignee.LastName).Append("CHAR( 10 )").Append("Description: ").Append(ax.todo);
+        //        else
+        //            sb.Append("Assignee: ").Append(ax.assignee.FirstName).Append(" ").Append(ax.assignee.LastName).Append("CHAR( 10 )").Append("Description: ").Append(ax.todo);
+        //    }
+        //    return sb.ToString();
+        //}
+
+        [Authorize(Roles = "Admin, CanViewActivity, Activity")]
+        [HttpPost]
+        public ActionResult ExportActivity(string searchString, DateTime? searchStartActivityDate, DateTime? searchEndActivityDate)
+        {
+            var activities = from r in db.Activities join a in db.ActivityAssignments on r.activityId equals a.activityId into aj from a in aj.DefaultIfEmpty() select new CustomActivityExport
+            {
+                Activity = r.activityDefinition.name,
+                ActivityDate = r.activityDate,
+                Description = r.description,
+                Location = r.location.name,
+                OiC = a.assignee.FirstName + " " + a.assignee.LastName,
+                ActionPerformed = a.todo,
+                Quality = r.quality,
+                Quantity = r.quantity,
+                Status = r.status,
+                Type = r.mediumPrepType.typename,
+                Variety = r.variety.varietyDefinition.name + " - " + r.variety.sampleNumber
+            };
+            //We load the data
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                if (searchStartActivityDate != null && searchEndActivityDate != null)
+                {
+                    activities = activities.Where(rg => (rg.Variety.Contains(searchString)
+                                       || rg.Activity.Contains(searchString) || rg.Type.Contains(searchString) || rg.Status.Contains(searchString)
+                                          || rg.Location.Contains(searchString) || rg.Description.Contains(searchString)) && (rg.ActivityDate >= (DateTime)searchStartActivityDate && rg.ActivityDate <= (DateTime)searchEndActivityDate));
+                }
+                else if (searchStartActivityDate != null)
+                {
+                    activities = activities.Where(rg => (rg.Variety.Contains(searchString)
+                                          || rg.Activity.Contains(searchString) || rg.Type.Contains(searchString) || rg.Status.Contains(searchString)
+                                          || rg.Location.Contains(searchString) || rg.Description.Contains(searchString)) && (rg.ActivityDate == (DateTime)searchStartActivityDate));
+                }
+                else if (searchEndActivityDate != null)
+                {
+                    activities = activities.Where(rg => (rg.Variety.Contains(searchString)
+                                          || rg.Activity.Contains(searchString) || rg.Type.Contains(searchString) || rg.Status.Contains(searchString)
+                                          || rg.Location.Contains(searchString) || rg.Description.Contains(searchString)) && (rg.ActivityDate == (DateTime)searchEndActivityDate));
+                }
+                else
+                {
+                    activities = activities.Where(rg => rg.Variety.Contains(searchString)
+                                           || rg.Activity.Contains(searchString) || rg.Type.Contains(searchString) || rg.Status.Contains(searchString)
+                                           || rg.Location.Contains(searchString) || rg.Description.Contains(searchString));
+                }
+            }
+            else
+            {
+                if (searchStartActivityDate != null && searchEndActivityDate != null)
+                {
+                    activities = activities.Where(rg => (rg.ActivityDate >= (DateTime)searchStartActivityDate && rg.ActivityDate <= (DateTime)searchEndActivityDate));
+                }
+                else if (searchStartActivityDate != null)
+                {
+                    activities = activities.Where(rg => rg.ActivityDate == (DateTime)searchStartActivityDate);
+                }
+                else if (searchEndActivityDate != null)
+                {
+                    activities = activities.Where(rg => rg.ActivityDate <= (DateTime)searchEndActivityDate);
+                }
+            }
+
+            GridView gv = new GridView();
+            gv.DataSource = activities.ToList();
+            gv.DataBind();
+            Response.ClearContent();
+            Response.Buffer = true;
+            var fName = string.Format("Activities-{0}", DateTime.Now.ToString("s"));
+            Response.AddHeader("content-disposition", "attachment; filename=" + fName + ".xls");
+            Response.ContentType = "application/ms-excel";
+            Response.Charset = "";
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter htw = new HtmlTextWriter(sw);
+            gv.RenderControl(htw);
+            Response.Output.Write(sw.ToString());
+            Response.Flush();
+            Response.End();
+
+            return RedirectToAction("Index");
+
         }
 
         protected override void Dispose(bool disposing)

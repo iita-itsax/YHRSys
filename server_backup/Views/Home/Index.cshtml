@@ -1,0 +1,159 @@
+﻿@using YHRSys.Models
+@using Microsoft.AspNet.Identity
+@model dynamic
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h2>Yam High Ratio Propagation DB System</h2>
+@if (Request.IsAuthenticated)
+    {
+        <div class="responsive">
+            <img src="@Url.Action("PartnerActivitiesChart", "PartnerActivity")" />
+        </div>
+    }
+    <p class="lead">This system is built for YIIFSWA Project in managing YHRP data.</p>
+    @if (!Request.IsAuthenticated)
+    {
+        <p><a href="/Account/Login" class="btn btn-primary btn-large">Sign in &raquo;</a></p>
+    }
+    else
+    {
+        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm"}))
+        {
+            @Html.AntiForgeryToken()
+            <p><a href="/Account/Manage" class="btn btn-primary btn-large">Welcome, @User.Identity.GetUserName() &raquo;</a></p>
+        }
+    }
+</div>
+
+<div class="row">
+    <div class="col-lg-4">
+        <div class="panel panel-info">
+            <div class="panel-heading"><h3 class="panel-title">Top 3 updated locations</h3></div>
+            <div class="panel-body">
+                @if (ViewBag.locationCounter > 0)
+                {
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th><span title="Location Number">Loc/Num</span></th>
+                                <th>Source</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var loc in (IEnumerable<CustomLocationViewModel>)Model.Locations)
+                            {
+                                <tr class="warning">
+                                    <td>
+                                        @loc.lName
+                                    </td>
+                                    <td>
+                                        @loc.locNumber
+                                    </td>
+                                    <td>
+                                        @loc.locSource
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p><em>No location information found!</em></p>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="panel panel-info">
+            <div class="panel-heading"><h3 class="panel-title">Top 3 recent activities</h3></div>
+            <div class="panel-body">
+                @if (ViewBag.activityCounter > 0)
+                {
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th><span title="Location">Loc</span></th>
+                                <th><span title="Activity">Acty</span></th>
+                                <th><span title="Activity Date">Date</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var acty in (IEnumerable<CustomActivitiesViewModel>)Model.Activities)
+                            {
+                                <tr class="success">
+                                    <td>
+                                        @acty.lName
+                                    </td>
+                                    <td>
+                                        @acty.activityName
+                                    </td>
+                                    <td>
+                                        @if (acty.activityDate.HasValue) { @Convert.ToDateTime(acty.activityDate).ToShortDateString();}
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p><em>No activities information found!</em></p>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="panel panel-info">
+            <div class="panel-heading"><h3 class="panel-title">Top 3 reagents status</h3></div>
+            <div class="panel-body">
+                @if (ViewBag.reagentCounter > 0)
+                {
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Reagent</th>
+                                <th><span title="Latest Stock Quantity">LSQ</span></th>
+                                <th><span title="Latest Stock Date">LSD</span></th>
+                                <th><span title="Total Stock Balance">TSB</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var reag in (IEnumerable<CustomReagentsViewModel>)Model.Reagents)
+                            {
+                                <tr class="danger">
+                                    <td>
+                                        @reag.rName
+                                    </td>
+                                    <td>
+                                        <span class="badge">@reag.quantity</span>
+</td>
+                                    <td>
+                                        @reag.createdDate
+                                    </td>
+                                    <td>
+                                        <span class="badge">@reag.qtySum</span>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p><em>No reagents information found!</em></p>
+                }
+            </div>
+        </div>
+    </div>
+    @*
+    <img src="@Url.Action("DrawChart", "Home")" />*@
+</div>

@@ -9,4 +9,11 @@ Solution:
 - Copied necessary contents back to the server
 - Voila!!! It came up working fine
 
+2. For relationships which are not mandatory, you should specify their int datatypes as nullable
+- public Nullable<int> foreignKeyId { get; set; }
+
+3. For us to use custom property/field in the model class, we should decorate it with this attribute
+[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+public string AssigneeDetails{get; private set;}
+
 Documented by Kenn

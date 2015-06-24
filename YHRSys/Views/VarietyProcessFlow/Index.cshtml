@@ -54,6 +54,9 @@
                 @Html.ActionLink("Rank", "Index", new { sortOrder = ViewBag.RankSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
             </th>
             <th>
+                @Html.ActionLink("Quality", "Index", new { sortOrder = ViewBag.QualitySortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
                 @Html.ActionLink("Barcode", "Index", new { sortOrder = ViewBag.BarcodeSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
             </th>
             <th>
@@ -65,7 +68,7 @@
         else
         {
             <tr>
-                <td colspan="8">
+                <td colspan="9">
                     <em>No records found!</em>
                 </td>
             </tr>
@@ -89,6 +92,9 @@
                     @Html.DisplayFor(modelItem => item.rank)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.quality)
+                </td>
+                <td>
                     @if (item.barcodeImageUrl != null)
                     {
                         var imageUrl = Convert.ToBase64String((byte[])item.barcodeImageUrl);
@@ -106,7 +112,7 @@
             </tr>
         }
         <tr>
-            <td colspan="8">
+            <td colspan="9">
                 <div class="form-group">
                     @Html.DropDownList("labeltype", new SelectListItem[]{
                         new SelectListItem() {Text = "Barcode 25mm x 13mm", Value="Barcode25x13mm"},

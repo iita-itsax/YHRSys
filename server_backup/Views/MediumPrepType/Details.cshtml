@@ -1,0 +1,122 @@
+﻿@model YHRSys.Models.MediumPrepType
+
+@{
+    ViewBag.Title = "Medium Prep. Type Details";
+}
+
+<h2>Medium Prep. Type Details</h2>
+
+<div>
+    <h4>Medium Prep. Type</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.typename)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.typename)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.extendCreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.createdDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.extendUpdatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updatedDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.typeId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+@if (Model.activities.Count() > 0)
+{
+    <div class="table-responsive">
+        <h2>Related Activities</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Variety
+                </th>
+                <th>
+                    Location
+                </th>
+                <th>
+                    Type
+                </th>
+                <th>
+                    Quality
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Activity Date
+                </th>
+                <th>
+                    Description
+                </th>
+            </tr>
+            @foreach (var item in Model.activities)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.activityDefinition.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.variety.FullDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.location.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.mediumPrepType.typename)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.quality)%
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.activityDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.description)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}

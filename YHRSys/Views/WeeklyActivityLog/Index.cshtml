@@ -2,10 +2,10 @@
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Weekly Activity Log";
+    ViewBag.Title = "Weekly Activity Logs";
 }
 
-<h2>Weekly Activity Log</h2>
+<h2>Weekly Activity Logs</h2>
 <p>
     @Html.ActionLink("Create New", "Create")
 
@@ -28,8 +28,11 @@
         @if (Model.PageCount > 0) {
             <tr>
                 <th>
+                    @Html.ActionLink("Workplan", "Index", new { sortOrder = ViewBag.WorkplanSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+                </th>
+                <th>
                     @Html.ActionLink("Staff", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
-</th>
+                </th>
                 <th>
                     @Html.ActionLink("Start Date", "Index", new { sortOrder = ViewBag.StartDateSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
                 </th>
@@ -40,16 +43,13 @@
                     Description
                 </th>
                 <th>
+                    @Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.StatusSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+                </th>
+                <th>
                     Created By
                 </th>
                 <th>
                     Created Date
-                </th>
-                <th>
-                    Updated By
-                </th>
-                <th>
-                    Updated Date
                 </th>
                 <th></th>
             </tr>
@@ -57,13 +57,16 @@
         else
         {
             <tr>
-                <td colspan="8">
+                <td colspan="7">
                     <em>No records found!</em>
                 </td>
             </tr>
         }
             @foreach (var item in Model) {
                 <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.activityWorkplan.FullObjective)
+                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.staff.FullName)
                     </td>
@@ -77,16 +80,13 @@
                         @Html.DisplayFor(modelItem => item.description)
                     </td>
                     <td>
+                        @Html.DisplayFor(modelItem => item.status)
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.extendCreatedBy)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.createdDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.extendUpdatedBy)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.updatedDate)
                     </td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { id=item.activityLogId }) |

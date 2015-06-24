@@ -62,6 +62,15 @@
     </Reference>
     <Reference Include="DYMO.Label.Framework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5426002a38745af9, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Vbe.Interop, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="PagedList">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
     </Reference>
@@ -249,8 +258,46 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ActivityAchievementController.cs" />
     <Compile Include="Controllers\ActivityController.cs" />
     <Compile Include="Controllers\ActivityDefinitionController.cs" />
+    <Compile Include="Controllers\ActivityWorkplanController.cs" />
+    <Compile Include="Migrations\201506131728326_thirthy-first.cs" />
+    <Compile Include="Migrations\201506131728326_thirthy-first.Designer.cs">
+      <DependentUpon>201506131728326_thirthy-first.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506131823194_thirthy-second.cs" />
+    <Compile Include="Migrations\201506131823194_thirthy-second.Designer.cs">
+      <DependentUpon>201506131823194_thirthy-second.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506131848398_thirthy-third.cs" />
+    <Compile Include="Migrations\201506131848398_thirthy-third.Designer.cs">
+      <DependentUpon>201506131848398_thirthy-third.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506131913468_thirthy-fourth.cs" />
+    <Compile Include="Migrations\201506131913468_thirthy-fourth.Designer.cs">
+      <DependentUpon>201506131913468_thirthy-fourth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506141838009_thirthy-fifth.cs" />
+    <Compile Include="Migrations\201506141838009_thirthy-fifth.Designer.cs">
+      <DependentUpon>201506141838009_thirthy-fifth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506161047235_thirthy-sixth.cs" />
+    <Compile Include="Migrations\201506161047235_thirthy-sixth.Designer.cs">
+      <DependentUpon>201506161047235_thirthy-sixth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506231323373_thirty-seventh.cs" />
+    <Compile Include="Migrations\201506231323373_thirty-seventh.Designer.cs">
+      <DependentUpon>201506231323373_thirty-seventh.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506231714156_thirty-eightieth.cs" />
+    <Compile Include="Migrations\201506231714156_thirty-eightieth.Designer.cs">
+      <DependentUpon>201506231714156_thirty-eightieth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ActivityAchievement.cs" />
+    <Compile Include="Models\ActivityWorkplan.cs" />
+    <Compile Include="Models\CheckGroupAffiliate.cs" />
+    <Compile Include="Models\CustomActivityExport.cs" />
     <Compile Include="Controllers\ScannerController.cs" />
     <Compile Include="Controllers\SiteContentController.cs" />
     <Compile Include="Controllers\WeeklyActivityLogController.cs" />
@@ -305,6 +352,10 @@
     <Compile Include="Migrations\201505211336096_twenty-nineth.cs" />
     <Compile Include="Migrations\201505211336096_twenty-nineth.Designer.cs">
       <DependentUpon>201505211336096_twenty-nineth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201506121421241_thirtieth.cs" />
+    <Compile Include="Migrations\201506121421241_thirtieth.Designer.cs">
+      <DependentUpon>201506121421241_thirtieth.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\ActivityAssignment.cs" />
     <Compile Include="Models\CustomPartnerActivities.cs" />
@@ -414,6 +465,7 @@
     <Compile Include="Models\CustomActivitiesViewModel.cs" />
     <Compile Include="Models\CustomLocationViewModel.cs" />
     <Compile Include="Models\CustomReagentsViewModel.cs" />
+    <Compile Include="Models\GenericEnums.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\IdentityManager.cs" />
     <Compile Include="Models\InternalReagentUsage.cs" />
@@ -444,6 +496,8 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\Microsoft.Office.Interop.SmartTag.dll" />
+    <Content Include="bin\Microsoft.Vbe.Interop.dll" />
     <Content Include="bin\YHRSys.dll.config" />
     <Content Include="Content\uploads\chartd8249f9b-1d4a-4954-8581-173ac5d2fa61">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -1184,6 +1238,17 @@
     <Content Include="Views\SiteContent\ImageBrowser.cshtml" />
     <Content Include="Views\Shared\_SiteMenuList.cshtml" />
     <Content Include="Views\Home\Content.cshtml" />
+    <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\ActivityWorkplan\Create.cshtml" />
+    <Content Include="Views\ActivityWorkplan\Delete.cshtml" />
+    <Content Include="Views\ActivityWorkplan\Details.cshtml" />
+    <Content Include="Views\ActivityWorkplan\Edit.cshtml" />
+    <Content Include="Views\ActivityWorkplan\Index.cshtml" />
+    <Content Include="Views\ActivityAchievement\Create.cshtml" />
+    <Content Include="Views\ActivityAchievement\Delete.cshtml" />
+    <Content Include="Views\ActivityAchievement\Details.cshtml" />
+    <Content Include="Views\ActivityAchievement\Edit.cshtml" />
+    <Content Include="Views\ActivityAchievement\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
@@ -1324,6 +1389,33 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505211336096_twenty-nineth.resx">
       <DependentUpon>201505211336096_twenty-nineth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506121421241_thirtieth.resx">
+      <DependentUpon>201506121421241_thirtieth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506131728326_thirthy-first.resx">
+      <DependentUpon>201506131728326_thirthy-first.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506131823194_thirthy-second.resx">
+      <DependentUpon>201506131823194_thirthy-second.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506131848398_thirthy-third.resx">
+      <DependentUpon>201506131848398_thirthy-third.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506131913468_thirthy-fourth.resx">
+      <DependentUpon>201506131913468_thirthy-fourth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506141838009_thirthy-fifth.resx">
+      <DependentUpon>201506141838009_thirthy-fifth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506161047235_thirthy-sixth.resx">
+      <DependentUpon>201506161047235_thirthy-sixth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506231323373_thirty-seventh.resx">
+      <DependentUpon>201506231323373_thirty-seventh.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506231714156_thirty-eightieth.resx">
+      <DependentUpon>201506231714156_thirty-eightieth.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

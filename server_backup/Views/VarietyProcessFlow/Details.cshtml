@@ -1,0 +1,145 @@
+﻿@model YHRSys.Models.VarietyProcessFlow
+
+@{
+    ViewBag.Title = "Variety Process Flow Details";
+}
+
+<h2>Variety Process Flow Details</h2>
+@{
+    if (ViewBag.Message != null)
+    {
+        <div class="bs-component">
+            <div class="alert alert-dismissible alert-danger">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <h4>Warning!</h4>
+                <p>@Html.Encode(ViewBag.Message)</p>
+            </div>
+        </div>
+    }
+}
+@using (Html.BeginForm("PrintDetails", "VarietyProcessFlow", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.processId)
+    <div class="form-group">
+        @Html.DropDownList("labeltype", new SelectListItem[]{
+                new SelectListItem() {Text = "Barcode 25mm x 13mm", Value="Barcode25x13mm"},
+                new SelectListItem() {Text = "Barcode 51mm x 19mm", Value="Barcode51x19mm"},
+                new SelectListItem() {Text = "Select Label Type", Value=""}}, new { @class = "form-control" })
+        @Html.TextBox("copies", ViewBag.CurrentFilter as string, new { @class = "form-control input-mini", placeholder = "No. of Barcode Label Copies ...", pattern="\\d*" })
+    </div>;
+    <button class="btn btn-primary" type="submit">Print Details!</button>
+    <!--<input class="btn btn-success" type="submit" id="printButton" name="btnSubmit" value="Generate Label!" />-->
+    <!--<input class="btn btn-success" type="submit" id="printButton1" name="btnSubmit" value="Print Labels!" onclick="return confirm('Print label anyway?');" />-->
+    <input class="btn btn-success" type="button" id="printButton2" name="btnSubmit" value="Print Labels!" onclick="if (confirm('Print labels anyway?')) { printLocally(); }" />
+    <button class="btn btn-success" type="button" onclick="clearForm();">Clear!</button>
+}
+<div>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.varietyId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FullIdentifier)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.variety.sampleNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.variety.sampleNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.form)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.form)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.processDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.processDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.userId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.user.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.rank)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.rank)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.barcode)
+        </dt>
+
+        <dd>
+            @if (ViewBag.barcode != null)
+                {
+                    var imageUrl = Convert.ToBase64String((byte[])ViewBag.barcode);
+                    <img src="data:image/jpg;base64,@imageUrl" />
+                }
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.extendCreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.createdDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.extendUpdatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updatedDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.processId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+<script src="~/Scripts/DYMO.Label.Framework.1.2.6.latest.js"></script>
+<script src="~/Scripts/labels.js"></script>

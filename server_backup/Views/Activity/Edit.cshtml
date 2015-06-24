@@ -1,0 +1,107 @@
+﻿@model YHRSys.Models.Activity
+
+@{
+    ViewBag.Title = "Edit Activity";
+}
+
+<h2>Edit Activity</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Activity</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.activityId)
+        @Html.HiddenFor(model => model.Timestamp)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.activityDefinitionId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("activityDefinitionId", String.Empty)
+                @Html.ValidationMessageFor(model => model.activityDefinitionId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.activityDate, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.activityDate, new { @class = "form-control datecontrol" })
+                @Html.ValidationMessageFor(model => model.activityDate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.locationId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("locationId")
+                @Html.ValidationMessageFor(model => model.locationId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.typeId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("typeId")
+                @Html.ValidationMessageFor(model => model.typeId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.varietyId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("varietyId")
+                @Html.ValidationMessageFor(model => model.varietyId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.quantity, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.quantity, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.quantity)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.quality, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.quality, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.quality)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.description, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.description, new { rows=3, columns=40, @class = "form-control"})
+                @Html.ValidationMessageFor(model => model.description)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.status, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.status, new SelectList(Enum.GetValues(typeof(YHRSys.Models.ACTIVITYSTATUS))), new { @class = "font-control" })
+                @Html.ValidationMessageFor(model => model.status)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

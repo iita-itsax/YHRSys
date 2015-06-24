@@ -1,0 +1,62 @@
+﻿@model YHRSys.Models.LocationSubordinate
+
+@{
+    ViewBag.Title = "Edit Subordinate";
+}
+
+<h2>Edit Subordinate</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Location Subordinate</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.subordinateId)
+        @Html.HiddenFor(model => model.locationUserId)
+        @Html.HiddenFor(model => model.Timestamp)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.userSubordinateId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("userSubordinateId", String.Empty)
+                @Html.ValidationMessageFor(model => model.userSubordinateId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.status, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.status, new SelectList(Enum.GetValues(typeof(YHRSys.Models.STATUS))), new { @class = "font-control" })
+                @Html.ValidationMessageFor(model => model.status)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.workBrief, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.workBrief, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.workBrief)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to Details", "Details", new { id=Model.locationUserId })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+

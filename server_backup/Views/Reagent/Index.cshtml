@@ -1,0 +1,115 @@
+﻿@model PagedList.IPagedList<YHRSys.Models.ReagentStockModel>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Internal Items";
+}
+
+<h2>Internal Items</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+
+@using (Html.BeginForm("Index", "Reagent", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+{
+    <div class="form-group">
+        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control input-mini", placeholder = "Search for ... internal items, UoM or description" })
+    </div>;
+    <input class="btn btn-primary" type="submit" id="searchButton" name="btnSubmit" value="Search!" /> 
+    <button class="btn btn-success" type="button" onclick="clearForm();">Clear!</button>
+    <input class="btn btn-success" type="submit" id="printButton" name="btnSubmit" value="Print Stock!" />
+}
+</p>
+@{
+    if (ViewBag.Message != null)
+    {
+        <div class="bs-component">
+            <div class="alert alert-dismissible alert-warning">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <h4>Warning!</h4>
+                <p>@Html.Encode(ViewBag.Message)</p>
+            </div>
+        </div>
+    }
+}
+<div class="table-responsive">
+    <table class="table">
+        @if (Model.PageCount > 0)
+        {
+            <tr>
+                <th>
+                    @Html.ActionLink("Type", "Index", new { sortOrder = ViewBag.TypeSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th>
+                    @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th>
+                    UoM
+                </th>
+                <th>
+                    ReOrder Lev
+                </th>
+                <th>
+                    Desc
+                </th>
+                <th>
+                    CreatedBy
+                </th>
+                <th>
+                    @Html.ActionLink("CreatedOn", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th>
+                    Stock Bal.
+                </th>
+                <th></th>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td colspan="8">
+                    <em>No records found!</em>
+                </td>
+            </tr>
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.reagentType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.reagentName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.measurementName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.reOrderLevel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.createdBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.createdDate)
+                </td>
+                <td>
+                    <span class="badge">@Html.DisplayFor(modelItem => item.stockBalance)</span>
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.reagentId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.reagentId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.reagentId })
+                </td>
+            </tr>
+        }
+
+    </table>
+    <br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+</div>

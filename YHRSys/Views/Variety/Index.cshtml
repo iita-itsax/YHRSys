@@ -48,10 +48,13 @@
                 Location
             </th>
             <th>
-                CreatedBy
+                # Available
             </th>
             <th>
-                CreatedOn
+                Total Wg
+            </th>
+            <th>
+                UoM
             </th>
             <th></th>
         </tr>
@@ -59,7 +62,7 @@
         else
         {
         <tr>
-            <td colspan="8">
+            <td colspan="9">
                 <em>No records found!</em>
             </td>
         </tr>
@@ -86,10 +89,13 @@
                     @Html.DisplayFor(modelItem => item.location.name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.extendCreatedBy)
+                    @Html.DisplayFor(modelItem => item.availableQuantity)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.createdDate)
+                    @Html.DisplayFor(modelItem => item.totalWeight)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.uoms.name)
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.varietyId }) |

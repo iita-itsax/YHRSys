@@ -13,6 +13,7 @@ using System.Data.Entity.Infrastructure;
 using Microsoft.Owin.Security;
 using System.Security.Claims;
 using PagedList;
+using DropdownSelect.Models;
 
 
 namespace YHRSys.Controllers
@@ -21,6 +22,17 @@ namespace YHRSys.Controllers
     public class VarietyController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        SelectedValue selVal = new SelectedValue();
+
+        private List<SelectListItem> listReleaseStatus(string status)
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "--Select--", Value = "", Selected = selVal.checkForSelectedValue("", status) });
+            items.Add(new SelectListItem { Text = "Near Release", Value = "Near Release", Selected = selVal.checkForSelectedValue("Near Release", status) });
+            items.Add(new SelectListItem { Text = "Released", Value = "Released", Selected = selVal.checkForSelectedValue("Released", status) });
+            items.Add(new SelectListItem { Text = "Not Released", Value = "Not Released", Selected = selVal.checkForSelectedValue("Not Released", status) });
+            return items;
+        }
 
         // GET: /Variety/
         public ActionResult Index(string sortOrder, string currentFilter, string currentStartDateFilter, string currentEndDateFilter, string searchString, DateTime? searchStartTestDate, DateTime? searchEndTestDate, int? page)
@@ -189,6 +201,8 @@ namespace YHRSys.Controllers
             ViewBag.locationId = new SelectList(db.Locations, "locationId", "name");
             ViewBag.specieId = new SelectList(db.Species, "specieId", "name");
             ViewBag.userId = new SelectList(db.Users, "Id", "FullName");
+            ViewBag.releaseStatus = listReleaseStatus("");
+            ViewBag.measurementId = new SelectList(db.Measurements, "measurementId", "name");
             return View();
         }
 
@@ -198,7 +212,7 @@ namespace YHRSys.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, CanAddVariety, Variety")]
-        public ActionResult Create([Bind(Include="varietyDefinitionId,sampleNumber,userId,testDate,releaseStatus,resistance,storability,poundability,specieId,uniformity,stability,distinctness,value,locationId")] Variety tblvariety)
+        public ActionResult Create([Bind(Include="varietyDefinitionId,sampleNumber,userId,testDate,releaseStatus,resistance,storability,poundability,specieId,uniformity,stability,distinctness,value,locationId,availableQuantity,totalWeight,measurementId")] Variety tblvariety)
         {
             if (ModelState.IsValid)
             {
@@ -230,6 +244,8 @@ namespace YHRSys.Controllers
             ViewBag.locationId = new SelectList(db.Locations, "locationId", "name", tblvariety.locationId);
             ViewBag.specieId = new SelectList(db.Species, "specieId", "name", tblvariety.specieId);
             ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblvariety.userId);
+            ViewBag.releaseStatus = listReleaseStatus(tblvariety.releaseStatus);
+            ViewBag.measurementId = new SelectList(db.Measurements, "measurementId", "name");
             return View(tblvariety);
         }
 
@@ -251,6 +267,8 @@ namespace YHRSys.Controllers
             ViewBag.locationId = new SelectList(db.Locations, "locationId", "name", tblvariety.locationId);
             ViewBag.specieId = new SelectList(db.Species, "specieId", "name", tblvariety.specieId);
             ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblvariety.userId);
+            ViewBag.releaseStatus = listReleaseStatus(tblvariety.releaseStatus);
+            ViewBag.measurementId = new SelectList(db.Measurements, "measurementId", "name", tblvariety.uomId);
             return View(tblvariety);
         }
 
@@ -260,7 +278,7 @@ namespace YHRSys.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, CanEditVariety, Variety")]
-        public ActionResult Edit([Bind(Include="varietyId,varietyDefinitionId,sampleNumber,userId,testDate,releaseStatus,resistance,storability,poundability,specieId,uniformity,stability,distinctness,value,locationId")] Variety tblvariety)
+        public ActionResult Edit([Bind(Include = "varietyId,varietyDefinitionId,sampleNumber,userId,testDate,releaseStatus,resistance,storability,poundability,specieId,uniformity,stability,distinctness,value,locationId,availableQuantity,totalWeight,measurementId")] Variety tblvariety)
         {
             if (ModelState.IsValid)
             {
@@ -285,6 +303,10 @@ namespace YHRSys.Controllers
                     med.distinctness = tblvariety.distinctness;
                     med.value = tblvariety.value;
                     med.locationId = tblvariety.locationId;
+
+                    med.availableQuantity = tblvariety.availableQuantity;
+                    med.totalWeight = tblvariety.totalWeight;
+                    med.uomId = tblvariety.uomId;
 
                     if (currentUser != null)
                         med.updatedBy = currentUser.UserName;
@@ -319,6 +341,8 @@ namespace YHRSys.Controllers
             ViewBag.locationId = new SelectList(db.Locations, "locationId", "name", tblvariety.locationId);
             ViewBag.specieId = new SelectList(db.Species, "specieId", "name", tblvariety.specieId);
             ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblvariety.userId);
+            ViewBag.releaseStatus = listReleaseStatus(tblvariety.releaseStatus);
+            ViewBag.measurementId = new SelectList(db.Measurements, "measurementId", "name", tblvariety.uomId);
             return View(tblvariety);
         }
 
