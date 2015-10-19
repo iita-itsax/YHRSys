@@ -24,7 +24,8 @@ namespace YHRSys.Models
 
         [DisplayName("Form")]
         [Required(ErrorMessage = "Form should not be empty")]
-        public string form { get; set; }
+        public int formId { get; set; }
+        //public string form { get; set; }
 
         [DisplayName("Process Date")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
@@ -36,7 +37,8 @@ namespace YHRSys.Models
 
         [DisplayName("Rank")]
         [Required(ErrorMessage = "Rank should not be empty")]
-        public string rank { get; set; }
+        public int rankId { get; set; }
+        //public string rank { get; set; }
 
         [DisplayName("Barcode")]
         public string barcode { get; set; }
@@ -48,6 +50,7 @@ namespace YHRSys.Models
         [DisplayName("Description")]
         public string description { get; set; }
 
+
         [DisplayName("Quality"), Required]
         [DefaultValue(DEFAULT_VALUE)]
         [Range(1, 100, ErrorMessage = "Quality must be greater than zero.")]
@@ -55,6 +58,12 @@ namespace YHRSys.Models
 
         [ForeignKey("varietyId")]
         public virtual Variety variety { get; set; }
+
+        [ForeignKey("rankId")]
+        public virtual Ranks rank { get; set; }
+
+        [ForeignKey("formId")]
+        public virtual Forms form { get; set; }
 
         [NotMapped]
         public string FullIdentifier {

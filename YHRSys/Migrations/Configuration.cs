@@ -23,7 +23,7 @@ namespace YHRSys.Migrations
         private readonly string[] _groupAdminRoleNames = { "CanEditUser", "CanEditGroup", "User" };
         private readonly IdentityManager _idManager = new IdentityManager();
         private readonly string[] _initialGroupNames = { "SuperAdmins", "GroupAdmins", "UserAdmins", "Users" };
-        private readonly string[] _superAdminRoleNames = { "Admin", "CanEditUser", "CanEditGroup", "CanEditRole", "User", "CanEditLocation", "CanAddLocation", "CanDeleteLocation", "CanViewLocation", "CanEditLocationUser", "CanAddLocationUser", "CanDeleteLocationUser", "CanViewLocationUser", "CanEditActivity", "CanAddActivity", "CanDeleteActivity", "CanViewActivity", "CanEditInventory", "CanAddInventory", "CanDeleteInventory", "CanViewInventory", "CanEditMediumPrepType", "CanAddMediumPrepType", "CanDeleteMediumPrepType", "CanViewMediumPrepType", "CanEditPartner", "CanAddPartner", "CanDeletePartner", "CanViewPartner", "CanEditPartnerActivity", "CanAddPartnerActivity", "CanDeletePartnerActivity", "CanViewPartnerActivity", "CanEditPartnerContactPerson", "CanAddPartnerContactPerson", "CanDeletePartnerContactPerson", "CanViewPartnerContactPerson", "CanEditReagent", "CanAddReagent", "CanDeleteReagent", "CanViewReagent", "CanEditVariety", "CanAddVariety", "CanDeleteVariety", "CanViewVariety", "CanEditVarietyProcessFlow", "CanAddVarietyProcessFlow", "CanDeleteVarietyProcessFlow", "CanViewVarietyProcessFlow", "CanEditActivityDefinitions", "CanAddActivityDefinitions", "CanDeleteActivityDefinitions", "CanViewActivityDefinitions", "CanEditVarietyDefinitions", "CanAddVarietyDefinitions", "CanDeleteVarietyDefinitions", "CanViewVarietyDefinitions", "CanEditSpecies", "CanAddSpecies", "CanDeleteSpecies", "CanViewSpecies", "CanEditInternalReagentUsage", "CanAddInternalReagentUsage", "CanDeleteInternalReagentUsage", "CanViewInternalReagentUsage", "CanEditActivityWorkplan", "CanAddActivityWorkplan", "CanDeleteActivityWorkplan", "CanViewActivityWorkplan", "CanEditActivityAchievement", "CanAddActivityAchievement", "CanDeleteActivityAchievement", "CanViewActivityAchievement", "CanAddWeeklyActivityLog", "CanEditWeeklyActivityLog", "CanDeleteWeeklyActivityLog", "CanViewWeeklyActivityLog", "CanAddSiteContents", "CanEditSiteContents", "CanDeleteSiteContents", "CanViewSiteContents" };
+        private readonly string[] _superAdminRoleNames = { "Admin", "CanEditUser", "CanEditGroup", "CanEditRole", "User", "CanEditLocation", "CanAddLocation", "CanDeleteLocation", "CanViewLocation", "CanEditLocationUser", "CanAddLocationUser", "CanDeleteLocationUser", "CanViewLocationUser", "CanEditActivity", "CanAddActivity", "CanDeleteActivity", "CanViewActivity", "CanEditInventory", "CanAddInventory", "CanDeleteInventory", "CanViewInventory", "CanEditMediumPrepType", "CanAddMediumPrepType", "CanDeleteMediumPrepType", "CanViewMediumPrepType", "CanEditPartner", "CanAddPartner", "CanDeletePartner", "CanViewPartner", "CanEditPartnerActivity", "CanAddPartnerActivity", "CanDeletePartnerActivity", "CanViewPartnerActivity", "CanEditPartnerContactPerson", "CanAddPartnerContactPerson", "CanDeletePartnerContactPerson", "CanViewPartnerContactPerson", "CanEditReagent", "CanAddReagent", "CanDeleteReagent", "CanViewReagent", "CanEditVariety", "CanAddVariety", "CanDeleteVariety", "CanViewVariety", "CanEditVarietyProcessFlow", "CanAddVarietyProcessFlow", "CanDeleteVarietyProcessFlow", "CanViewVarietyProcessFlow", "CanEditActivityDefinitions", "CanAddActivityDefinitions", "CanDeleteActivityDefinitions", "CanViewActivityDefinitions", "CanEditVarietyDefinitions", "CanAddVarietyDefinitions", "CanDeleteVarietyDefinitions", "CanViewVarietyDefinitions", "CanEditSpecies", "CanAddSpecies", "CanDeleteSpecies", "CanViewSpecies", "CanEditInternalReagentUsage", "CanAddInternalReagentUsage", "CanDeleteInternalReagentUsage", "CanViewInternalReagentUsage", "CanEditActivityWorkplan", "CanAddActivityWorkplan", "CanDeleteActivityWorkplan", "CanViewActivityWorkplan", "CanEditActivityAchievement", "CanAddActivityAchievement", "CanDeleteActivityAchievement", "CanViewActivityAchievement", "CanAddWeeklyActivityLog", "CanEditWeeklyActivityLog", "CanDeleteWeeklyActivityLog", "CanViewWeeklyActivityLog", "CanAddSiteContents", "CanEditSiteContents", "CanDeleteSiteContents", "CanViewSiteContents", "CanAddForms", "CanEditForms", "CanDeleteForms", "CanViewForms", "CanAddRanks", "CanEditRanks", "CanDeleteRanks", "CanViewRanks", "CanAddOrder", "CanEditOrder", "CanDeleteOrder", "CanViewOrder", "CanAddSeedling", "CanEditSeedling", "CanDeleteSeedling", "CanViewSeedling", "CanAddReport", "CanEditReport", "CanDeleteReport", "CanViewReport", "CanViewCummulativeReport" };
         private readonly string[] _userAdminRoleNames = { "CanEditUser", "User" };
         private readonly string[] _userRoleNames = { "User" };
         public Configuration()
@@ -144,6 +144,53 @@ namespace YHRSys.Migrations
             _idManager.CreateRole("CanAddActivityAchievement", "Add/Publish Activity Achievements");
             _idManager.CreateRole("CanDeleteActivityAchievement", "Delete Activity Achievements");
             _idManager.CreateRole("CanViewActivityAchievement", "View Activity Achievements");
+
+            _idManager.CreateRole("CanEditForms", "Modify Forms");
+            _idManager.CreateRole("CanAddForms", "Add Forms");
+            _idManager.CreateRole("CanDeleteForms", "Delete Forms");
+            _idManager.CreateRole("CanViewForms", "View Forms");
+
+            _idManager.CreateRole("CanEditRanks", "Modify Ranks");
+            _idManager.CreateRole("CanAddRanks", "Add Ranks");
+            _idManager.CreateRole("CanDeleteRanks", "Delete Ranks");
+            _idManager.CreateRole("CanViewRanks", "View Ranks");
+
+            _idManager.CreateRole("CanEditOrder", "Modify Variety Order");
+            _idManager.CreateRole("CanAddOrder", "Add Variety Order");
+            _idManager.CreateRole("CanDeleteOrder", "Delete Variety Ranks");
+            _idManager.CreateRole("CanViewOrder", "View Variety Order");
+
+            _idManager.CreateRole("CanEditSeedling", "Modify Seedling");
+            _idManager.CreateRole("CanAddSeedling", "Add Seedling");
+            _idManager.CreateRole("CanDeleteSeedling", "Delete Seedling");
+            _idManager.CreateRole("CanViewSeedling", "View Seedling");
+
+            _idManager.CreateRole("CanEditReport", "Modify Report");
+            _idManager.CreateRole("CanAddReport", "Add Report");
+            _idManager.CreateRole("CanDeleteReport", "Delete Report");
+            _idManager.CreateRole("CanViewReport", "View Report");
+
+            _idManager.CreateRole("CanEditOwnPartner", "Modify Own Partner");
+            _idManager.CreateRole("CanAddOwnPartner", "Add Own Partner");
+            _idManager.CreateRole("CanDeleteOwnPartner", "Delete Own Partner");
+            _idManager.CreateRole("CanViewOwnPartner", "View Own Partner");
+
+            _idManager.CreateRole("CanEditOwnPartnerContact", "Modify Own Partner Contact");
+            _idManager.CreateRole("CanAddOwnPartnerContact", "Add Own Partner Contact");
+            _idManager.CreateRole("CanDeleteOwnPartnerContact", "Delete Own Partner Contact");
+            _idManager.CreateRole("CanViewOwnPartnerContact", "View Own Partner Contact");
+
+            _idManager.CreateRole("CanEditOwnPartnerActivity", "Modify Own Partner Activity");
+            _idManager.CreateRole("CanAddOwnPartnerActivity", "Add Own Partner Activity");
+            _idManager.CreateRole("CanDeleteOwnPartnerActivity", "Delete Own Partner Activity");
+            _idManager.CreateRole("CanViewOwnPartnerActivity", "View Own Partner Activity");
+
+            _idManager.CreateRole("CanEditOwnReport", "Modify Own Partner Activity Report");
+            _idManager.CreateRole("CanAddOwnReport", "Add Own Partner Activity Report");
+            _idManager.CreateRole("CanDeleteOwnReport", "Delete Own Partner Activity Report");
+            _idManager.CreateRole("CanViewOwnReport", "View Own Partner Activity Report");
+
+            _idManager.CreateRole("CanViewCummulativeReport", "View Cummulative Partner Activity Reports");
 
         }
         private void AddRolesToGroups()

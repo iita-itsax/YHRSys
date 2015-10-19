@@ -1,10 +1,10 @@
 ﻿@model YHRSys.Models.EditUserViewModel
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit User";
 }
 
-<h2>Edit</h2>
+<h2>Edit User</h2>
 
 
 @using (Html.BeginForm())
@@ -12,13 +12,12 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>EditUserViewModel</h4>
         <hr />
         @Html.ValidationSummary(true)
         <div class="form-group">
             @Html.LabelFor(model => model.UserName, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.UserName)
+                @Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.UserName)
             </div>
         </div>
@@ -26,7 +25,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.FirstName, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.FirstName)
+                @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.FirstName)
             </div>
         </div>
@@ -34,7 +33,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.LastName, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.LastName)
+                @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.LastName)
             </div>
         </div>
@@ -42,8 +41,16 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Email)
+                @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Email)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.partnerId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("partnerId", null, String.Empty, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.partnerId)
             </div>
         </div>
 

@@ -4,10 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />-->
+    <link rel="shortcut icon" href="~/Content/images/favicon.ico" type="image/x-icon" />
     <title>@ViewBag.Title - Yam High Ratio Propagation System</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
 </head>
 <body>
     <div class="navbar navbar-default navbar-fixed-top">
@@ -46,6 +48,12 @@
                             <li>@Html.ActionLink("Variety Definitions", "Index", "VarietyDefinition")</li>
                             <li class="divider"></li>
                             <li>@Html.ActionLink("Species", "Index", "Species")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Forms", "Index", "Forms")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Ranks", "Index", "Ranks")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Seedlings", "Index", "Seedlings")</li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -70,6 +78,8 @@
                             <li>@Html.ActionLink("Weekly Activity Logs", "Index", "WeeklyActivityLog")</li>
                             <li class="divider"></li>
                             <li>@Html.ActionLink("Activity Achievements", "Index", "ActivityAchievement")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("View Orders", "Index", "Orders")</li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -80,6 +90,8 @@
                             <li>@Html.ActionLink("Partner Contacts", "Index", "PartnerContact")</li>
                             <li class="divider"></li>
                             <li>@Html.ActionLink("Partner Activities", "Index", "PartnerActivity")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Activities Cummulative Reporting", "Index", "CummulativeReporting")</li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -107,9 +119,6 @@
             <p>&copy; @DateTime.Now.Year - Yam High Ratio Propagation System</p>
         </footer>
     </div>
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
 </html>

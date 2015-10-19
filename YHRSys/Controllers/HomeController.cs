@@ -16,6 +16,7 @@ using System.Data.Entity.Infrastructure;
 using Microsoft.Owin.Security;
 using System.Security.Claims;
 using System.Text;
+using System.Diagnostics;
 namespace YHRSys.Controllers
 {
     public class HomeController : Controller
@@ -30,7 +31,7 @@ namespace YHRSys.Controllers
                             select new CustomReagentsViewModel
                             {
                                 rName = rea.name,
-                                createdDate = rea.inventories.Select(i => i.createdDate).FirstOrDefault(),
+                                createdDate =  rea.inventories.Select(i => i.createdDate).FirstOrDefault(),
                                 quantity = rea.inventories.Select(i => i.quantity).FirstOrDefault(),
                                 qtySum = reagentStock.totalIn //.inventories.Sum(i => i.quantity)
                             }).Take(3);
@@ -59,7 +60,7 @@ namespace YHRSys.Controllers
                              }).Take(3);
             model.Locations = locations;
             ViewBag.locationCounter = locations.Count();
-
+            //Debug.WriteLine("TESTING CONSOLE WRITEPAD");
             return View(model);
         }
 
@@ -101,6 +102,8 @@ namespace YHRSys.Controllers
 
             StringBuilder sb = new StringBuilder("");
             sb.Append("<li><a href=\"/Home/Index\">Home</a></li>");
+            sb.Append("<li class=\"divider\"></li>");
+            sb.Append("<li><a href=\"/AvailableVariety/Index\">Order Varieties</a></li>");
             foreach (var menu in menus)
             {
                 if (sb.Length > 0) { 

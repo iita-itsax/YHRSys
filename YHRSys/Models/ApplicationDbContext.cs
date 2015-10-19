@@ -35,6 +35,15 @@ namespace YHRSys.Models
         public virtual IDbSet<SiteContent> SiteContents { get; set; }
         public virtual IDbSet<ActivityWorkplan> ActivityWorkplans { get; set; }
         public virtual IDbSet<ActivityAchievement> ActivityAchievements { get; set; }
+        public virtual IDbSet<Ranks> Ranks { get; set; }
+        public virtual IDbSet<Forms> Forms { get; set; }
+        public virtual IDbSet<Seedling> Seedlings { get; set; }
+
+        public virtual IDbSet<PartnerReporting> PartnerReportings { get; set; }
+
+        public virtual IDbSet<Cart> Carts { get; set; }
+        public virtual IDbSet<Order> Orders { get; set; }
+        public virtual IDbSet<OrderDetail> OrderDetails { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection")
@@ -93,6 +102,12 @@ namespace YHRSys.Models
             EntityTypeConfiguration<ApplicationRole> entityTypeConfiguration1 = modelBuilder.Entity<ApplicationRole>().ToTable("AspNetRoles");
             entityTypeConfiguration1.Property((ApplicationRole r) => r.Name).IsRequired();
         }
+
+        //public System.Data.Entity.DbSet<YHRSys.Models.Seedling> Seedlings { get; set; }
+
+        //public System.Data.Entity.DbSet<YHRSys.Models.ApplicationUser> IdentityUsers { get; set; }
+
+       // public System.Data.Entity.DbSet<YHRSys.Models.ApplicationUser> IdentityUsers { get; set; }
 
         //public System.Data.Entity.DbSet<YHRSys.Models.Location> Locations { get; set; }
 

@@ -202,7 +202,7 @@ namespace YHRSys.Controllers
             ViewBag.specieId = new SelectList(db.Species, "specieId", "name");
             ViewBag.userId = new SelectList(db.Users, "Id", "FullName");
             ViewBag.releaseStatus = listReleaseStatus("");
-            ViewBag.measurementId = new SelectList(db.Measurements, "measurementId", "name");
+            ViewBag.uomId = new SelectList(db.Measurements, "measurementId", "name");
             return View();
         }
 
@@ -212,7 +212,7 @@ namespace YHRSys.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, CanAddVariety, Variety")]
-        public ActionResult Create([Bind(Include="varietyDefinitionId,sampleNumber,userId,testDate,releaseStatus,resistance,storability,poundability,specieId,uniformity,stability,distinctness,value,locationId,availableQuantity,totalWeight,measurementId")] Variety tblvariety)
+        public ActionResult Create([Bind(Include="varietyDefinitionId,sampleNumber,userId,testDate,releaseStatus,resistance,storability,poundability,specieId,uniformity,stability,distinctness,value,locationId,availableQuantity,totalWeight,uomId")] Variety tblvariety)
         {
             if (ModelState.IsValid)
             {
@@ -245,7 +245,7 @@ namespace YHRSys.Controllers
             ViewBag.specieId = new SelectList(db.Species, "specieId", "name", tblvariety.specieId);
             ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblvariety.userId);
             ViewBag.releaseStatus = listReleaseStatus(tblvariety.releaseStatus);
-            ViewBag.measurementId = new SelectList(db.Measurements, "measurementId", "name");
+            ViewBag.uomId = new SelectList(db.Measurements, "measurementId", "name");
             return View(tblvariety);
         }
 
@@ -268,7 +268,7 @@ namespace YHRSys.Controllers
             ViewBag.specieId = new SelectList(db.Species, "specieId", "name", tblvariety.specieId);
             ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblvariety.userId);
             ViewBag.releaseStatus = listReleaseStatus(tblvariety.releaseStatus);
-            ViewBag.measurementId = new SelectList(db.Measurements, "measurementId", "name", tblvariety.uomId);
+            ViewBag.uomId = new SelectList(db.Measurements, "measurementId", "name", tblvariety.uomId);
             return View(tblvariety);
         }
 
@@ -278,7 +278,7 @@ namespace YHRSys.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, CanEditVariety, Variety")]
-        public ActionResult Edit([Bind(Include = "varietyId,varietyDefinitionId,sampleNumber,userId,testDate,releaseStatus,resistance,storability,poundability,specieId,uniformity,stability,distinctness,value,locationId,availableQuantity,totalWeight,measurementId")] Variety tblvariety)
+        public ActionResult Edit([Bind(Include = "varietyId,varietyDefinitionId,sampleNumber,userId,testDate,releaseStatus,resistance,storability,poundability,specieId,uniformity,stability,distinctness,value,locationId,availableQuantity,totalWeight,uomId")] Variety tblvariety)
         {
             if (ModelState.IsValid)
             {
@@ -342,7 +342,7 @@ namespace YHRSys.Controllers
             ViewBag.specieId = new SelectList(db.Species, "specieId", "name", tblvariety.specieId);
             ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblvariety.userId);
             ViewBag.releaseStatus = listReleaseStatus(tblvariety.releaseStatus);
-            ViewBag.measurementId = new SelectList(db.Measurements, "measurementId", "name", tblvariety.uomId);
+            ViewBag.uomId = new SelectList(db.Measurements, "measurementId", "name", tblvariety.uomId);
             return View(tblvariety);
         }
 

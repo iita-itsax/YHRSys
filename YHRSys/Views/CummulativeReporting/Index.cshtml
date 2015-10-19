@@ -1,0 +1,140 @@
+﻿@model PagedList.IPagedList<YHRSys.Models.PartnerReporting>
+@using PagedList.Mvc;
+@{
+    if (Model.PageCount > 0)
+    {
+        Layout = "~/Views/Shared/_Layout_PartnerActivities.cshtml";
+    }
+}
+@{
+    ViewBag.Title = "Partner Activities Cummulative Reporting";
+}
+
+<h2>Partner Activities Cummulative Reporting</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+
+    @using (Html.BeginForm("Index", "CummulativeReporting", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+    {
+        <div class="form-group">
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control input-mini", placeholder = "Search phrase goes here ..." })
+        </div>;
+        <div class="form-group">
+            @Html.TextBox("SearchStartActivityDate", ViewBag.StartActivityDateFilter as string, new { @class = "form-control datecontrol input-mini", placeholder = "Activity date start range .." })
+        </div>;
+        <div class="form-group">
+            @Html.TextBox("SearchEndActivityDate", ViewBag.EndActivityDateFilter as string, new { @class = "form-control datecontrol input-mini", placeholder = "Activity date end range ..." })
+        </div>;
+        <input class="btn btn-primary" type="submit" id="searchButton" name="btnSubmit" value="Search!" />
+        <button class="btn btn-success" type="button" id="resetButton" onclick="clearForm();">Clear!</button>
+        <input class="btn btn-success" type="submit" id="printButton" name="btnSubmit" value="Export Report!" />
+        @*<button class="btn btn-success" type="button" name="printButton" onclick="location.href='@Url.Action("ExportReport", "PartnerActivity")'">Print Report!</button>*@
+    }
+</p>
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>
+                @Html.ActionLink("Giving Partner", "Index", new { sortOrder = ViewBag.GiverSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Receiver Partner", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                @Html.ActionLink("OiC", "Index", new { sortOrder = ViewBag.OiCNameSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter }, new { title = "Officer-in-Charge" })
+            </th>
+            <th>
+                @Html.ActionLink("Reagent", "Index", new { sortOrder = ViewBag.ReagentSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Rg-Qty", "Index", new { sortOrder = ViewBag.QuantitySortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter }, new { title = "Reagent Quantity" })
+            </th>
+            <th>
+                @Html.ActionLink("Variety", "Index", new { sortOrder = ViewBag.VarietySortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                SP Qty
+            </th>
+            <th>
+                TCP Qty
+            </th>
+            <th>
+                TP Qty
+            </th>
+            <th>
+                BioRP Qty
+            </th>
+            <th>
+                Comment
+            </th>
+            <th>
+                @Html.ActionLink("Reporting Date", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter }, new { title = "Reporting Date" })
+            </th>
+            @if (Model.PageCount > 0) {
+                <th>
+                    CreatedBy
+                </th>
+                <th>
+                    CreatedDate
+                </th>
+            }
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.activity.giver.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.activity.partner.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.activity.OiCFullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.activity.reagent.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.reagentQty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.activity.variety.FullDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.spQty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tcpQty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tpQty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.bioRPQty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.comment)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.reportDate)
+                </td>
+                @if (Model.PageCount > 0) {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.extendCreatedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.createdDate)
+                    </td>
+                }
+            </tr>
+        }
+
+    </table>
+    <br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+                        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter }))
+</div>

@@ -19,7 +19,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.partnerId, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("partnerId", String.Empty)
+                @Html.DropDownList("partnerId", null, String.Empty, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.partnerId)
             </div>
         </div>
@@ -27,7 +27,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.giverId, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("giverId", String.Empty)
+                @Html.DropDownList("giverId", null, String.Empty, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.giverId)
             </div>
         </div>
@@ -35,7 +35,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.reagentId, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("reagentId", String.Empty)
+                @Html.DropDownList("reagentId", null, String.Empty, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.reagentId)
             </div>
         </div>
@@ -48,10 +48,19 @@
             </div>
         </div>
 
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.varietyId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("varietyId", null, String.Empty, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.varietyId)
+            </div>
+        </div>
+
         <div class="form-group">
             @Html.LabelFor(model => model.userId, "Officer-in-Charge", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("userId", String.Empty)
+                @Html.DropDownList("userId", null, String.Empty, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.userId)
             </div>
         </div>
@@ -97,9 +106,9 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.seedsGiven, new { @class = "control-label col-md-2", title = "Seeds Given" })
+            @Html.LabelFor(model => model.seedsGiven, new { @class = "control-label col-md-2", title = "Seedlings Given" })
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.seedsGiven, new { @class = "form-control", title = "Seeds Given", placeholder = ".. Seeds Given" })
+                @Html.TextBoxFor(model => model.seedsGiven, new { @class = "form-control", title = "Seedlings Given", placeholder = ".. Seedlings Given" })
                 @Html.ValidationMessageFor(model => model.seedsGiven)
             </div>
         </div>
@@ -127,11 +136,11 @@
                 @Html.ValidationMessageFor(model => model.tubersAvailable)
             </div>
         </div>
-
+        
         <div class="form-group">
-            @Html.LabelFor(model => model.seedsAvailable, new { @class = "control-label col-md-2", title = "Seeds Available" })
+            @Html.LabelFor(model => model.seedsAvailable, new { @class = "control-label col-md-2", title = "Seedlings Available" })
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.seedsAvailable, new { @class = "form-control", title = "Seeds Available", placeholder = ".. Seeds Available" })
+                @Html.TextBoxFor(model => model.seedsAvailable, new { @class = "form-control", title = "Seedlings Available", placeholder = ".. Seedlings Available" })
                 @Html.ValidationMessageFor(model => model.seedsAvailable)
             </div>
         </div>

@@ -26,11 +26,14 @@
             @Html.DisplayFor(model => model.variety.sampleNumber)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.form)
+            @Html.DisplayNameFor(model => model.formId)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.form)
+            @if (Model.form != null)
+            {
+                @Html.DisplayFor(model => model.form.name)
+            }
         </dd>
 
         <dt>
@@ -50,11 +53,14 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.rank)
+            @Html.DisplayNameFor(model => model.rankId)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.rank)
+            @if (Model.rank != null)
+            {
+                @Html.DisplayFor(model => model.rank.name)
+            }
         </dd>
 
         <dt>

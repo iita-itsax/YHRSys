@@ -95,7 +95,7 @@
                                         @acty.activityName
                                     </td>
                                     <td>
-                                        @if (acty.activityDate.HasValue) { @Convert.ToDateTime(acty.activityDate).ToShortDateString();}
+                                        @if (acty.activityDate.HasValue) { @acty.activityDate.Value.ToString("dd/MM yyyy");}
                                     </td>
                                 </tr>
                             }
@@ -136,7 +136,7 @@
                                         <span class="badge">@reag.quantity</span>
 </td>
                                     <td>
-                                        @reag.createdDate
+                                        @reag.createdDate.Value.ToString("dd/MM yyyy")
                                     </td>
                                     <td>
                                         <span class="badge">@reag.qtySum</span>

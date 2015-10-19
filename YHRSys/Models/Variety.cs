@@ -17,6 +17,7 @@ namespace YHRSys.Models
         {
             this.varietyProcessFlows = new HashSet<VarietyProcessFlow>();
             this.activities = new HashSet<Activity>();
+            this.partnerActivities = new HashSet<PartnerActivity>();
         }
 
         [Key]
@@ -27,7 +28,7 @@ namespace YHRSys.Models
         public int varietyDefinitionId { get; set; }
 
         [Required(ErrorMessage = "Sample number should not be empty")]
-        [DisplayName("Sample No")]
+        [DisplayName("Batch Code")]
         public string sampleNumber { get; set; }
 
        // [Required(ErrorMessage = "Officer-in-Charge should not be empty")]
@@ -99,6 +100,8 @@ namespace YHRSys.Models
 
         public virtual ICollection<Activity> activities { get; set; }
 
+        public virtual ICollection<PartnerActivity> partnerActivities { get; set; }
+
         [ForeignKey("uomId")]
         public virtual Measurements uoms { get; set; }
 
@@ -119,7 +122,7 @@ namespace YHRSys.Models
             get
             {
                 if (varietyDefinition != null)
-                    return varietyDefinition.name + " - " + sampleNumber;
+                    return varietyDefinition.name + "/" + sampleNumber;
                 else if (species != null)
                     return sampleNumber  + " - {specie: " + species.name + "}";
                 else

@@ -16,4 +16,12 @@ Solution:
 [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
 public string AssigneeDetails{get; private set;}
 
+
+4. To add migration : run this command - add-migration name_of_migration_file then run update command to update the database - update-database
 Documented by Kenn
+
+5. If you are getting error: An exception of type 'System.InvalidOperationException' occurred in EntityFramework.dll but was not handled in user code.
+ The model backing the 'ApplicationDbContext' context has changed since the database was created. Consider using Code First Migrations to update the database
+ Solution: 
+ - add-migration name_of_migration_file_not_existing
+ - update-database

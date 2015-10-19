@@ -101,29 +101,29 @@ namespace YHRSys.Controllers
                 if (searchStartProcessDate != null && searchEndProcessDate != null)
                 {
                     varietyProcessFlow = varietyProcessFlow.Where(rg => (rg.variety.varietyDefinition.name.Contains(searchString)
-                                       || rg.variety.sampleNumber.Contains(searchString) || rg.form.Contains(searchString) || rg.user.LastName.Contains(searchString) || rg.user.FirstName.Contains(searchString)
-                                        || rg.rank.Contains(searchString) || rg.barcode.Contains(searchString)
+                                       || rg.variety.sampleNumber.Contains(searchString) || rg.form.name.Contains(searchString) || rg.user.LastName.Contains(searchString) || rg.user.FirstName.Contains(searchString)
+                                        || rg.rank.name.Contains(searchString) || rg.barcode.Contains(searchString)
                                          || rg.description.Contains(searchString)) && (rg.processDate >= (DateTime)searchStartProcessDate && rg.processDate <= (DateTime)searchEndProcessDate));
                 }
                 else if (searchStartProcessDate != null)
                 {
                     varietyProcessFlow = varietyProcessFlow.Where(rg => (rg.variety.varietyDefinition.name.Contains(searchString)
-                                          || rg.variety.sampleNumber.Contains(searchString) || rg.form.Contains(searchString) || rg.user.LastName.Contains(searchString) || rg.user.FirstName.Contains(searchString)
-                                        || rg.rank.Contains(searchString) || rg.barcode.Contains(searchString)
+                                          || rg.variety.sampleNumber.Contains(searchString) || rg.form.name.Contains(searchString) || rg.user.LastName.Contains(searchString) || rg.user.FirstName.Contains(searchString)
+                                        || rg.rank.name.Contains(searchString) || rg.barcode.Contains(searchString)
                                          || rg.description.Contains(searchString)) && (rg.processDate == (DateTime)searchStartProcessDate));
                 }
                 else if (searchEndProcessDate != null)
                 {
                     varietyProcessFlow = varietyProcessFlow.Where(rg => (rg.variety.varietyDefinition.name.Contains(searchString)
-                                          || rg.variety.sampleNumber.Contains(searchString) || rg.form.Contains(searchString) || rg.user.LastName.Contains(searchString) || rg.user.FirstName.Contains(searchString)
-                                        || rg.rank.Contains(searchString) || rg.barcode.Contains(searchString)
+                                          || rg.variety.sampleNumber.Contains(searchString) || rg.form.name.Contains(searchString) || rg.user.LastName.Contains(searchString) || rg.user.FirstName.Contains(searchString)
+                                        || rg.rank.name.Contains(searchString) || rg.barcode.Contains(searchString)
                                          || rg.description.Contains(searchString)) && (rg.processDate == (DateTime)searchEndProcessDate));
                 }
                 else
                 {
                     varietyProcessFlow = varietyProcessFlow.Where(rg => rg.variety.varietyDefinition.name.Contains(searchString)
-                                          || rg.variety.sampleNumber.Contains(searchString) || rg.form.Contains(searchString) || rg.user.LastName.Contains(searchString) || rg.user.FirstName.Contains(searchString)
-                                        || rg.rank.Contains(searchString) || rg.barcode.Contains(searchString)
+                                          || rg.variety.sampleNumber.Contains(searchString) || rg.form.name.Contains(searchString) || rg.user.LastName.Contains(searchString) || rg.user.FirstName.Contains(searchString)
+                                        || rg.rank.name.Contains(searchString) || rg.barcode.Contains(searchString)
                                          || rg.description.Contains(searchString));
                 }
             }
@@ -149,10 +149,10 @@ namespace YHRSys.Controllers
                     varietyProcessFlow = varietyProcessFlow.OrderByDescending(rg => rg.variety.sampleNumber).ThenBy(rg => rg.variety.varietyDefinition.name);
                     break;
                 case "form_desc":
-                    varietyProcessFlow = varietyProcessFlow.OrderByDescending(rg => rg.form);
+                    varietyProcessFlow = varietyProcessFlow.OrderByDescending(rg => rg.form.name);
                     break;
                 case "Form":
-                    varietyProcessFlow = varietyProcessFlow.OrderBy(rg => rg.form);
+                    varietyProcessFlow = varietyProcessFlow.OrderBy(rg => rg.form.name);
                     break;
                 case "oicname_desc":
                     varietyProcessFlow = varietyProcessFlow.OrderByDescending(rg => rg.user.LastName).ThenBy(rg => rg.user.FirstName);
@@ -167,10 +167,10 @@ namespace YHRSys.Controllers
                     varietyProcessFlow = varietyProcessFlow.OrderByDescending(rg => rg.processDate);
                     break;
                 case "rank_desc":
-                    varietyProcessFlow = varietyProcessFlow.OrderByDescending(rg => rg.rank);
+                    varietyProcessFlow = varietyProcessFlow.OrderByDescending(rg => rg.rank.name);
                     break;
                 case "Rank":
-                    varietyProcessFlow = varietyProcessFlow.OrderBy(rg => rg.rank);
+                    varietyProcessFlow = varietyProcessFlow.OrderBy(rg => rg.rank.name);
                     break;
                 case "quality_desc":
                     varietyProcessFlow = varietyProcessFlow.OrderByDescending(rg => rg.quality);
@@ -203,6 +203,22 @@ namespace YHRSys.Controllers
             return View(varietyProcessFlow.ToPagedList(pageNumber, pageSize));
             //var tblvarietyprocessflows = db.VarietyProcessFlows;//.Include(t => t.tblVariety);
             //return View(tblvarietyprocessflows.ToList());
+        }
+
+        // GET: /VarietyProcessFlow/
+        public ActionResult BarcodeDataList(string barcode)
+        {
+            var varietyProcessFlow = from r in db.VarietyProcessFlows select r;
+
+            if (!String.IsNullOrEmpty(barcode))
+            {
+                varietyProcessFlow = varietyProcessFlow.Where(rg => rg.variety.varietyDefinition.name.Contains(barcode)
+                                          || rg.variety.sampleNumber.Contains(barcode) || rg.form.name.Contains(barcode) || rg.user.LastName.Contains(barcode) || rg.user.FirstName.Contains(barcode)
+                                        || rg.rank.name.Contains(barcode) || rg.barcode.Contains(barcode)
+                                         || rg.description.Contains(barcode));
+            }
+            
+            return View(varietyProcessFlow.ToList());
         }
 
         List<string> GetPrinters()
@@ -267,8 +283,8 @@ namespace YHRSys.Controllers
             });
             ViewBag.varietyId = new SelectList(varieties, "varietyId", "description");
             ViewBag.userId = new SelectList(db.Users, "Id", "FullName");
-            ViewBag.form = listForm(null);
-            ViewBag.rank = listRank(null);
+            ViewBag.formId = new SelectList(db.Forms, "formId", "name");
+            ViewBag.rankId = new SelectList(db.Ranks, "rankId", "name");
             ViewBag.quality = listQuality(0);
             return View();
         }
@@ -279,7 +295,7 @@ namespace YHRSys.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, CanAddVarietyProcessFlow, VarietyProcessFlow")]
-        public ActionResult Create([Bind(Include="varietyId,form,processDate,userId,rank,description,quality")] VarietyProcessFlow tblvarietyprocessflow)
+        public ActionResult Create([Bind(Include="varietyId,formId,processDate,userId,rankId,description,quality")] VarietyProcessFlow tblvarietyprocessflow)
         {
             if (ModelState.IsValid)
             {
@@ -303,13 +319,32 @@ namespace YHRSys.Controllers
                         ModelState.AddModelError(string.Empty, "Selected Variety could not be located!");
                         return View(tblvarietyprocessflow);
                     }
-                    tblvarietyprocessflow.barcode = objbar.generateBarcode(variety.varietyDefinition.name, variety.sampleNumber, 
-                        tblvarietyprocessflow.rank);
-                    //
-                    tblvarietyprocessflow.barcodeImageUrl = objbar.getBarcodeImage(objbar.generateBarcode(variety.varietyDefinition.name, 
-                        variety.sampleNumber, tblvarietyprocessflow.rank),
-                        variety.varietyDefinition.name + variety.sampleNumber);
 
+                    //Get rank name    
+                    var rank = db.Ranks.Find(tblvarietyprocessflow.rankId);
+                    if (rank != null)
+                    {
+                        tblvarietyprocessflow.barcode = objbar.generateBarcode(variety.varietyDefinition.name, variety.sampleNumber);
+                        /*tblvarietyprocessflow.barcode = objbar.generateBarcode(variety.varietyDefinition.name, variety.sampleNumber,
+                            rank.name);*/
+                        //
+                        tblvarietyprocessflow.barcodeImageUrl = objbar.getBarcodeImage(objbar.generateBarcode(variety.varietyDefinition.name,
+                            variety.sampleNumber),
+                            variety.varietyDefinition.name + variety.sampleNumber);
+                        /*tblvarietyprocessflow.barcodeImageUrl = objbar.getBarcodeImage(objbar.generateBarcode(variety.varietyDefinition.name,
+                            variety.sampleNumber, rank.name),
+                            variety.varietyDefinition.name + variety.sampleNumber);*/
+                    }
+                    else
+                    {
+                        tblvarietyprocessflow.barcode = objbar.generateBarcode(variety.varietyDefinition.name, variety.sampleNumber);
+                        //tblvarietyprocessflow.barcode = objbar.generateBarcode(variety.varietyDefinition.name, variety.sampleNumber, "");
+                        //
+                        tblvarietyprocessflow.barcodeImageUrl = objbar.getBarcodeImage(objbar.generateBarcode(variety.varietyDefinition.name,
+                            variety.sampleNumber), variety.varietyDefinition.name + variety.sampleNumber);
+                        /*tblvarietyprocessflow.barcodeImageUrl = objbar.getBarcodeImage(objbar.generateBarcode(variety.varietyDefinition.name,
+                            variety.sampleNumber, ""), variety.varietyDefinition.name + variety.sampleNumber);*/
+                    }
                     db.VarietyProcessFlows.Add(tblvarietyprocessflow);
                     db.SaveChanges();
                 }
@@ -331,8 +366,8 @@ namespace YHRSys.Controllers
 
             ViewBag.varietyId = new SelectList(varieties, "varietyId", "description", tblvarietyprocessflow.varietyId);
             ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblvarietyprocessflow.userId);
-            ViewBag.form = listForm(tblvarietyprocessflow.form);
-            ViewBag.rank = listRank(tblvarietyprocessflow.rank);
+            ViewBag.formId = new SelectList(db.Forms, "formId", "name", tblvarietyprocessflow.formId);// listForm(tblvarietyprocessflow.formId);
+            ViewBag.rankId = new SelectList(db.Ranks, "rankId", "name", tblvarietyprocessflow.rankId);// listRank(tblvarietyprocessflow.rankId);
             ViewBag.quality = listQuality(tblvarietyprocessflow.quality);
             return View(tblvarietyprocessflow);
         }
@@ -359,8 +394,8 @@ namespace YHRSys.Controllers
 
             ViewBag.varietyId = new SelectList(varieties, "varietyId", "description", tblvarietyprocessflow.varietyId);
             ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblvarietyprocessflow.userId);
-            ViewBag.form = listForm(tblvarietyprocessflow.form);
-            ViewBag.rank = listRank(tblvarietyprocessflow.rank);
+            ViewBag.formId = new SelectList(db.Forms, "formId", "name", tblvarietyprocessflow.formId);// listForm(tblvarietyprocessflow.formId);
+            ViewBag.rankId = new SelectList(db.Ranks, "rankId", "name", tblvarietyprocessflow.rankId);// listRank(tblvarietyprocessflow.rankId);
             ViewBag.quality = listQuality(tblvarietyprocessflow.quality);
             ViewBag.barcode = tblvarietyprocessflow.barcodeImageUrl;
             return View(tblvarietyprocessflow);
@@ -372,7 +407,7 @@ namespace YHRSys.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, CanEditVarietyProcessFlow, VarietyProcessFlow")]
-        public ActionResult Edit([Bind(Include="processId,varietyId,form,processDate,userId,rank,description,quality")] VarietyProcessFlow tblvarietyprocessflow)
+        public ActionResult Edit([Bind(Include="processId,varietyId,formId,processDate,userId,rankId,description,quality")] VarietyProcessFlow tblvarietyprocessflow)
         {
             try
             {
@@ -387,10 +422,10 @@ namespace YHRSys.Controllers
 
                         var act = db.VarietyProcessFlows.Where(c => c.processId == tblvarietyprocessflow.processId).FirstOrDefault();
                         act.varietyId = tblvarietyprocessflow.varietyId;
-                        act.form = tblvarietyprocessflow.form;
+                        act.formId = tblvarietyprocessflow.formId;
                         act.processDate = tblvarietyprocessflow.processDate;
                         act.userId = tblvarietyprocessflow.userId;
-                        act.rank = tblvarietyprocessflow.rank;
+                        act.rankId = tblvarietyprocessflow.rankId;
                         act.quality = tblvarietyprocessflow.quality;
                         act.description = tblvarietyprocessflow.description;
 
@@ -408,13 +443,32 @@ namespace YHRSys.Controllers
                             ModelState.AddModelError(string.Empty, "Selected Variety could not be located!");
                             return View(tblvarietyprocessflow);
                         }
-                        act.barcode = objbar.generateBarcode(variety.varietyDefinition.name, variety.sampleNumber,
-                            tblvarietyprocessflow.rank);
-                        //
-                        act.barcodeImageUrl = objbar.getBarcodeImage(objbar.generateBarcode(variety.varietyDefinition.name,
-                            variety.sampleNumber, tblvarietyprocessflow.rank),
-                            variety.varietyDefinition.name + variety.sampleNumber);
 
+                        //Get rank object
+                        var rank = db.Ranks.Find(tblvarietyprocessflow.rankId);
+                        if (rank != null)
+                        {
+                            //act.barcode = objbar.generateBarcode(variety.varietyDefinition.name, variety.sampleNumber,                               rank.name);
+                            act.barcode = objbar.generateBarcode(variety.varietyDefinition.name,
+                                variety.sampleNumber);
+                            //
+                            //act.barcodeImageUrl = objbar.getBarcodeImage(objbar.generateBarcode(variety.varietyDefinition.name, variety.sampleNumber, rank.name),                       variety.varietyDefinition.name + variety.sampleNumber);
+                            act.barcodeImageUrl = objbar.getBarcodeImage(objbar.generateBarcode(variety.varietyDefinition.name, variety.sampleNumber),
+                                variety.varietyDefinition.name + variety.sampleNumber);
+                        }
+                        else
+                        {
+                            act.barcode = objbar.generateBarcode(variety.varietyDefinition.name, variety.sampleNumber);
+                            /*act.barcode = objbar.generateBarcode(variety.varietyDefinition.name, variety.sampleNumber,
+                                "");*/
+                            //
+                            act.barcodeImageUrl = objbar.getBarcodeImage(objbar.generateBarcode(variety.varietyDefinition.name,
+                                variety.sampleNumber),
+                                variety.varietyDefinition.name + variety.sampleNumber);
+                            /*act.barcodeImageUrl = objbar.getBarcodeImage(objbar.generateBarcode(variety.varietyDefinition.name,
+                                variety.sampleNumber, ""),
+                                variety.varietyDefinition.name + variety.sampleNumber);*/
+                        }
                         db.SaveChanges();
                     }
                     catch (DbUpdateConcurrencyException ex)
@@ -424,10 +478,10 @@ namespace YHRSys.Controllers
                         var clientValues = (VarietyProcessFlow)entry.Entity;
                         if (databaseValues.barcode != clientValues.barcode)
                             ModelState.AddModelError("Barcode", "Current value: " + databaseValues.barcode);
-                        if (databaseValues.form != clientValues.form)
-                            ModelState.AddModelError("Form", "Current value: " + databaseValues.form);
-                        if (databaseValues.rank != clientValues.rank)
-                            ModelState.AddModelError("Rank", "Current value: " + databaseValues.rank);
+                        if (databaseValues.formId != clientValues.formId)
+                            ModelState.AddModelError("Form", "Current value: " + databaseValues.form.name);
+                        if (databaseValues.rankId != clientValues.rankId)
+                            ModelState.AddModelError("Rank", "Current value: " + databaseValues.rank.name);
                         if (databaseValues.quality != clientValues.quality)
                             ModelState.AddModelError("Quality", "Current value: " + databaseValues.quality);
                         if (databaseValues.processDate != clientValues.processDate)
@@ -440,7 +494,8 @@ namespace YHRSys.Controllers
                           + "the Save button again. Otherwise click the Back to List hyperlink.");
 
                         tblvarietyprocessflow.Timestamp = databaseValues.Timestamp;
-                        return View();
+                        ViewBag.barcode = tblvarietyprocessflow.barcodeImageUrl;
+                        return View(tblvarietyprocessflow);
                     }
                     return RedirectToAction("Index");
                 }
@@ -450,15 +505,16 @@ namespace YHRSys.Controllers
                     varietyId = v.varietyId,
                     description = string.Format("{0}--{1}", v.varietyDefinition.name, v.sampleNumber)
                 });
+
                 ViewBag.varietyId = new SelectList(varieties, "varietyId", "description", tblvarietyprocessflow.varietyId);
                 ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblvarietyprocessflow.userId);
-                ViewBag.form = listForm(tblvarietyprocessflow.form);
-                ViewBag.rank = listRank(tblvarietyprocessflow.rank);
+                ViewBag.formId = new SelectList(db.Forms, "formId", "name", tblvarietyprocessflow.formId);// listForm(tblvarietyprocessflow.formId);
+                ViewBag.rankId = new SelectList(db.Ranks, "rankId", "name", tblvarietyprocessflow.rankId);// listRank(tblvarietyprocessflow.rankId);
                 ViewBag.quality = listQuality(tblvarietyprocessflow.quality);
                 ViewBag.barcode = tblvarietyprocessflow.barcodeImageUrl;
                 return View(tblvarietyprocessflow);
             }
-            catch
+            catch(Exception ex)
             {
                 var varieties = db.Varieties.ToList()
                 .Select(v => new
@@ -466,15 +522,17 @@ namespace YHRSys.Controllers
                     varietyId = v.varietyId,
                     description = string.Format("{0}--{1}", v.varietyDefinition.name, v.sampleNumber)
                 });
-                
+
+                ModelState.AddModelError(string.Empty, "Error occurred: " + ex.Message);
+
                 ViewBag.varietyId = new SelectList(varieties, "varietyId", "description", tblvarietyprocessflow.varietyId);
                 ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblvarietyprocessflow.userId);
 
-                ViewBag.form = listForm(tblvarietyprocessflow.form);
-                ViewBag.rank = listRank(tblvarietyprocessflow.rank);
+                ViewBag.formId = new SelectList(db.Forms, "formId", "name", tblvarietyprocessflow.formId);// listForm(tblvarietyprocessflow.formId);
+                ViewBag.rankId = new SelectList(db.Ranks, "rankId", "name", tblvarietyprocessflow.rankId);// listRank(tblvarietyprocessflow.rankId);
                 ViewBag.quality = listQuality(tblvarietyprocessflow.quality);
                 ViewBag.barcode = tblvarietyprocessflow.barcodeImageUrl;
-                return View();
+                return View(tblvarietyprocessflow);
             }
         }
 
@@ -544,10 +602,17 @@ namespace YHRSys.Controllers
         {
             if (copies > 1)
             {
-                var query = from pa in db.VarietyProcessFlows.Where(pa => pa.processId == id)
-                            select new
+                var query = from pa in db.VarietyProcessFlows.AsEnumerable().Where(pa => pa.processId == id)
+                            select new CustomVarietyProcessFlow
                                                        {
-                                                           barcode = pa.barcode
+                                                           barcode = pa.barcode,
+                                                           description = pa.description,
+                                                           OiC = pa.user.FirstName + " " + pa.user.LastName,
+                                                           processDate = pa.processDate.HasValue ? pa.processDate.Value.ToString("dd/MM/yyyy") : String.Empty,
+                                                           variety = pa.variety.varietyDefinition.name,
+                                                           form = pa.form.name,
+                                                           rank = pa.rank.name,
+                                                           barcodeImageUrl = pa.barcodeImageUrl.ToString()
                                                        };
 
                 List<CustomVarietyProcessFlow> customVPF = new List<CustomVarietyProcessFlow>();
@@ -557,6 +622,12 @@ namespace YHRSys.Controllers
                     foreach (var q in query) { 
                         CustomVarietyProcessFlow cvpf = new CustomVarietyProcessFlow();
                         cvpf.barcode = q.barcode;
+                        cvpf.description = q.description;
+                        cvpf.processDate = String.Format("{0:d}",q.processDate);
+                        cvpf.rank = q.rank;
+                        cvpf.form = q.form;
+                        cvpf.OiC = q.OiC;
+                        cvpf.variety = q.variety;
                         customVPF.Add(cvpf);
                     }
                 }
@@ -608,9 +679,9 @@ namespace YHRSys.Controllers
                            {
                                variety = pa.variety.varietyDefinition.name,
                                OiC = pa.user.FirstName + " " + pa.user.LastName,
-                               form = pa.form,
-                               processDate = pa.processDate.HasValue ? pa.processDate.Value.ToString("dd/MM/yyyy") : String.Empty,
-                               rank = pa.rank,
+                               form = pa.form.name,
+                               processDate = String.Format("{0:d}", pa.processDate),//.HasValue ? pa.processDate.Value.ToString("dd/MM/yyyy") : String.Empty,
+                               rank = pa.rank.name,
                                barcode = pa.barcode,
                                barcodeImageUrl = Convert.ToString(pa.barcodeImageUrl),
                                description = pa.description
@@ -933,29 +1004,29 @@ namespace YHRSys.Controllers
                     if (searchStartProcessDate != null && searchEndProcessDate != null)
                     {
                         varietyProcessFlow = varietyProcessFlow.Where(rg => (rg.variety.varietyDefinition.name.Contains(searchString)
-                                           || rg.variety.sampleNumber.Contains(searchString) || rg.form.Contains(searchString) || rg.user.LastName.Contains(searchString) || rg.user.FirstName.Contains(searchString)
-                                            || rg.rank.Contains(searchString) || rg.barcode.Contains(searchString)
+                                           || rg.variety.sampleNumber.Contains(searchString) || rg.form.name.Contains(searchString) || rg.user.LastName.Contains(searchString) || rg.user.FirstName.Contains(searchString)
+                                            || rg.rank.name.Contains(searchString) || rg.barcode.Contains(searchString)
                                              || rg.description.Contains(searchString)) && (rg.processDate >= (DateTime)searchStartProcessDate && rg.processDate <= (DateTime)searchEndProcessDate));
                     }
                     else if (searchStartProcessDate != null)
                     {
                         varietyProcessFlow = varietyProcessFlow.Where(rg => (rg.variety.varietyDefinition.name.Contains(searchString)
-                                              || rg.variety.sampleNumber.Contains(searchString) || rg.form.Contains(searchString) || rg.user.LastName.Contains(searchString) || rg.user.FirstName.Contains(searchString)
-                                            || rg.rank.Contains(searchString) || rg.barcode.Contains(searchString)
+                                              || rg.variety.sampleNumber.Contains(searchString) || rg.form.name.Contains(searchString) || rg.user.LastName.Contains(searchString) || rg.user.FirstName.Contains(searchString)
+                                            || rg.rank.name.Contains(searchString) || rg.barcode.Contains(searchString)
                                              || rg.description.Contains(searchString)) && (rg.processDate == (DateTime)searchStartProcessDate));
                     }
                     else if (searchEndProcessDate != null)
                     {
                         varietyProcessFlow = varietyProcessFlow.Where(rg => (rg.variety.varietyDefinition.name.Contains(searchString)
-                                              || rg.variety.sampleNumber.Contains(searchString) || rg.form.Contains(searchString) || rg.user.LastName.Contains(searchString) || rg.user.FirstName.Contains(searchString)
-                                            || rg.rank.Contains(searchString) || rg.barcode.Contains(searchString)
+                                              || rg.variety.sampleNumber.Contains(searchString) || rg.form.name.Contains(searchString) || rg.user.LastName.Contains(searchString) || rg.user.FirstName.Contains(searchString)
+                                            || rg.rank.name.Contains(searchString) || rg.barcode.Contains(searchString)
                                              || rg.description.Contains(searchString)) && (rg.processDate == (DateTime)searchEndProcessDate));
                     }
                     else
                     {
                         varietyProcessFlow = varietyProcessFlow.Where(rg => rg.variety.varietyDefinition.name.Contains(searchString)
-                                              || rg.variety.sampleNumber.Contains(searchString) || rg.form.Contains(searchString) || rg.user.LastName.Contains(searchString) || rg.user.FirstName.Contains(searchString)
-                                            || rg.rank.Contains(searchString) || rg.barcode.Contains(searchString)
+                                              || rg.variety.sampleNumber.Contains(searchString) || rg.form.name.Contains(searchString) || rg.user.LastName.Contains(searchString) || rg.user.FirstName.Contains(searchString)
+                                            || rg.rank.name.Contains(searchString) || rg.barcode.Contains(searchString)
                                              || rg.description.Contains(searchString));
                     }
                 }
@@ -1001,6 +1072,7 @@ namespace YHRSys.Controllers
                         CustomVarietyProcessFlow cvpf = new CustomVarietyProcessFlow();
                         cvpf.barcode = q.barcode;//Regex.Match(q.barcode, @"\d+").Value;
                         cvpf.processId = q.processId;
+                        cvpf.processDate = (q.processDate.HasValue)? q.processDate.ToString() : null;
                         customVPF.Add(cvpf);
                     }
                 }
@@ -1013,6 +1085,7 @@ namespace YHRSys.Controllers
                     CustomVarietyProcessFlow cvpf = new CustomVarietyProcessFlow();
                     cvpf.barcode = q.barcode;//Regex.Match(q.barcode, @"\d+").Value;
                     cvpf.processId = q.processId;
+                    cvpf.processDate = (q.processDate.HasValue) ? q.processDate.ToString() : null;
                     customVPF.Add(cvpf);
                 }
             }

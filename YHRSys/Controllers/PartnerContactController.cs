@@ -22,6 +22,9 @@ namespace YHRSys.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         SelectedValue selVal = new SelectedValue();
+        AccessRoleCheck accessRoleCheck = new AccessRoleCheck();
+        string[] groups = new string[] { "Partner" };
+
 
         private List<SelectListItem> listTitle(string title)
         {
@@ -49,8 +52,14 @@ namespace YHRSys.Controllers
         }
 
         // GET: /PartnerContact/
+        [Authorize(Roles = "Admin, CanViewPartnerContact, CanViewOwnPartnerContact, PartnerContact")]
         public ActionResult Index(string sortOrder, string currentFilter, string currentStartDateFilter, string currentEndDateFilter, string searchString, DateTime? searchStartCreatedDate, DateTime? searchEndCreatedDate, int? page)
         {
+            string perms = "CanViewOwnPartnerContact";
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            ApplicationUser accessUser = manager.FindById(User.Identity.GetUserId());
+            Boolean OwnAccess = accessRoleCheck.checkOwnPerm(groups, accessUser, perms);
+
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.ContactSortParm = sortOrder == "Contact" ? "contact_desc" : "Contact";
@@ -141,6 +150,11 @@ namespace YHRSys.Controllers
                 }
             }
 
+            if (OwnAccess)
+            {
+                partners = partners.Where(rg => rg.createdBy == accessUser.UserName);
+            }
+
             switch (sortOrder)
             {
                 case "name_desc":
@@ -181,14 +195,25 @@ namespace YHRSys.Controllers
         }
 
         // GET: /PartnerContact/Details/5
-        [Authorize(Roles = "Admin, CanViewPartnerContact, PartnerContact")]
+        [Authorize(Roles = "Admin, CanViewPartnerContact, CanViewOwnPartnerContact, PartnerContact")]
         public ActionResult Details(long? id)
         {
+            string perms = "CanViewOwnPartnerContact";
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            ApplicationUser accessUser = manager.FindById(User.Identity.GetUserId());
+            Boolean OwnAccess = accessRoleCheck.checkOwnPerm(groups, accessUser, perms);
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             PartnerContact tblpartnercontact = db.PartnerContactPersons.Find(id);
+
+            if (OwnAccess)
+            {
+                tblpartnercontact = (PartnerContact)db.PartnerContactPersons.Where(p => p.partnerId == id && p.createdBy == accessUser.UserName);
+            }
+
             if (tblpartnercontact == null)
             {
                 return HttpNotFound();
@@ -197,10 +222,21 @@ namespace YHRSys.Controllers
         }
 
         // GET: /PartnerContact/Create
-        [Authorize(Roles = "Admin, CanAddPartnerContact, PartnerContact")]
+        [Authorize(Roles = "Admin, CanAddPartnerContact, CanAddOwnPartnerContact, PartnerContact")]
         public ActionResult Create()
         {
-            ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name");
+            string perms = "CanAddOwnPartnerContact";
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            ApplicationUser accessUser = manager.FindById(User.Identity.GetUserId());
+            Boolean OwnAccess = accessRoleCheck.checkOwnPerm(groups, accessUser, perms);
+
+            if (OwnAccess)
+            {
+                ViewBag.partnerId = new SelectList(db.Partners.Where(p=>p.partnerId == accessUser.partnerId), "partnerId", "name");
+            }
+            else {
+                ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name");
+            }
             ViewBag.personTitle = listTitle(null);
             ViewBag.gender = listGender(null);
             return View();
@@ -211,16 +247,27 @@ namespace YHRSys.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, CanAddPartnerContact, PartnerContact")]
+        [Authorize(Roles = "Admin, CanAddPartnerContact, CanAddOwnPartnerContact, PartnerContact")]
         public ActionResult Create([Bind(Include = "partnerId,firstName,otherNames,lastName,gender,phoneNumber,emailAddress,contactAddress,contactCity,contactState,contactCountry,webAddress,geoLongitude,geoLatitude,personTitle")] PartnerContact tblpartnercontact)
         {
+            string perms = "CanViewOwnPartnerContact";
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            ApplicationUser currentUser = manager.FindById(User.Identity.GetUserId());
+            Boolean OwnAccess = accessRoleCheck.checkOwnPerm(groups, currentUser, perms);
+
             if (ModelState.IsValid)
             {
                 var r = db.PartnerContactPersons.FirstOrDefault(p => p.partnerId == tblpartnercontact.partnerId && p.firstName == tblpartnercontact.firstName && p.lastName == tblpartnercontact.lastName && p.emailAddress == tblpartnercontact.emailAddress);
+
+                if (OwnAccess)
+                {
+                    r = db.PartnerContactPersons.FirstOrDefault(p => p.createdBy == currentUser.UserName && p.partnerId == tblpartnercontact.partnerId && p.firstName == tblpartnercontact.firstName && p.lastName == tblpartnercontact.lastName && p.emailAddress == tblpartnercontact.emailAddress);
+                }
+
                 if (r == null)
                 {
-                    var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-                    var currentUser = manager.FindById(User.Identity.GetUserId());
+                    //var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                    //var currentUser = manager.FindById(User.Identity.GetUserId());
 
                     if (currentUser != null)
                         tblpartnercontact.createdBy = currentUser.UserName;
@@ -234,8 +281,18 @@ namespace YHRSys.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Partner contact already registered: " + tblpartnercontact.partner.name + ", " + tblpartnercontact.firstName + " " + tblpartnercontact.lastName);
-                    ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartnercontact.partnerId);
+                    ModelState.AddModelError(string.Empty, "Partner contact already registered: " + r.partner.name + ", " + tblpartnercontact.firstName + " " + tblpartnercontact.lastName);
+                    //ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartnercontact.partnerId);
+
+                    if (OwnAccess)
+                    {
+                        ViewBag.partnerId = new SelectList(db.Partners.Where(p => p.partnerId == currentUser.partnerId), "partnerId", "name", tblpartnercontact.partnerId);
+                    }
+                    else
+                    {
+                        ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartnercontact.partnerId);
+                    }
+
                     ViewBag.personTitle = listTitle(tblpartnercontact.personTitle);
                     ViewBag.gender = listGender(tblpartnercontact.gender);
                     return View(tblpartnercontact);
@@ -243,26 +300,54 @@ namespace YHRSys.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartnercontact.partnerId);
+            //ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartnercontact.partnerId);
+            if (OwnAccess)
+            {
+                ViewBag.partnerId = new SelectList(db.Partners.Where(p => p.partnerId == currentUser.partnerId), "partnerId", "name", tblpartnercontact.partnerId);
+            }
+            else
+            {
+                ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartnercontact.partnerId);
+            }
             ViewBag.personTitle = listTitle(tblpartnercontact.personTitle);
             ViewBag.gender = listGender(tblpartnercontact.gender);
             return View(tblpartnercontact);
         }
 
         // GET: /PartnerContact/Edit/5
-        [Authorize(Roles = "Admin, CanEditPartnerContact, PartnerContact")]
+        [Authorize(Roles = "Admin, CanEditPartnerContact, CanEditOwnPartnerContact, PartnerContact")]
         public ActionResult Edit(long? id)
         {
+            string perms = "CanEditOwnPartnerContact";
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            ApplicationUser accessUser = manager.FindById(User.Identity.GetUserId());
+            Boolean OwnAccess = accessRoleCheck.checkOwnPerm(groups, accessUser, perms);
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             PartnerContact tblpartnercontact = db.PartnerContactPersons.Find(id);
+
+            if (OwnAccess)
+            {
+                tblpartnercontact = (PartnerContact)db.PartnerContactPersons.Where(p => p.partnerId == id && p.createdBy == accessUser.UserName);
+            }
+
             if (tblpartnercontact == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartnercontact.partnerId);
+
+            if (OwnAccess)
+            {
+                ViewBag.partnerId = new SelectList(db.Partners.Where(p => p.partnerId == accessUser.partnerId), "partnerId", "name", tblpartnercontact.partnerId);
+            }
+            else
+            {
+                ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartnercontact.partnerId);
+            }
+
             ViewBag.personTitle = listTitle(tblpartnercontact.personTitle);
             ViewBag.gender = listGender(tblpartnercontact.gender);
             return View(tblpartnercontact);
@@ -273,11 +358,16 @@ namespace YHRSys.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, CanEditPartnerContact, PartnerContact")]
+        [Authorize(Roles = "Admin, CanEditPartnerContact, CanEditOwnPartnerContact, PartnerContact")]
         public ActionResult Edit([Bind(Include = "contactId,partnerId,firstName,otherNames,lastName,gender,phoneNumber,emailAddress,contactAddress,contactCity,contactState,contactCountry,webAddress,geoLongitude,geoLatitude,personTitle")] PartnerContact tblpartnercontact)
         {
+            string perms = "CanEditOwnPartnerContact";
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            var currentUser = manager.FindById(User.Identity.GetUserId());
+            ApplicationUser currentUser = manager.FindById(User.Identity.GetUserId());
+            Boolean OwnAccess = accessRoleCheck.checkOwnPerm(groups, currentUser, perms);
+
+            //var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            //var currentUser = manager.FindById(User.Identity.GetUserId());
 
             if (ModelState.IsValid)
             {
@@ -286,6 +376,12 @@ namespace YHRSys.Controllers
                 {
                     //db.Entry(tbllocationuser).State = EntityState.Modified;
                     var r = db.PartnerContactPersons.Where(c => c.contactId == tblpartnercontact.contactId).FirstOrDefault();
+
+                    if (OwnAccess)
+                    {
+                        r = (PartnerContact)db.PartnerContactPersons.Where(p => p.contactId == tblpartnercontact.contactId && p.createdBy == currentUser.UserName);
+                    }
+
                     r.partnerId = tblpartnercontact.partnerId;
                     r.personTitle = tblpartnercontact.personTitle;
                     r.otherNames = tblpartnercontact.otherNames;
@@ -329,7 +425,15 @@ namespace YHRSys.Controllers
                       + "the Save button again. Otherwise click the Back to List hyperlink.");
 
                     tblpartnercontact.Timestamp = databaseValues.Timestamp;
-                    ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartnercontact.partnerId);
+                    //ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartnercontact.partnerId);
+                    if (OwnAccess)
+                    {
+                        ViewBag.partnerId = new SelectList(db.Partners.Where(p => p.partnerId == currentUser.partnerId), "partnerId", "name", tblpartnercontact.partnerId);
+                    }
+                    else
+                    {
+                        ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartnercontact.partnerId);
+                    }
                     ViewBag.personTitle = listTitle(tblpartnercontact.personTitle);
                     ViewBag.gender = listGender(tblpartnercontact.gender);
                     return View();
@@ -337,28 +441,55 @@ namespace YHRSys.Controllers
                 catch (Exception e)
                 {
                     ModelState.AddModelError(string.Empty, e.Message);
-                    ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartnercontact.partnerId);
+                    //ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartnercontact.partnerId);
+                    if (OwnAccess)
+                    {
+                        ViewBag.partnerId = new SelectList(db.Partners.Where(p => p.partnerId == currentUser.partnerId), "partnerId", "name", tblpartnercontact.partnerId);
+                    }
+                    else
+                    {
+                        ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartnercontact.partnerId);
+                    }
                     ViewBag.personTitle = listTitle(tblpartnercontact.personTitle);
                     ViewBag.gender = listGender(tblpartnercontact.gender);
                     return View();
                 }
                 return RedirectToAction("Index");
             }
-            ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartnercontact.partnerId);
+            //ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartnercontact.partnerId);
+            if (OwnAccess)
+            {
+                ViewBag.partnerId = new SelectList(db.Partners.Where(p => p.partnerId == currentUser.partnerId), "partnerId", "name", tblpartnercontact.partnerId);
+            }
+            else
+            {
+                ViewBag.partnerId = new SelectList(db.Partners, "partnerId", "name", tblpartnercontact.partnerId);
+            }
             ViewBag.personTitle = listTitle(tblpartnercontact.personTitle);
             ViewBag.gender = listGender(tblpartnercontact.gender);
             return View(tblpartnercontact);
         }
 
         // GET: /PartnerContact/Delete/5
-        [Authorize(Roles = "Admin, CanDeletePartnerContact, PartnerContact")]
+        [Authorize(Roles = "Admin, CanDeletePartnerContact, CanDeleteOwnPartnerContact, PartnerContact")]
         public ActionResult Delete(long? id)
         {
+            string perms = "CanDeleteOwnPartnerContact";
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            ApplicationUser currentUser = manager.FindById(User.Identity.GetUserId());
+            Boolean OwnAccess = accessRoleCheck.checkOwnPerm(groups, currentUser, perms);
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             PartnerContact tblpartnercontact = db.PartnerContactPersons.Find(id);
+
+            if (OwnAccess)
+            {
+                tblpartnercontact = (PartnerContact)db.PartnerContactPersons.Where(p => p.contactId == id && p.createdBy == currentUser.UserName);
+            }
+
             if (tblpartnercontact == null)
             {
                 return HttpNotFound();
@@ -369,10 +500,21 @@ namespace YHRSys.Controllers
         // POST: /PartnerContact/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, CanDeletePartnerContact, PartnerContact")]
+        [Authorize(Roles = "Admin, CanDeletePartnerContact, CanDeleteOwnPartnerContact, PartnerContact")]
         public ActionResult DeleteConfirmed(long id)
         {
+            string perms = "CanDeleteOwnPartnerContact";
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            ApplicationUser currentUser = manager.FindById(User.Identity.GetUserId());
+            Boolean OwnAccess = accessRoleCheck.checkOwnPerm(groups, currentUser, perms);
+
             PartnerContact tblpartnercontact = db.PartnerContactPersons.Find(id);
+
+            if (OwnAccess)
+            {
+                tblpartnercontact = (PartnerContact)db.PartnerContactPersons.Where(p => p.contactId == id && p.createdBy == currentUser.UserName);
+            }
+            
             db.PartnerContactPersons.Remove(tblpartnercontact);
             db.SaveChanges();
             return RedirectToAction("Index");

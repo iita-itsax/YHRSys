@@ -20,6 +20,9 @@
         <th>
             @Html.DisplayNameFor(model => model.Email)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.partnerId)
+        </th>
         <th></th>
     </tr>
 
@@ -38,9 +41,20 @@
             @Html.DisplayFor(modelItem => item.Email)
         </td>
         <td>
+            @{
+                if (item.partner != null)
+                {
+                    @Html.DisplayFor(modelItem => item.partner.name);
+                }
+                else {
+                     @:Unspecified
+                }
+            }
+        </td>
+        <td>
             @Html.ActionLink("Edit", "Edit", new { id = item.UserName }) |
             @Html.ActionLink("Groups", "UserGroups", new { id = item.UserName }) |
-            @Html.ActionLink("Effective Permissions", "UserPermissions", new { id = item.UserName }) ||| 
+            @Html.ActionLink("Effective Permissions", "UserPermissions", new { id = item.UserName }) |  
             @Html.ActionLink("Delete", "Delete", new { id = item.UserName })
         </td>
     </tr>

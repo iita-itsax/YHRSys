@@ -439,6 +439,33 @@ namespace YHRSys.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        public PartialViewResult WeeklyActivityFullDescription(int? id)
+        {
+
+            if (id == null)
+            {
+                return PartialView(HttpStatusCode.BadRequest);
+            }
+            WeeklyActivityLog weeklyactivitylog = db.WeeklyActivityLogs.Find(id);
+            //string html = "<strong>Weekly Activity Full Description</strong><br/>" + weeklyactivitylog.description.ToString();
+            //ViewBag.Html = html;
+            return PartialView("FullDescriptionResult", weeklyactivitylog);
+        }
+
+        /*[HttpPost]
+        public JsonResult WeeklyActivityFullDescription(int? id) {
+
+            if (id == null)
+            {
+                return Json(new { msg = HttpStatusCode.BadRequest, ok = false });
+            }
+            WeeklyActivityLog weeklyactivitylog = db.WeeklyActivityLogs.Find(id);
+            HtmlString html = new HtmlString("<strong>Weekly Activity Full Description</strong><br/>" + weeklyactivitylog.description.ToString());
+            return Json(new { fullDescription = html, ok = true });
+        }
+        */
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

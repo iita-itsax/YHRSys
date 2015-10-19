@@ -5,6 +5,96 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#divFullDescription").hide("slow");
+
+            if ($("#activityLogId").val() != '') {
+                var achId = $("#activityLogId").val();
+                $.ajax({
+                    type: "POST",
+                    url: "/ActivityAchievement/WeeklyActivityFullDescription/" + achId,
+                    data: { id: achId },
+                    cache: false,
+                    dataType: "html",
+                    beforeSend: function () {
+                        $('#divFullDescription').html('<div class="loading"><img src="../Content/images/spinner.gif" alt="Loading..." /></div>');
+                    },
+                    success: function (data, textStatus, xMLHttpRequest) {
+                        //if (data.ok) {
+                            $("#divFullDescription").fadeIn("slow");
+                            $("#divFullDescription").html(data);//"/SiteContent";
+                        //} else
+                        //    if (achId != '') alert(data);
+                    },
+                    error: function (data, textStatus, xMLHttpRequest) {
+                        alert(data + ', ' + xMLHttpRequest);
+                        $("#divFullDescription").html("");
+                        $("#divFullDescription").fadeOut("slow");
+                    }
+                    /*success: function (data, textStatus, xMLHttpRequest) {
+                        if (data.ok) {
+                            $("#divFullDescription").fadeIn("slow");
+                            $("#divFullDescription").html(data.fullDescription);//"/SiteContent";
+                        } else
+                            if (achId != '') alert(data.msg);
+                    },
+                    error: function (data, textStatus, xMLHttpRequest) {
+                        alert(data.msg + ', ' + textStatus);
+                    }*/
+                });
+            } else {
+                $("#divFullDescription").html("");
+                $("#divFullDescription").fadeOut("slow");
+            }
+        });
+
+        $("#activityLogId").change(function(event) {
+            var achId = $(this).val();
+            //$("#divFullDescription").fadeOut("slow");
+            $.ajax({
+                type: "POST",
+                url: "/ActivityAchievement/WeeklyActivityFullDescription/" + achId,
+                data: { id: achId },
+                cache: false,
+                dataType: "html",
+                beforeSend:function(){
+                    $('#divFullDescription').html('<div class="loading"><img src="../Content/images/spinner.gif" alt="Loading..." /></div>');
+                },
+                success: function (data, textStatus, xMLHttpRequest) {
+                    //if (data.ok) {
+                        $("#divFullDescription").fadeIn("slow");
+                        $("#divFullDescription").html(data);
+                    //} else {
+                    //    $("#divFullDescription").html("");
+                    //    $("#divFullDescription").fadeOut("slow");
+                    //    if(achId!='') alert(data);
+                   // }
+                },
+                error: function (data, textStatus, xMLHttpRequest) {
+                    alert(data + ', ' + xMLHttpRequest);
+                    $("#divFullDescription").html("");
+                    $("#divFullDescription").fadeOut("slow");
+                }
+                /*success: function (data, textStatus, xMLHttpRequest) {
+                    if (data.ok) {
+                        $("#divFullDescription").fadeIn("slow");
+                        $("#divFullDescription").html(data.fullDescription);
+                    } else {
+                        $("#divFullDescription").html("");
+                        $("#divFullDescription").fadeOut("slow");
+                        if(achId!='') alert(data.msg);
+                    }
+                },
+                error: function (data, textStatus, xMLHttpRequest) {
+                    alert(data.msg + ', ' + textStatus);
+                }*/
+            });
+        });
+    </script>
+}
+
 <h2>Edit</h2>
 
 @using (Html.BeginForm())
@@ -44,6 +134,11 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10 alert alert-info" id="divFullDescription">
             </div>
         </div>
     </div>

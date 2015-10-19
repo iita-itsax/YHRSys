@@ -80,7 +80,10 @@
                     @Html.DisplayFor(modelItem => item.variety.varietyDefinition.name) - @Html.DisplayFor(modelItem => item.variety.sampleNumber)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.form)
+                    @if (item.form != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.form.name)
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.processDate)
@@ -89,7 +92,10 @@
                     @Html.DisplayFor(modelItem => item.user.FullName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.rank)
+                    @if (item.rank != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.rank.name)
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.quality)

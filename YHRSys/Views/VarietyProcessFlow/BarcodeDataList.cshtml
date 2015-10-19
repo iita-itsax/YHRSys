@@ -1,0 +1,100 @@
+﻿@model IEnumerable<YHRSys.Models.VarietyProcessFlow>
+
+@{
+    ViewBag.Title = "Barcode Data List";
+}
+
+<h2>Barcode Data List</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.form.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.rank.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.user.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.variety.sampleNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.processDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.barcode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.barcodeImageUrl)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.quality)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.updatedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.createdBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.updatedBy)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @if (item.form != null)
+            {
+                @Html.DisplayFor(modelItem => item.form.name)
+            }
+        </td>
+        <td>
+            @if (item.rank != null)
+            {
+                @Html.DisplayFor(modelItem => item.rank.name)
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.user.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.variety.sampleNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.processDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.barcode)
+        </td>
+        <td>
+            @if (item.barcodeImageUrl != null)
+            {
+                var imageUrl = Convert.ToBase64String((byte[])item.barcodeImageUrl);
+                <img src="data:image/jpg;base64,@imageUrl" />
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.quality)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.processId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.processId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.processId })
+        </td>
+    </tr>
+}
+
+</table>

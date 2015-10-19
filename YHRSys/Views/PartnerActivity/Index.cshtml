@@ -47,11 +47,22 @@
             </th>
 
             <th>
-                @Html.ActionLink("Item", "Index", new { sortOrder = ViewBag.ReagentSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+                @Html.ActionLink("Reagent", "Index", new { sortOrder = ViewBag.ReagentSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
             </th>
             <th>
-                @Html.ActionLink("Qty", "Index", new { sortOrder = ViewBag.QuantitySortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter }, new { title = "Reagent Quantity" })
+                @Html.ActionLink("RgQty", "Index", new { sortOrder = ViewBag.QuantitySortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter }, new { title = "Reagent Quantity" })
             </th>
+
+            <th>
+                @Html.ActionLink("Variety", "Index", new { sortOrder = ViewBag.VarietySortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                <span title="Total Variety Given">TVG</span>
+            </th>
+            <th>
+                <span title="Total Variety Available">TVA</span>
+            </th>
+
             <th>
                 @Html.ActionLink("OiC", "Index", new { sortOrder = ViewBag.OiCNameSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter }, new { title = "Officer-in-Charge" })
             </th>
@@ -71,7 +82,7 @@
                 <span title="Tubers Given">TG</span>
             </th>
             <th>
-                <span title="Seeds Given">SG</span>
+                <span title="Seedlings Given">SG</span>
             </th>
             <th>
                 <span title="TC Plantlets Available">TCPA</span>
@@ -85,13 +96,12 @@
             <th>
                 <span title="Seeds Available">SA</span>
             </th>
-            <th></th>
         </tr>
         }
         else
         {
         <tr>
-            <td colspan="8">
+            <td colspan="18">
                 <em>No records found!</em>
             </td>
         </tr>
@@ -111,6 +121,19 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.reagentQty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.variety.varietyDefinition.name)
+                </td>
+                @{
+                    var varQtyGiven = item.tcPlantletsGiven + item.bioreactorplantsGiven + item.tubersGiven + item.seedsGiven;
+                    var varQtyAvailable = item.tcPlantletsAvailable + item.tibPlantletsAvailable + item.tubersAvailable + item.seedsAvailable;
+                }
+                <td>
+                    @varQtyGiven
+                </td>
+                <td>
+                    @varQtyAvailable
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.oic.FullName)
@@ -145,10 +168,13 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.seedsAvailable)
                 </td>
-                <td>
+            </tr>
+            <tr>
+                <td colspan="18" height="8px">
                     @Html.ActionLink("Edit", "Edit", new { id = item.partnerActivityId }) |
                     @Html.ActionLink("Details", "Details", new { id = item.partnerActivityId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.partnerActivityId })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.partnerActivityId }) | 
+                    @Html.ActionLink("Add Comments/Report", "Details", new { id = item.partnerActivityId })
                 </td>
             </tr>
         }

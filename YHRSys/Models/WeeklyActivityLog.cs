@@ -65,7 +65,10 @@ namespace YHRSys.Models
         {
             get
             {
-                return description + " (" + startDate.Value.ToString("dd/MM/yyyy") + " - " + endDate.Value.ToString("dd/MM/yyyy") +")";
+                if (description.Length > 100)
+                    return description.Substring(0, 99) + "... | " + startDate.Value.ToString("dd/MM/yyyy") + " - " + endDate.Value.ToString("dd/MM/yyyy");
+                else
+                    return description + " | " + startDate.Value.ToString("dd/MM/yyyy") + " - " + endDate.Value.ToString("dd/MM/yyyy");
             }
         }
     }

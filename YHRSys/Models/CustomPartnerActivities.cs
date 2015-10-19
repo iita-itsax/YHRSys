@@ -11,6 +11,11 @@ namespace YHRSys.Models
         public String GiverName { set; get; }
         public String ReagentName { set; get; }
         public Decimal ReagentQty { set; get; }
+
+        public String VarietyName { set; get; }
+        public Decimal VarietyQtyG { set; get; }
+        public Decimal VarietyQtyA { set; get; }
+
         public String OiCFullName { set; get; }
         public String BackStopping { set; get; }
         public Decimal TCPG { set; get; }
@@ -22,5 +27,6 @@ namespace YHRSys.Models
         public String ActivityDate { set; get; }
         public Decimal SA { set; get; }
         public Decimal SG { set; get; }
+        public String userName { set; get; }
     }
 }

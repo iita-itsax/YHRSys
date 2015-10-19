@@ -1,0 +1,10 @@
+
+Log Entry : 10:03:31 10 September 2015
+  :
+  :YHRSys New Order Notification, ERROR: Mailbox unavailable. The server response was: 5.7.1 Unable to relay
+-------------------------------
+
+Log Entry : 11:06:48 10 September 2015
+  :
+  :YHRSys New Order Notification, ERROR: Mailbox unavailable. The server response was: 5.7.1 Unable to relay
+-------------------------------

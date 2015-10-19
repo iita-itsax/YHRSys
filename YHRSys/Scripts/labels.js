@@ -271,7 +271,7 @@ function printLocally() {
                         }
                         else {
                             label.setObjectText("Barcode", data[i].barcode);
-                            label.setObjectText("bottomLabel", "");//WORK HERE
+                            label.setObjectText("bottomLabel", data[i].processDate);//WORK HERE
                         }
                         //Try and catch any printer thrown errors
                         label.print("DYMO LabelWriter 4XL");

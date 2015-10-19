@@ -19,16 +19,16 @@
         <div class="form-group">
             @Html.LabelFor(model => model.varietyId, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("varietyId", String.Empty)
+                @Html.DropDownList("varietyId", null, String.Empty, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.varietyId)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.form, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.formId, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("form")
-                @Html.ValidationMessageFor(model => model.form)
+                @Html.DropDownList("formId", null, String.Empty, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.formId)
             </div>
         </div>
 
@@ -43,16 +43,24 @@
         <div class="form-group">
             @Html.LabelFor(model => model.userId, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("userId", String.Empty)
+                @Html.DropDownList("userId", null, String.Empty, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.userId)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.rank, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.rankId, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("rank")
-                @Html.ValidationMessageFor(model => model.rank)
+                @Html.DropDownList("rankId", null, String.Empty, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.rankId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.quality, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.quality, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.quality)
             </div>
         </div>
 

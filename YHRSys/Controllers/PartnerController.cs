@@ -21,9 +21,19 @@ namespace YHRSys.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        AccessRoleCheck accessRoleCheck = new AccessRoleCheck();
+        string[] groups = new string[] { "Partner" };
+        
         // GET: /Partner/
+        [Authorize(Roles = "Admin, CanViewPartner, CanViewOwnPartner, Partner")]
         public ActionResult Index(string sortOrder, string currentFilter, string currentStartDateFilter, string currentEndDateFilter, string searchString, DateTime? searchStartCreatedDate, DateTime? searchEndCreatedDate, int? page)
         {
+            string perms = "CanViewOwnPartner";
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            ApplicationUser accessUser = manager.FindById(User.Identity.GetUserId());
+            Boolean OwnAccess = accessRoleCheck.checkOwnPerm(groups, accessUser, perms);
+            //Boolean GeneralAccess = checkOwnPerm(groups, accessUser, perms);
+
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.ContactSortParm = sortOrder == "Contact" ? "contact_desc" : "Contact";
@@ -112,6 +122,11 @@ namespace YHRSys.Controllers
                 }
             }
 
+            if (OwnAccess)
+            {
+                partners = partners.Where(rg => rg.createdBy == accessUser.UserName);
+            }
+            
             switch (sortOrder)
             {
                 case "name_desc":
@@ -137,19 +152,28 @@ namespace YHRSys.Controllers
             int pageSize = 10;
             int pageNumber = (page ?? 1);
             return View(partners.ToPagedList(pageNumber, pageSize));
-
-            //return View(db.Partners.ToList());
         }
 
         // GET: /Partner/Details/5
-        [Authorize(Roles = "Admin, CanViewPartner, Partner")]
+        [Authorize(Roles = "Admin, CanViewPartner, CanViewOwnPartner, Partner")]
         public ActionResult Details(long? id)
         {
+            string perms = "CanViewOwnPartner";
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            ApplicationUser accessUser = manager.FindById(User.Identity.GetUserId());
+            Boolean OwnAccess = accessRoleCheck.checkOwnPerm(groups, accessUser, perms);
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Partner tblpartner = db.Partners.Find(id);
+            if (OwnAccess)
+            {
+                tblpartner = (Partner)db.Partners.Where(p => p.partnerId == id && p.createdBy == accessUser.UserName);
+            }
+
             if (tblpartner == null)
             {
                 return HttpNotFound();
@@ -158,7 +182,7 @@ namespace YHRSys.Controllers
         }
 
         // GET: /Partner/Create
-        [Authorize(Roles = "Admin, CanAddPartner, Partner")]
+        [Authorize(Roles = "Admin, CanAddPartner, CanAddOwnPartner, Partner")]
         public ActionResult Create()
         {
             return View();
@@ -169,15 +193,25 @@ namespace YHRSys.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, CanAddPartner, Partner")]
+        [Authorize(Roles = "Admin, CanAddPartner, CanAddOwnPartner, Partner")]
         public ActionResult Create([Bind(Include="name,contactAddress,contactCity,contactState,contactCountry,phoneNumber,emailAddress,webAddress,geoLongitude,geoLatitude")] Partner tblpartner)
         {
+            string perms = "CanAddOwnPartner";
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            ApplicationUser accessUser = manager.FindById(User.Identity.GetUserId());
+            Boolean OwnAccess = accessRoleCheck.checkOwnPerm(groups, accessUser, perms);
+
             if (ModelState.IsValid)
             {
                 var r = db.Partners.FirstOrDefault(p => p.name == tblpartner.name);
+
+                if(OwnAccess){
+                    r = db.Partners.FirstOrDefault(p => p.createdBy == accessUser.UserName);
+                }
+
                 if (r == null)
                 {
-                    var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                    //var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
                     var currentUser = manager.FindById(User.Identity.GetUserId());
 
                     if (currentUser != null)
@@ -192,7 +226,7 @@ namespace YHRSys.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Partner already registered: " + tblpartner.name);
+                    ModelState.AddModelError(string.Empty, "Partner already registered or you have added a partner earlier than now: " + r.name);
                     return View(tblpartner);
                 }
                 return RedirectToAction("Index");
@@ -202,14 +236,25 @@ namespace YHRSys.Controllers
         }
 
         // GET: /Partner/Edit/5
-        [Authorize(Roles = "Admin, CanEditPartner, Partner")]
+        [Authorize(Roles = "Admin, CanEditPartner, CanEditOwnPartner, Partner")]
         public ActionResult Edit(long? id)
         {
+            string perms = "CanEditOwnPartner";
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            ApplicationUser accessUser = manager.FindById(User.Identity.GetUserId());
+            Boolean OwnAccess = accessRoleCheck.checkOwnPerm(groups, accessUser, perms);
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Partner tblpartner = db.Partners.Find(id);
+
+            if (OwnAccess)
+            {
+                tblpartner = (Partner)db.Partners.Where(p => p.partnerId == id && p.createdBy == accessUser.UserName);
+            }
+
             if (tblpartner == null)
             {
                 return HttpNotFound();
@@ -222,11 +267,16 @@ namespace YHRSys.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, CanEditPartner, Partner")]
+        [Authorize(Roles = "Admin, CanEditPartner, CanEditOwnPartner, Partner")]
         public ActionResult Edit([Bind(Include = "partnerId,name,contactAddress,contactCity,contactState,contactCountry,phoneNumber,emailAddress,webAddress,geoLongitude,geoLatitude")] Partner tblpartner)
         {
+            string perms = "CanEditOwnPartner";
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            var currentUser = manager.FindById(User.Identity.GetUserId());
+            ApplicationUser currentUser = manager.FindById(User.Identity.GetUserId());
+            Boolean OwnAccess = accessRoleCheck.checkOwnPerm(groups, currentUser, perms);
+
+            //var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            //var currentUser = manager.FindById(User.Identity.GetUserId());
 
             if (ModelState.IsValid)
             {
@@ -235,6 +285,12 @@ namespace YHRSys.Controllers
                 {
                     //db.Entry(tbllocationuser).State = EntityState.Modified;
                     var r = db.Partners.Where(c => c.partnerId == tblpartner.partnerId).FirstOrDefault();
+
+                    if (OwnAccess)
+                    {
+                        r = (Partner)db.Partners.Where(p => p.partnerId == tblpartner.partnerId && p.createdBy == currentUser.UserName);
+                    }
+
                     r.name = tblpartner.name;
                     r.contactAddress = tblpartner.contactAddress;
 
@@ -285,14 +341,25 @@ namespace YHRSys.Controllers
         }
 
         // GET: /Partner/Delete/5
-        [Authorize(Roles = "Admin, CanDeletePartner, Partner")]
+        [Authorize(Roles = "Admin, CanDeletePartner, CanDeleteOwnPartner, Partner")]
         public ActionResult Delete(long? id)
         {
+            string perms = "CanDeleteOwnPartner";
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            ApplicationUser currentUser = manager.FindById(User.Identity.GetUserId());
+            Boolean OwnAccess = accessRoleCheck.checkOwnPerm(groups, currentUser, perms);
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Partner tblpartner = db.Partners.Find(id);
+
+            if (OwnAccess)
+            {
+                tblpartner = (Partner)db.Partners.Where(p => p.partnerId == id && p.createdBy == currentUser.UserName);
+            }
+
             if (tblpartner == null)
             {
                 return HttpNotFound();
@@ -303,10 +370,20 @@ namespace YHRSys.Controllers
         // POST: /Partner/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, CanDeletePartner, Partner")]
+        [Authorize(Roles = "Admin, CanDeletePartner, CanDeleteOwnPartner, Partner")]
         public ActionResult DeleteConfirmed(long id)
         {
+            string perms = "CanDeleteOwnPartner";
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            ApplicationUser currentUser = manager.FindById(User.Identity.GetUserId());
+            Boolean OwnAccess = accessRoleCheck.checkOwnPerm(groups, currentUser, perms);
+
             Partner tblpartner = db.Partners.Find(id);
+            if (OwnAccess)
+            {
+                tblpartner = (Partner)db.Partners.Where(p => p.partnerId == id && p.createdBy == currentUser.UserName);
+            }
+
             db.Partners.Remove(tblpartner);
             db.SaveChanges();
             return RedirectToAction("Index");

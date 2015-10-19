@@ -311,8 +311,10 @@ namespace YHRSys.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            string status = "OPEN";
-            WeeklyActivityLog weeklyactivitylog = (WeeklyActivityLog)db.WeeklyActivityLogs.Where(r => r.activityLogId == id && r.status == status).FirstOrDefault();
+            //string status = "OPEN";
+            //WeeklyActivityLog weeklyactivitylog = (WeeklyActivityLog)db.WeeklyActivityLogs.Where(r => r.activityLogId == id && r.status == status).FirstOrDefault();
+
+            WeeklyActivityLog weeklyactivitylog = (WeeklyActivityLog)db.WeeklyActivityLogs.Where(r => r.activityLogId == id).FirstOrDefault();
 
             if (currentUser != null)
             {
@@ -324,6 +326,9 @@ namespace YHRSys.Controllers
             if (weeklyactivitylog == null)
             {
                 return HttpNotFound();
+            }
+            else if (weeklyactivitylog != null && weeklyactivitylog.status == "CLOSED") {
+                return View("Details", weeklyactivitylog);
             }
 
             if (groupExists)

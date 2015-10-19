@@ -26,9 +26,15 @@ namespace YHRSys.Controllers
                 {
                     return HttpNotFound();
                 }
-                VarietyProcessFlow vpf = varietyProcessFlow.FirstOrDefault();
-                if (vpf != null)
-                    return RedirectToAction("Details", "VarietyProcessFlow", new { id = vpf.processId });
+                List<VarietyProcessFlow> vpf = varietyProcessFlow.AsEnumerable().ToList();//.FirstOrDefault();
+                if (vpf != null && vpf.Count()>0)
+                    if (vpf.Count() == 1)
+                    {
+                        VarietyProcessFlow vp = vpf.FirstOrDefault();
+                        return RedirectToAction("Details", "VarietyProcessFlow", new { id = vp.processId });
+                    }
+                    else
+                        return RedirectToAction("BarcodeDataList", "VarietyProcessFlow", new { barcode = barcodeText });
                 else
                     ViewBag.Message = "No record found!";
             }
