@@ -197,12 +197,12 @@ namespace YHRSys.Controllers
         public ActionResult Create()
         {
             //ViewBag.activityId = new SelectList(db.Activities, "activityId", "name");
-            ViewBag.varietyDefinitionId = new SelectList(db.VarietyDefinitions, "varietyDefinitionId", "name");
-            ViewBag.locationId = new SelectList(db.Locations, "locationId", "name");
-            ViewBag.specieId = new SelectList(db.Species, "specieId", "name");
-            ViewBag.userId = new SelectList(db.Users, "Id", "FullName");
+            ViewBag.varietyDefinitionId = new SelectList(db.VarietyDefinitions.OrderBy(x=>x.name), "varietyDefinitionId", "name");
+            ViewBag.locationId = new SelectList(db.Locations.OrderBy(x=>x.name), "locationId", "name");
+            ViewBag.specieId = new SelectList(db.Species.OrderBy(s=>s.name), "specieId", "name");
+            ViewBag.userId = new SelectList(db.Users.OrderBy(u=>u.FirstName), "Id", "FullName");
             ViewBag.releaseStatus = listReleaseStatus("");
-            ViewBag.uomId = new SelectList(db.Measurements, "measurementId", "name");
+            ViewBag.uomId = new SelectList(db.Measurements.OrderBy(m=>m.name), "measurementId", "name");
             return View();
         }
 
@@ -216,7 +216,7 @@ namespace YHRSys.Controllers
         {
             if (ModelState.IsValid)
             {
-                var med = db.Varieties.FirstOrDefault(p => p.varietyDefinitionId == tblvariety.varietyDefinitionId && p.sampleNumber == tblvariety.sampleNumber);
+                var med = db.Varieties.FirstOrDefault(p => p.varietyDefinitionId == tblvariety.varietyDefinitionId && p.sampleNumber == tblvariety.sampleNumber && p.userId == tblvariety.userId && p.testDate == tblvariety.testDate);
                 if (med == null)
                 {
                     var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
@@ -233,6 +233,12 @@ namespace YHRSys.Controllers
                 }
                 else
                 {
+                    ViewBag.varietyDefinitionId = new SelectList(db.VarietyDefinitions.OrderBy(x => x.name), "varietyDefinitionId", "name", tblvariety.varietyDefinitionId);
+                    ViewBag.locationId = new SelectList(db.Locations.OrderBy(x => x.name), "locationId", "name", tblvariety.locationId);
+                    ViewBag.specieId = new SelectList(db.Species.OrderBy(x => x.name), "specieId", "name", tblvariety.specieId);
+                    ViewBag.userId = new SelectList(db.Users.OrderBy(x => x.FirstName), "Id", "FullName", tblvariety.userId);
+                    ViewBag.releaseStatus = listReleaseStatus(tblvariety.releaseStatus);
+                    ViewBag.uomId = new SelectList(db.Measurements.OrderBy(x => x.name), "measurementId", "name");
                     ModelState.AddModelError(string.Empty, "Variety already registered: " + med.varietyDefinition.name);
                     return View(tblvariety);
                 }
@@ -240,12 +246,12 @@ namespace YHRSys.Controllers
             }
 
             //ViewBag.activityId = new SelectList(db.Activities, "activityId", "name", tblvariety.activityId);
-            ViewBag.varietyDefinitionId = new SelectList(db.VarietyDefinitions, "varietyDefinitionId", "name", tblvariety.varietyDefinitionId);
-            ViewBag.locationId = new SelectList(db.Locations, "locationId", "name", tblvariety.locationId);
-            ViewBag.specieId = new SelectList(db.Species, "specieId", "name", tblvariety.specieId);
-            ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblvariety.userId);
+            ViewBag.varietyDefinitionId = new SelectList(db.VarietyDefinitions.OrderBy(x => x.name), "varietyDefinitionId", "name", tblvariety.varietyDefinitionId);
+            ViewBag.locationId = new SelectList(db.Locations.OrderBy(x => x.name), "locationId", "name", tblvariety.locationId);
+            ViewBag.specieId = new SelectList(db.Species.OrderBy(x => x.name), "specieId", "name", tblvariety.specieId);
+            ViewBag.userId = new SelectList(db.Users.OrderBy(x => x.FirstName), "Id", "FullName", tblvariety.userId);
             ViewBag.releaseStatus = listReleaseStatus(tblvariety.releaseStatus);
-            ViewBag.uomId = new SelectList(db.Measurements, "measurementId", "name");
+            ViewBag.uomId = new SelectList(db.Measurements.OrderBy(x => x.name), "measurementId", "name");
             return View(tblvariety);
         }
 
@@ -263,12 +269,12 @@ namespace YHRSys.Controllers
                 return HttpNotFound();
             }
             //ViewBag.activityId = new SelectList(db.Activities, "activityId", "name", tblvariety.activityId);
-            ViewBag.varietyDefinitionId = new SelectList(db.VarietyDefinitions, "varietyDefinitionId", "name", tblvariety.varietyDefinitionId);
-            ViewBag.locationId = new SelectList(db.Locations, "locationId", "name", tblvariety.locationId);
-            ViewBag.specieId = new SelectList(db.Species, "specieId", "name", tblvariety.specieId);
-            ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblvariety.userId);
+            ViewBag.varietyDefinitionId = new SelectList(db.VarietyDefinitions.OrderBy(x => x.name), "varietyDefinitionId", "name", tblvariety.varietyDefinitionId);
+            ViewBag.locationId = new SelectList(db.Locations.OrderBy(x => x.name), "locationId", "name", tblvariety.locationId);
+            ViewBag.specieId = new SelectList(db.Species.OrderBy(x => x.name), "specieId", "name", tblvariety.specieId);
+            ViewBag.userId = new SelectList(db.Users.OrderBy(x => x.FirstName), "Id", "FullName", tblvariety.userId);
             ViewBag.releaseStatus = listReleaseStatus(tblvariety.releaseStatus);
-            ViewBag.uomId = new SelectList(db.Measurements, "measurementId", "name", tblvariety.uomId);
+            ViewBag.uomId = new SelectList(db.Measurements.OrderBy(x => x.name), "measurementId", "name", tblvariety.uomId);
             return View(tblvariety);
         }
 
@@ -337,12 +343,12 @@ namespace YHRSys.Controllers
                 return RedirectToAction("Index");
             }
             //ViewBag.activityId = new SelectList(db.Activities, "activityId", "name", tblvariety.activityId);
-            ViewBag.varietyDefinitionId = new SelectList(db.VarietyDefinitions, "varietyDefinitionId", "name", tblvariety.varietyDefinitionId);
-            ViewBag.locationId = new SelectList(db.Locations, "locationId", "name", tblvariety.locationId);
-            ViewBag.specieId = new SelectList(db.Species, "specieId", "name", tblvariety.specieId);
-            ViewBag.userId = new SelectList(db.Users, "Id", "FullName", tblvariety.userId);
+            ViewBag.varietyDefinitionId = new SelectList(db.VarietyDefinitions.OrderBy(x => x.name), "varietyDefinitionId", "name", tblvariety.varietyDefinitionId);
+            ViewBag.locationId = new SelectList(db.Locations.OrderBy(x => x.name), "locationId", "name", tblvariety.locationId);
+            ViewBag.specieId = new SelectList(db.Species.OrderBy(x => x.name), "specieId", "name", tblvariety.specieId);
+            ViewBag.userId = new SelectList(db.Users.OrderBy(x => x.FirstName), "Id", "FullName", tblvariety.userId);
             ViewBag.releaseStatus = listReleaseStatus(tblvariety.releaseStatus);
-            ViewBag.uomId = new SelectList(db.Measurements, "measurementId", "name", tblvariety.uomId);
+            ViewBag.uomId = new SelectList(db.Measurements.OrderBy(x => x.name), "measurementId", "name", tblvariety.uomId);
             return View(tblvariety);
         }
 

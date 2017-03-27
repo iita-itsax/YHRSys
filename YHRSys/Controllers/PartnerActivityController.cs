@@ -247,8 +247,8 @@ namespace YHRSys.Controllers
             ApplicationUser accessUser = manager.FindById(User.Identity.GetUserId());
             Boolean OwnAccess = accessRoleCheck.checkOwnPerm(groups, accessUser, perms);
 
-            try { 
-                ViewBag.reagentId = new SelectList(db.Reagents, "reagentId", "name");
+            //try {
+                ViewBag.reagentId = new SelectList(db.Reagents.Join(db.Stocks, r => r.reagentId, s => s.reagentId, (r, s) => new { Reagent = r, Stock = s }).Where(t => t.Stock.reagentId == t.Reagent.reagentId && (t.Stock.totalIn - t.Stock.totalOut) > 0).Select(m => new { m.Reagent.reagentId, m.Reagent.name }), "reagentId", "name");
                 if (OwnAccess)
                 {
                     ViewBag.partnerId = new SelectList(db.Partners.Where(p => p.partnerId == accessUser.partnerId), "partnerId", "name");
@@ -271,9 +271,9 @@ namespace YHRSys.Controllers
 
                 //ViewBag.seedlingId = new SelectList(db.Seedlings, "seedlingId", "name");
 
-            }catch(Exception ex){
-                throw ex;
-            }
+            //}catch(Exception ex){
+            //    throw ex;
+            //}
             return View();
         }
 

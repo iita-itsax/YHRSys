@@ -50,7 +50,7 @@ namespace YHRSys.Controllers
                 else
                 {
                     idManager.CreateRole(model.RoleName, model.Description);
-                    return RedirectToAction("Index", "Account");
+                    return RedirectToAction("Index", "Roles");
                 }
             }
             return View();

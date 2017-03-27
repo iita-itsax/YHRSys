@@ -22,5 +22,13 @@ namespace YHRSys.Models
 
         [ForeignKey("reagentId")]
         public Reagent reagent { get; set; }
+
+        /*[NotMapped]
+        public string NameQty { 
+            get 
+            { 
+                return reagent.name + " - " + (totalIn - totalOut); 
+            } 
+        }*/
     }
 }

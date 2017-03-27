@@ -623,7 +623,7 @@ namespace YHRSys.Controllers
                         CustomVarietyProcessFlow cvpf = new CustomVarietyProcessFlow();
                         cvpf.barcode = q.barcode;
                         cvpf.description = q.description;
-                        cvpf.processDate = String.Format("{0:d}",q.processDate);
+                        cvpf.processDate = String.Format("{0:d}", DateTime.Now.ToString("dd/MM/yyyy"));//q.processDate);
                         cvpf.rank = q.rank;
                         cvpf.form = q.form;
                         cvpf.OiC = q.OiC;
@@ -680,7 +680,7 @@ namespace YHRSys.Controllers
                                variety = pa.variety.varietyDefinition.name,
                                OiC = pa.user.FirstName + " " + pa.user.LastName,
                                form = pa.form.name,
-                               processDate = String.Format("{0:d}", pa.processDate),//.HasValue ? pa.processDate.Value.ToString("dd/MM/yyyy") : String.Empty,
+                               processDate = String.Format("{0:d}", DateTime.Now.ToString("dd/MM/yyyy")),//pa.processDate),//.HasValue ? pa.processDate.Value.ToString("dd/MM/yyyy") : String.Empty,
                                rank = pa.rank.name,
                                barcode = pa.barcode,
                                barcodeImageUrl = Convert.ToString(pa.barcodeImageUrl),
@@ -1072,7 +1072,7 @@ namespace YHRSys.Controllers
                         CustomVarietyProcessFlow cvpf = new CustomVarietyProcessFlow();
                         cvpf.barcode = q.barcode;//Regex.Match(q.barcode, @"\d+").Value;
                         cvpf.processId = q.processId;
-                        cvpf.processDate = (q.processDate.HasValue)? q.processDate.ToString() : null;
+                        cvpf.processDate = DateTime.Now.ToString("dd/MM/yyyy");//(q.processDate.HasValue)? q.processDate.ToString() : null;
                         customVPF.Add(cvpf);
                     }
                 }
@@ -1085,7 +1085,7 @@ namespace YHRSys.Controllers
                     CustomVarietyProcessFlow cvpf = new CustomVarietyProcessFlow();
                     cvpf.barcode = q.barcode;//Regex.Match(q.barcode, @"\d+").Value;
                     cvpf.processId = q.processId;
-                    cvpf.processDate = (q.processDate.HasValue) ? q.processDate.ToString() : null;
+                    cvpf.processDate = DateTime.Now.ToString("dd/MM/yyyy");//(q.processDate.HasValue) ? q.processDate.ToString() : null;
                     customVPF.Add(cvpf);
                 }
             }

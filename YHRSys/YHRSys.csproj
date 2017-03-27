@@ -604,6 +604,8 @@
     <Compile Include="Models\Species.cs" />
     <Compile Include="Models\Stock.cs" />
     <Compile Include="Models\StringExtention.cs" />
+    <Compile Include="Models\SubCulture.cs" />
+    <Compile Include="Models\SubCultureTransaction.cs" />
     <Compile Include="Models\Variety.cs" />
     <Compile Include="Models\VarietyDefinition.cs" />
     <Compile Include="Models\VarietyProcessFlow.cs" />

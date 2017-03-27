@@ -67,9 +67,14 @@ namespace BarCode.Models
                             if (dashVal[0].IndexOf("/") > 0)
                             {
                                 String[] slashVal = dashVal[0].Split('/');
-                                if (!slashVal[1].Equals(""))
-                                    accessionNo = slashVal[1];
-                                else
+                                if (slashVal.Length > 1 )
+                                {
+                                    if (!slashVal[1].Equals(""))
+                                        accessionNo = slashVal[1];
+                                    else
+                                        accessionNo = slashVal[0];
+                                }
+                                    else
                                     accessionNo = slashVal[0];
                             }
                             else
@@ -81,8 +86,13 @@ namespace BarCode.Models
                         {
                             //Remove the year part
                             String[] slashVal = spaceVal[0].Split('/');
-                            if (!slashVal[1].Equals(""))
-                                accessionNo = slashVal[1];
+                            if (slashVal.Length > 1 )
+                            {
+                                if (!slashVal[1].Equals(""))
+                                    accessionNo = slashVal[1];
+                                else
+                                    accessionNo = slashVal[0];
+                            }
                             else
                                 accessionNo = slashVal[0];
                         }
@@ -127,9 +137,9 @@ namespace BarCode.Models
                 rs.Append(varietyName.Replace("(", "/").Replace(")", "/").Replace(" ", "").ToUpper()).Append("/").Append(sampleNumber.Replace(" ", "").ToUpper());
                 return rs.ToString();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //ErrorLog.WriteErrorLog("Barcode", ex.ToString(), ex.Message);
+                Console.WriteLine("Barcode: " + ex.ToString() + "  " + ex.Message);
             }
             return "";
         }
@@ -145,9 +155,9 @@ namespace BarCode.Models
                 string fontFile = HttpContext.Current.Server.MapPath("~/fonts/free3of9.ttf");
                 return (_barcode.Code39(barcode, barSize, false, file, fontFile));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //ErrorLog.WriteErrorLog("Barcode", ex.ToString(), ex.Message);
+                Console.WriteLine("Barcode: " + ex.ToString() + "  " + ex.Message);
             }
             return null;
         }
