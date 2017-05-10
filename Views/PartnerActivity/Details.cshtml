@@ -1,0 +1,304 @@
+﻿@model YHRSys.Models.PartnerActivity
+
+@{
+    ViewBag.Title = "Partner Activity Details";
+}
+
+<h2>Partner Activity Details</h2>
+
+<div>
+	<hr />
+    <dl class="dl-horizontal-wider">
+        <dt>
+            @Html.DisplayNameFor(model => model.partnerId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.partner.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.giverId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.giver.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.reagentId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.reagent.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.reagentQty)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.reagentQty)
+        </dd>
+
+        <dt>
+            Officer-in-Charge
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OiCFullName)
+        </dd>
+
+        <dt>
+            Activity Date
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.activityDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.backStopping)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.backStopping)
+        </dd>
+
+        <dt>
+            TC Plantlets Given
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tcPlantletsGiven)
+        </dd>
+
+        <dt>
+            Bioreactor Plants Given
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.bioreactorplantsGiven)
+        </dd>
+
+        <dt>
+            Tubers Given
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tubersGiven)
+        </dd>
+
+        <dt>
+            Seeds Given
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.seedsGiven)
+        </dd>
+
+        <dt>
+            TC Plantlets Available
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tcPlantletsAvailable)
+        </dd>
+
+        <dt>
+            TIB Plantlets Available
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tibPlantletsAvailable)
+        </dd>
+
+        <dt>
+            Tubers Available
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tubersAvailable)
+        </dd>
+
+        <dt>
+            Seeds Available
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.seedsAvailable)
+        </dd>
+
+        <dt>
+            Total Variety Given
+        </dt>
+        <dd>
+            @ViewBag.VarietyQtyGiven
+        </dd>
+
+        <dt>
+            Total Variety Available
+        </dt>
+        <dd>
+            @ViewBag.VarietyQtyAvailable
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.extendCreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.createdDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.extendUpdatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updatedDate)
+        </dd>
+
+    </dl>
+</div>
+<p><br/>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.partnerActivityId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+@if (Model.partnerReportings.Count > 0)
+{
+    <div class="table-responsive">
+        <h2>Activity Reports (Available reagent/plantlets)</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    Reagent Qty
+                </th>
+                <th>
+                    SP Qty
+                </th>
+                <th>
+                    TCP Qty
+                </th>
+                <th>
+                    Tuber Qty
+                </th>
+                <th>
+                    BioRP Qty
+                </th>
+                <th>
+                    Report Date
+                </th>
+                <th>
+                    Comments
+                </th>
+                <th />
+            </tr>
+            @foreach (var item in Model.partnerReportings)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.reagentQty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.spQty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tcpQty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tpQty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.bioRPQty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.reportDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.comment)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Delete", "DeleteReport", new { id = item.reportId }) || @Html.ActionLink("Edit", "EditReport", new { id = item.reportId })
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+@using (Html.BeginForm("AddReport", "PartnerActivity", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h3>New Activity Report (Available reagent/plantlets)</h3>
+        <hr />        
+        @Html.Hidden("activityId", Model.partnerActivityId)
+
+        <div class="form-group">
+            @Html.Label("SP Qty", new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBox("spQty", "", new { @class = "form-control", @placeholder=".. seedling plantlets quantity available" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("TCP Qty", new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBox("tcpQty", "", new { @class = "form-control", @placeholder = ".. TC plantlets quantity available" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("TP Qty", new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBox("tpQty", "", new { @class = "form-control", @placeholder = ".. Tubers quantity available" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("BioRP Qty", new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBox("bioRPQty", "", new { @class = "form-control", @placeholder = ".. bioreactor plantlets quantity available" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Reagent Qty", new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBox("reagentQty", "", new { @class = "form-control", @placeholder = ".. reagent quantity available" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Report Date", new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.TextBox("reportDate", "", new { @class = "form-control datecontrol" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("comment", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextArea("comment", "", new { @class = "form-control" })
+            </div>
+        </div>
+        <button class="btn btn-success pull-right" type="button" onclick="clearForm();">Clear!</button> <button class="btn btn-primary pull-right col-sm-push-2" type="submit">Add Report!</button> &nbsp;&nbsp;
+    </div>
+}

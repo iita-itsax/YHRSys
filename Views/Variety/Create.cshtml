@@ -1,0 +1,169 @@
+﻿@model YHRSys.Models.Variety
+
+@{
+    ViewBag.Title = "Create Variety";
+}
+
+<h2>Create Variety</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Variety</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.varietyDefinitionId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("varietyDefinitionId", String.Empty)
+                @Html.ValidationMessageFor(model => model.varietyDefinitionId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.sampleNumber, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.sampleNumber, new { @class = "form-control"})
+                @Html.ValidationMessageFor(model => model.sampleNumber)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.locationId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("locationId", String.Empty)
+                @Html.ValidationMessageFor(model => model.locationId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.userId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("userId", String.Empty)
+                @Html.ValidationMessageFor(model => model.userId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.testDate, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.testDate, new { @class = "form-control datecontrol" })
+                @Html.ValidationMessageFor(model => model.testDate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.releaseStatus, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("releaseStatus", String.Empty)
+                @Html.ValidationMessageFor(model => model.releaseStatus)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.resistance, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.resistance, new { rows = 2, columns = 40, @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.resistance)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.storability, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.storability, new { rows = 2, columns = 40, @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.storability)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.poundability, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.poundability, new { rows = 2, columns = 40, @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.poundability)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.specieId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("specieId", String.Empty)
+                @Html.ValidationMessageFor(model => model.specieId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.uniformity, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.uniformity, new { rows = 2, columns = 40, @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.uniformity)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.stability, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.stability, new { rows = 2, columns = 40, @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.stability)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.distinctness, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.distinctness, new { rows = 2, columns = 40, @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.distinctness)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.value, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.value, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.value)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.availableQuantity, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.availableQuantity, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.availableQuantity)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.totalWeight, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.totalWeight, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.totalWeight)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.uomId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("uomId", String.Empty)
+                @Html.ValidationMessageFor(model => model.uomId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

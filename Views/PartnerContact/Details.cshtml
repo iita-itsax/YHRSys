@@ -1,0 +1,170 @@
+﻿@model YHRSys.Models.PartnerContact
+
+@{
+    ViewBag.Title = "Partner Contact Person Details";
+}
+
+<h2>Partner Contact Person Details</h2>
+
+<div>
+    <h4>Partner Contact Person</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.partner.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.partner.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.personTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.personTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.firstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.firstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.otherNames)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.otherNames)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.lastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.lastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.gender)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.gender)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.phoneNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.phoneNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.emailAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.emailAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.contactAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.contactAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.contactCity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.contactCity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.contactState)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.contactState)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.contactCountry)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.contactCountry)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.webAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.webAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.geoLongitude)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.geoLongitude)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.geoLatitude)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.geoLatitude)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.extendCreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.createdDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.extendUpdatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updatedDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.contactId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,10 @@
+
+Log Entry : 23:59:42 24 February 2017
+  :
+  :YHRSys Stock Level Alert, ERROR: Service not available, closing transmission channel. The server response was: 4.3.2 Service not available
+-------------------------------
+
+Log Entry : 23:59:52 24 February 2017
+  :
+  :YHRSys Stock Level Alert, ERROR: Service not available, closing transmission channel. The server response was: 4.3.2 Service not available
+-------------------------------

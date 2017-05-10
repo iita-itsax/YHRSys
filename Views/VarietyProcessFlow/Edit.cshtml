@@ -1,0 +1,102 @@
+﻿@model YHRSys.Models.VarietyProcessFlow
+
+@{
+    ViewBag.Title = "Edit Variety Process Flow";
+}
+
+<h2>Edit Variety Process Flow</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Variety Process Flow</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.processId)
+        @Html.HiddenFor(model => model.Timestamp)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.varietyId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("varietyId", null, String.Empty, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.varietyId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.formId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("formId", null, String.Empty, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.formId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.processDate, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.processDate, new { @class = "form-control datecontrol" })
+                @Html.ValidationMessageFor(model => model.processDate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.userId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("userId", null, String.Empty, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.userId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.rankId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("rankId", null, String.Empty, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.rankId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.quality, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.quality, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.quality)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.barcode, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @if (ViewBag.barcode != null)
+                {
+                    var imageUrl = Convert.ToBase64String((byte[])ViewBag.barcode);
+                    <img src="data:image/jpg;base64,@imageUrl" />
+                }
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.description, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.description, new { rows=2, columns=40, @class="form-control" })
+                @Html.ValidationMessageFor(model => model.description)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

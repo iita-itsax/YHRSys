@@ -1,0 +1,63 @@
+﻿@model IEnumerable<YHRSys.Models.Measurements>
+
+@{
+    ViewBag.Title = "Units of Measurements";
+}
+
+<h2>Units of Measurements</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.uom)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.createdBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.updatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.updatedDate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.uom)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.extendCreatedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.createdDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.extendUpdatedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.updatedDate)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.measurementId }) |
+            @Html.ActionLink("Details", "Details", new { id = item.measurementId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.measurementId })
+        </td>
+    </tr>
+}
+
+</table>

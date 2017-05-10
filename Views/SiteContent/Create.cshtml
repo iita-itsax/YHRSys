@@ -1,0 +1,92 @@
+﻿@model YHRSys.Models.SiteContent
+
+@{
+    ViewBag.Title = "Create Site Content";
+}
+@section scripts {
+    @Scripts.Render("~/Scripts/ckeditor/ckeditor.js")
+    <script>
+        CKEDITOR.config.filebrowserUploadUrl = '/SiteContent/UploadFromEditor';
+        CKEDITOR.config.filebrowserBrowseUrl = '/SiteContent/ImageBrowser';
+
+
+        function save() {
+            var caption = $('#caption').val();
+            var summary = $('#summary').val();
+            var status = $('#status').val();
+
+            $.ajax({
+                type: "POST",
+                url: "/SiteContent/Create",
+                data: { caption: caption, summary: summary, fullArticle: CKEDITOR.instances["fullArticle"].getData(), status: status },
+                success: function (data) {
+                    window.location = data.redirectUrl;//"/SiteContent";
+                },
+                dataType: "json"
+            });
+        }
+    </script>
+}
+
+<h2>Create Site Content</h2>
+
+@using (Html.BeginForm("#")) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Site Content</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @if (ViewBag.Error != null) {
+            <div class="bs-component">
+                <div class="alert alert-dismissible alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <h4>Warning!</h4>
+                    <p>@Html.Encode(ViewBag.Error)</p>
+                </div>
+            </div>
+        }
+        <div class="form-group">
+            @Html.LabelFor(model => model.caption, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.caption, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.caption)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.summary, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.summary, new { rows = 2, @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.summary)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.fullArticle, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.fullArticle, new { rows = 5, @class = "form-control ckeditor" })
+                @Html.ValidationMessageFor(model => model.fullArticle)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.status, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.status, new SelectList(Enum.GetValues(typeof(YHRSys.Models.PUBLISHSTATUS))), new { @class = "font-control" })
+                @Html.ValidationMessageFor(model => model.status)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" onclick="save()" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

@@ -1,0 +1,146 @@
+﻿@model YHRSys.Models.Order
+
+@{
+    ViewBag.Title = "AndPayment";
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <h2>Address And Payment</h2>
+    <fieldset>
+        <legend>Shipping Information</legend>
+
+        <div class="form-horizontal">
+            <h4>Order</h4>
+            <hr />
+            @Html.ValidationSummary(true)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.FirstName)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.LastName)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("Country", null, null, new { @class = "form-control", @id = "CountryID" })
+                    @Html.ValidationMessageFor(model => model.Country)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Address)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.City, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.City)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10" id="StateList">
+                    @Html.DropDownList("State", null, null, new { @class = "form-control", @id = "StateID" })
+                    @Html.ValidationMessageFor(model => model.State)
+                </div>
+                <div class="col-md-10" id="StateDiv">
+                    @Html.TextBox("StateTxt", (string)ViewBag.StateTxt, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PostalCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.PostalCode, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.PostalCode)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Phone, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Phone)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Email)
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Payment</legend>
+        <p>
+            We're running a promo: all order is free with the promo code: "YIIFSWA"
+        </p>
+        <div class="form-group">
+            @Html.Label("Promo Code", null, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("PromoCode", null, new { @class = "form-control" })
+                @Html.ValidationMessage("PromoCode")
+            </div>
+        </div>
+</fieldset>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10" style="margin-top:10px;">
+            <input type="submit" value="Submit Order" class="btn btn-default" />
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var ctry = $("#CountryID").val();
+
+        if (ctry == "Nigeria") {
+            $("#StateList").show("slow")
+            $("#StateDiv").hide("slow");
+        } else {
+            $("#StateDiv").show("slow");
+            $("#StateList").hide("slow")
+        }
+        $("#CountryID").change(function () {
+            var country = $("#CountryID > option:selected").attr("value");
+            if (country !== "Nigeria") {
+                $("#StateDiv").show("slow")
+                $("#StateList").hide("slow")
+                $("#State").val("");
+            } else {
+                $("#StateDiv").hide("slow")
+                $("#StateList").show("slow")
+                $("#StateTxt").val("");
+            }
+        });
+    });
+</script>

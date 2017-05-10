@@ -1,0 +1,56 @@
+﻿@model YHRSys.Models.OrderDetail
+
+@{
+    ViewBag.Title = "Delete Variety Order";
+}
+
+<h2>Delete Variety Order</h2>
+
+<h3>Are you sure you want to delete this variety order?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.VarietyId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Variety.FullDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.extendUpdatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updatedDate)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("OrderDetailId", Model.OrderDetailId)
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete Variety Order" class="btn btn-default" /> |
+            @Html.ActionLink("Back to Details", "Details", new { id = Model.OrderId })
+        </div>
+    }
+</div>

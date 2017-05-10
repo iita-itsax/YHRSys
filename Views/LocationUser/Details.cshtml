@@ -1,0 +1,164 @@
+﻿@model YHRSys.Models.LocationUser
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Location OiC</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Location
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.location.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.userId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.user.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.startDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.startDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.endDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.endDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.extendCreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.createdDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.extendUpdatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updatedDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.locationUserId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+@if (Model.locationSubordinates.Count > 0)
+{
+    <div class="table-responsive">
+        <h2>Location Subordinates</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    Staff Name
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Work Brief
+                </th>
+                <th />
+            </tr>
+            @foreach (var item in Model.locationSubordinates)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SubordinateFullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.workBrief)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Delete", "DeleteSubordinate", new { id = item.subordinateId }) || @Html.ActionLink("Edit", "EditSubordinate", new { id = item.subordinateId })
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+
+        @using (Html.BeginForm("AddSubordinate", "LocationUser", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
+                <h3>New Surbordinate</h3>
+                <hr />
+                <div class="form-group">
+                    @Html.Hidden("locationUserId", Model.locationUserId )
+                    @Html.Label("Subordinate", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("userSubordinateId", String.Empty)
+                        @Html.ValidationMessageFor(model => model.userId)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("Status", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("status", new SelectList(Enum.GetValues(typeof(YHRSys.Models.STATUS))), new { @class = "font-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("Work Brief", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextArea("workBrief", "", new { @class = "form-control" })
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit">Add Subordinate!</button> <button class="btn btn-success" type="button" onclick="clearForm();">Clear!</button>
+            </div>
+        }
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

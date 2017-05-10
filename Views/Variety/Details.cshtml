@@ -1,0 +1,317 @@
+﻿@model YHRSys.Models.Variety
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Variety</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.varietyDefinitionId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.varietyDefinition.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.sampleNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sampleNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.locationId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.location.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.userId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.user.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.testDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.testDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.releaseStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.releaseStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.resistance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.resistance)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.storability)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.storability)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.poundability)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.poundability)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.specieId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.species.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.uniformity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.uniformity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.stability)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.stability)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.distinctness)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.distinctness)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.value)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.value)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.availableQuantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.availableQuantity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.totalWeight)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.totalWeight)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.uomId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.uoms.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.extendCreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.createdDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.extendUpdatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updatedDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.varietyId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+@if (Model.varietyProcessFlows.Count() > 0)
+{
+    <div class="table-responsive">
+        <h2>Related Variety Process Flows</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    Variety
+                </th>
+                <th>
+                    Form
+                </th>
+                <th>
+                    Process Date
+                </th>
+                <th>
+                    Officer-In-Charge
+                </th>
+                <th>
+                    Rank
+                </th>
+                <th>
+                    Quality
+                </th>
+                <th>
+                    Barcode
+                </th>
+                <th>
+                    Description
+                </th>
+            </tr>
+
+            @foreach (var item in Model.varietyProcessFlows)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.variety.varietyDefinition.name) - @Html.DisplayFor(modelItem => item.variety.sampleNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.form)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.processDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.user.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.rank)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.quality)
+                    </td>
+                    <td>
+                        @if (item.barcodeImageUrl != null)
+                        {
+                            var imageUrl = Convert.ToBase64String((byte[])item.barcodeImageUrl);
+                            <img src="data:image/jpg;base64,@imageUrl" />
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.description)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+@if (Model.activities.Count() > 0) { 
+    <div class="table-responsive">
+        <h2>Related Activities</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Variety
+                </th>
+                <th>
+                    Location
+                </th>
+                <th>
+                    Type
+                </th>
+                <th>
+                    Quality
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Activity Date
+                </th>
+                <th>
+                    Description
+                </th>
+            </tr>
+            @foreach (var item in Model.activities)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.activityDefinition.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.variety.FullDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.location.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.mediumPrepType.typename)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.quality)%
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.activityDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.description)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}

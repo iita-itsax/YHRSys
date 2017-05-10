@@ -1,0 +1,147 @@
+﻿@model PagedList.IPagedList<YHRSys.Models.Variety>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Avaliable Varieties";
+}
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $(".AddToCart").click(function () {
+            // Get the id from the link
+            var recordToUpdate = $(this).attr("data-id");
+            if (recordToUpdate != '') {
+                clearUpdateMessage();
+                // Perform the ajax post
+                $.post("/ShoppingCart/AddToCart", { "id": recordToUpdate, "cartCount": "1" },
+                function (data) {
+                    // Successful requests get here
+                    // Update the page elements
+                    if (data.ItemCount == 0) {
+                        $('#row-' + data.DeleteId).fadeOut('slow');
+                    }
+                    $('#update-message').text(htmlDecode(data.Message));
+
+                    //Check for not process the callback data when server error occurs
+                    if (data.ItemCount != -1) {
+                        $('#cart-total').text(data.QtyTotal);//$('#cart-total').text(data.CartTotal);
+                        $('#cart-status').text('Cart (' + data.CartCount + ')');
+                    }
+                });
+            }
+        });
+    });
+
+    function clearUpdateMessage() {
+        // Reset update-message area
+        $('#update-message').text('');
+    }
+    function htmlDecode(value) {
+        if (value) {
+            return $('<div />').html(value).text();
+        }
+        else {
+            return '';
+        }
+    }
+    if (typeof String.prototype.trim !== 'function') {
+        String.prototype.trim = function () {
+            return this.replace(/^\s+|\s+$/g, '');
+        }
+    }
+</script>
+
+<h2>Avaliable Varieties</h2>
+
+
+<p>
+    @Html.ActionLink("Review & Checkout Order Now >>", "Index", "ShoppingCart")
+
+    @using (Html.BeginForm("Index", "AvailableVariety", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+    {
+        <div class="form-group">
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control input-mini", placeholder = "Search phrase goes here ..." })
+        </div>;
+        <button class="btn btn-primary" type="submit">Search!</button> <button class="btn btn-success" type="button" onclick="clearForm();">Clear!</button>
+    }
+</p>
+<div id="update-message" style="padding-bottom: 10px;"></div>
+    <div class="table-responsive">
+        <table class="table">
+            @if (Model.PageCount > 0)
+            {
+                <tr>
+                    <th>
+                        @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+                    </th>
+                    <th>
+                        Species
+                    </th>
+                    <th>
+                        @Html.ActionLink("Sample No", "Index", new { sortOrder = ViewBag.SampleNumSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+                    </th>
+                    <th>
+                        @Html.ActionLink("Test Date", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+                    </th>
+                    <th>
+                        # Available
+                    </th>
+                    <th>
+                        Total Wg
+                    </th>
+                    <th>
+                        UoM
+                    </th>
+                    <th></th>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td colspan="8">
+                        <em>No records found!</em>
+                    </td>
+                </tr>
+            }
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.varietyDefinition.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.species.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sampleNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.testDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.availableQuantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.totalWeight)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.uoms.name)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Add to cart", null, null, new { @class = "AddToCart", data_id = @item.varietyId, @Href="#" })
+                    </td>
+                </tr>
+            }
+
+        </table>
+        <br />
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+        @Html.PagedListPager(Model, page => Url.Action("Index",
+                new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter }))
+
+    </div>

@@ -1,0 +1,183 @@
+﻿@model YHRSys.Models.Activity
+
+@{
+    ViewBag.Title = "Activity Details";
+}
+
+<h2>Activity Details</h2>
+
+<div>
+    <h4>Activity</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.activityDefinitionId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.activityDefinition.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.activityDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.activityDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.varietyId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.variety.FullDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.locationId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.location.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.typeId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.mediumPrepType.typename)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.quantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.quantity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.quality)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.quality)%
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.extendCreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.createdDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.extendUpdatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updatedDate)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.activityId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+@if (Model.activityAssignments.Count > 0)
+{
+    <div class="table-responsive">
+        <h2>Activity Assignees</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    Staff Name
+                </th>
+                <th>
+                    ToDo
+                </th>
+                <th />
+            </tr>
+            @foreach (var item in Model.activityAssignments)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AssigneeFullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.todo)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Delete", "DeleteAssignee", new { id = item.assignmentId }) || @Html.ActionLink("Edit", "EditAssignee", new { id = item.assignmentId })
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+
+@using (Html.BeginForm("AddAssignee", "Activity", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h3>New Activity Assignee</h3>
+        <hr />
+        <div class="form-group">
+            @Html.Hidden("activityId", Model.activityId)
+            @Html.Label("Assignee", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("userId", String.Empty)
+                @Html.ValidationMessageFor(model => model.userId)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("ToDo", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextArea("todo", "", new { @class = "form-control" })
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Add Assignee!</button> <button class="btn btn-success" type="button" onclick="clearForm();">Clear!</button>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,115 @@
+﻿@model PagedList.IPagedList<YHRSys.Models.Variety>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Varieties";
+}
+<h2>Varieties</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+
+    @using (Html.BeginForm("Index", "Variety", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+    {
+        <div class="form-group">
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control input-mini", placeholder = "Search phrase goes here ..." })
+        </div>;
+        <div class="form-group">
+            @Html.TextBox("SearchStartTestDate", ViewBag.StartTestDateFilter as string, new { @class = "form-control datecontrol input-mini", placeholder = "Test date start range .." })
+        </div>;
+        <div class="form-group">
+            @Html.TextBox("SearchEndTestDate", ViewBag.EndTestDateFilter as string, new { @class = "form-control datecontrol input-mini", placeholder = "Test date end range ..." })
+        </div>;
+        <button class="btn btn-primary" type="submit">Search!</button> <button class="btn btn-success" type="button" onclick="clearForm();">Clear!</button>
+    }
+</p>
+
+<div class="table-responsive">
+    <table class="table">
+        @if (Model.PageCount > 0)
+        {
+        <tr>
+            <th>
+                @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Batch Code", "Index", new { sortOrder = ViewBag.SampleNumSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Officer-In-Charge", "Index", new { sortOrder = ViewBag.OiCNameSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Test Date", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter })
+            </th>
+            <th>
+                Species
+            </th>
+            <th>
+                Location
+            </th>
+            <th>
+                # Available
+            </th>
+            <th>
+                Total Wg
+            </th>
+            <th>
+                UoM
+            </th>
+            <th></th>
+        </tr>
+        }
+        else
+        {
+        <tr>
+            <td colspan="9">
+                <em>No records found!</em>
+            </td>
+        </tr>
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.varietyDefinition.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sampleNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.testDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.species.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.location.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.availableQuantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.totalWeight)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.uoms.name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.varietyId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.varietyId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.varietyId })
+                </td>
+            </tr>
+        }
+
+    </table>
+    <br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+                new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter }))
+
+</div>

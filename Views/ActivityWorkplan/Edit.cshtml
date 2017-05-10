@@ -1,0 +1,62 @@
+﻿@model YHRSys.Models.ActivityWorkplan
+
+@{
+    ViewBag.Title = "Edit Activity Workplan";
+}
+
+<h2>Edit Activity Workplan</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>ActivityWorkplan</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.workplanId)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.StartPeriod, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.StartPeriod, new { @class = "form-control datecontrol" })
+                @Html.ValidationMessageFor(model => model.StartPeriod)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EndPeriod, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.EndPeriod, new { @class = "form-control datecontrol" })
+                @Html.ValidationMessageFor(model => model.EndPeriod)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Objective, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Objective, new { rows = 2, columns = 40, @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Objective)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PerformanceIndicator, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.PerformanceIndicator, new { rows = 3, columns = 40, @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.PerformanceIndicator)
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
